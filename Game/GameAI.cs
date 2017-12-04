@@ -366,7 +366,7 @@ namespace WindBot.Game
                         return new MainPhaseAction(MainPhaseAction.MainAction.SetSpell, card.ActionIndex);
                 }
             }
-
+            //允许例外
             if (main.CanBattlePhase && Duel.Fields[0].HasAttackingMonster())
                 return new MainPhaseAction(MainPhaseAction.MainAction.ToBattlePhase);
 
@@ -616,6 +616,7 @@ namespace WindBot.Game
 
         // _ Others functions _
         // Those functions are used by the AI behavior.
+        //复杂些的 select card
 
         private CardSelector m_selector;
         private CardSelector m_nextSelector;
@@ -734,6 +735,13 @@ namespace WindBot.Game
             m_materialSelector = null;
         }
 
+
+        /// <summary>
+        /// need fix
+        /// 还不能推翻重写
+        /// 那就...加一个优先的判断是否有修复版
+        /// </summary>
+        /// <returns></returns>
         public CardSelector GetSelectedCards()
         {
             CardSelector selected = m_selector;
