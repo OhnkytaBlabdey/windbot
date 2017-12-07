@@ -433,15 +433,15 @@ namespace WindBot.Game
 
         private void OnMove(BinaryReader packet)
         {
-            int cardId = packet.ReadInt32();
-            int pc = GetLocalPlayer(packet.ReadByte());
-            int pl = packet.ReadByte();
-            int ps = packet.ReadSByte();
+            int cardId = packet.ReadInt32(); //cardid
+            int pc = GetLocalPlayer(packet.ReadByte()); //player
+            int pl = packet.ReadByte(); //location
+            int ps = packet.ReadSByte(); //sequence
             packet.ReadSByte(); // pp
-            int cc = GetLocalPlayer(packet.ReadByte());
-            int cl = packet.ReadByte();
-            int cs = packet.ReadSByte();
-            int cp = packet.ReadSByte();
+            int cc = GetLocalPlayer(packet.ReadByte()); //player
+            int cl = packet.ReadByte(); //location
+            int cs = packet.ReadSByte(); //sequence
+            int cp = packet.ReadSByte(); //position
             packet.ReadInt32(); // reason
 
             ClientCard card = _duel.GetCard(pc, (CardLocation)pl, ps);
@@ -509,12 +509,12 @@ namespace WindBot.Game
         private void OnChaining(BinaryReader packet)
         {
             packet.ReadInt32(); // card id
-            int pcc = GetLocalPlayer(packet.ReadByte());
-            int pcl = packet.ReadByte();
-            int pcs = packet.ReadSByte();
-            int subs = packet.ReadSByte();
-            ClientCard card = _duel.GetCard(pcc, pcl, pcs, subs);
-            int cc = GetLocalPlayer(packet.ReadByte());
+            int pcc = GetLocalPlayer(packet.ReadByte()); //player
+            int pcl = packet.ReadByte(); //location
+            int pcs = packet.ReadSByte(); //sequence
+            int subs = packet.ReadSByte(); //sub index (for overlay materials )
+            ClientCard card = _duel.GetCard(pcc, pcl, pcs, subs); //card
+            int cc = GetLocalPlayer(packet.ReadByte()); //player
             _ai.OnChaining(card, cc);
             _duel.ChainTargets.Clear();
         }
@@ -618,7 +618,7 @@ namespace WindBot.Game
             for (int i = 0; i < count; ++i)
             {
                 packet.ReadInt32(); // card id
-                int con = GetLocalPlayer(packet.ReadByte());
+                int con = GetLocalPlayer(packet.ReadByte()); //player
                 CardLocation loc = (CardLocation)packet.ReadByte();
                 int seq = packet.ReadByte();
                 int desc = packet.ReadInt32();
@@ -626,17 +626,17 @@ namespace WindBot.Game
                 ClientCard card = _duel.GetCard(con, loc, seq);
                 if (card != null)
                 {
-                    card.ActionIndex[0] = i;
+                    card.ActionIndex[0] = i; //index
                     battle.ActivableCards.Add(card);
                     battle.ActivableDescs.Add(desc);
-                }
+                }  //activateable cards
             }
 
             count = packet.ReadByte();
             for (int i = 0; i < count; ++i)
             {
                 packet.ReadInt32(); // card id
-                int con = GetLocalPlayer(packet.ReadByte());
+                int con = GetLocalPlayer(packet.ReadByte()); //player
                 CardLocation loc = (CardLocation)packet.ReadByte();
                 int seq = packet.ReadByte();
                 int diratt = packet.ReadByte();
@@ -644,11 +644,11 @@ namespace WindBot.Game
                 ClientCard card = _duel.GetCard(con, loc, seq);
                 if (card != null)
                 {
-                    card.ActionIndex[1] = i;
+                    card.ActionIndex[1] = i; //index
                     if (diratt > 0)
                         card.CanDirectAttack = true;
                     else
-                        card.CanDirectAttack = false;
+                        card.CanDirectAttack = false; //can direct attack
                     battle.AttackableCards.Add(card);
                     card.Attacked = false;
                 }
@@ -657,7 +657,7 @@ namespace WindBot.Game
             foreach (ClientCard monster in monsters)
             {
                 if (!battle.AttackableCards.Contains(monster))
-                    monster.Attacked = true;
+                    monster.Attacked = true; // cannot attack
             }
 
             battle.CanMainPhaseTwo = packet.ReadByte() != 0;
@@ -766,7 +766,7 @@ namespace WindBot.Game
                 Connection.Send(CtosMessage.Response, 0);
                 return;
             }
-
+            //chaining
             Connection.Send(CtosMessage.Response, _ai.OnSelectChain(cards, descs, forced));
         }
 

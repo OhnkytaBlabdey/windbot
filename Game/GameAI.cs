@@ -132,15 +132,15 @@ namespace WindBot.Game
         public BattlePhaseAction OnSelectBattleCmd(BattlePhase battle)
         {
             Executor.SetBattle(battle);
-            foreach (CardExecutor exec in Executor.Executors)
+            foreach (CardExecutor exec in Executor.Executors) // ?
             {
-                for (int i = 0; i < battle.ActivableCards.Count; ++i)
+                for (int i = 0; i < battle.ActivableCards.Count; ++i) // game behavior.cs -OnSelectBattleCmd
                 {
                     ClientCard card = battle.ActivableCards[i];
-                    if (ShouldExecute(exec, card, ExecutorType.Activate, battle.ActivableDescs[i]))
+                    if (ShouldExecute(exec, card, ExecutorType.Activate, battle.ActivableDescs[i])) //check in case it fails
                     {
                         _dialogs.SendChaining(card.Name);
-                        return new BattlePhaseAction(BattlePhaseAction.BattleAction.Activate, card.ActionIndex);
+                        return new BattlePhaseAction(BattlePhaseAction.BattleAction.Activate, card.ActionIndex); //return activate cmd
                     }
                 }
             }
@@ -900,6 +900,6 @@ namespace WindBot.Game
                 (exec.Func == null || exec.Func()))
                 return true;
             return false;
-        }
+        } //check format
     }
 }

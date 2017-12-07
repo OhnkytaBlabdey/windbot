@@ -6,8 +6,8 @@ using WindBot.Game.AI;
 
 namespace WindBot.Game.AI.Decks
 {
-    [Deck("Blue-Eyes", "AI_BluEyes")]
-    class BluEyesExecutor : DefaultExecutor
+    [Deck("BluEyes", "AI_BlueEyes")]
+    class BlueEyesExecutor : DefaultExecutor
     {
         public class CardId
         {
@@ -47,7 +47,7 @@ namespace WindBot.Game.AI.Decks
         bool AlternativeWhiteDragonSummoned = false;
         bool SoulChargeUsed = false;
 
-        public BluEyesExecutor(GameAI ai, Duel duel)
+        public BlueEyesExecutor(GameAI ai, Duel duel)
             : base(ai, duel)
         {
             // destroy traps

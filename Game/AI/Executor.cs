@@ -59,7 +59,8 @@ namespace WindBot.Game.AI
         public virtual BattlePhaseAction OnBattle(IList<ClientCard> attackers, IList<ClientCard> defenders)
         {
             if (attackers.Count == 0)
-                return AI.ToMainPhase2();
+                return AI.ToMainPhase2(); //if no attackers, go to MP2. 
+            //but i think bot is also able to go to EP. 
 
             if (defenders.Count == 0)
             {
@@ -67,7 +68,8 @@ namespace WindBot.Game.AI
                 {
                     ClientCard attacker = attackers[i];
                     if (attacker.Attack > 0)
-                        return AI.Attack(attacker, null);
+                        return AI.Attack(attacker, null); 
+                    // if an attacker's ATK > 0, then it attack directly. However, this is not the best choice.
                 }
             }
             else
@@ -80,23 +82,24 @@ namespace WindBot.Game.AI
                         ClientCard attacker = attackers[j];
                         attacker.RealPower = attacker.Attack;
                         defender.RealPower = defender.GetDefensePower();
-                        if (!OnPreBattleBetween(attacker, defender))
+                        if (!OnPreBattleBetween(attacker, defender)) //if bot judges that it should lose this battle
                             continue;
                         if (attacker.RealPower > defender.RealPower || (attacker.RealPower >= defender.RealPower && j == attackers.Count - 1))
-                            return AI.Attack(attacker, defender);
+                            return AI.Attack(attacker, defender); //battle
                     }
                 }
 
                 for (int i = attackers.Count - 1; i >= 0; --i)
                 {
                     ClientCard attacker = attackers[i];
-                    if (attacker.CanDirectAttack)
+                    if (attacker.CanDirectAttack) //monster cannot attack directly if this bool val is false.
                         return AI.Attack(attacker, null);
                 }
             }
 
             if (!Battle.CanMainPhaseTwo)
                 return AI.Attack(attackers[0], (defenders.Count == 0) ? null : defenders[0]);
+            //if some effect makes all monsters must attack during this phase.
 
             return AI.ToMainPhase2();
         }
@@ -182,6 +185,7 @@ namespace WindBot.Game.AI
             return -1;
         }
 
+        /**/
         public bool ChainContainsCard(int id)
         {
             foreach (ClientCard card in CurrentChain)
