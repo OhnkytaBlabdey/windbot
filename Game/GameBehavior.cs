@@ -668,6 +668,7 @@ namespace WindBot.Game
 
         private void InternalOnSelectCard(BinaryReader packet, Func<IList<ClientCard>, int, int, int, bool, IList<ClientCard>> func)
         {
+            Logger.DebugWriteLine("this is in GameBehavier.InternalOnSelectCard");
             packet.ReadByte(); // player
             bool cancelable = packet.ReadByte() != 0;
             int min = packet.ReadByte();
@@ -726,6 +727,7 @@ namespace WindBot.Game
 
         private void OnSelectCard(BinaryReader packet)
         {
+            Logger.DebugWriteLine("this is in GameBehavier.OnSelectCard");
             InternalOnSelectCard(packet, _ai.OnSelectCard);
         }
 
