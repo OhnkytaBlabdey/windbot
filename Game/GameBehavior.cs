@@ -614,7 +614,7 @@ namespace WindBot.Game
             _duel.BattlePhase = new BattlePhase();
             BattlePhase battle = _duel.BattlePhase;
 
-            int count = packet.ReadByte();
+            int count = packet.ReadByte(); //activate
             for (int i = 0; i < count; ++i)
             {
                 packet.ReadInt32(); // card id
@@ -632,7 +632,7 @@ namespace WindBot.Game
                 }  //activateable cards
             }
 
-            count = packet.ReadByte();
+            count = packet.ReadByte(); //attack
             for (int i = 0; i < count; ++i)
             {
                 packet.ReadInt32(); // card id

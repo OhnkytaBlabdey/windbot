@@ -6,15 +6,15 @@ using WindBot.Game.AI;
 
 namespace WindBot.Game.AI.Decks
 {
-    [Deck("A", "AI_DeckA")]
-    class ExecutorA : DefaultExecutor
+    [Deck("B", "AI_DeckB")]
+    class ExecutorB : DefaultExecutor
     {
         public class CardId
         {
 
         }
 
-        public ExecutorA(GameAI ai, Duel duel)
+        public ExecutorB(GameAI ai, Duel duel)
             : base(ai, duel)
         {
             //AddExecutor(ExecutorType.Activate);
