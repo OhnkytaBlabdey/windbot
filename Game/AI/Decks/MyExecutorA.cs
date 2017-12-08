@@ -17,15 +17,18 @@ namespace WindBot.Game.AI.Decks
         public ExecutorA(GameAI ai, Duel duel)
             : base(ai, duel)
         {
-            //AddExecutor(ExecutorType.Activate);
-            //AddExecutor(ExecutorType.SpSummon);
-            //AddExecutor(ExecutorType.SpellSet);
-            //AddExecutor(ExecutorType.Summon);
-            //AddExecutor(ExecutorType.MonsterSet);
-            //AddExecutor(ExecutorType.Repos);
-            //AddExecutor(ExecutorType.SummonOrSet);
+            AddExecutor(ExecutorType.Activate);
+            AddExecutor(ExecutorType.SpSummon);
+            AddExecutor(ExecutorType.SpellSet);
+            AddExecutor(ExecutorType.Summon);
+            AddExecutor(ExecutorType.MonsterSet);
+            AddExecutor(ExecutorType.Repos);
+            AddExecutor(ExecutorType.SummonOrSet);
         }
-
+        public override bool OnSelectHand()
+        {
+            return true;
+        }
         public override IList<ClientCard> OnSelectCard(IList<ClientCard> cards, int min, int max, int hint, bool cancelable)
         {
             Logger.DebugWriteLine("OnSelectCard " + cards.Count + " " + min + " " + max);
