@@ -696,10 +696,11 @@ namespace WindBot.Game
                 int id = packet.ReadInt32();
                 int player = GetLocalPlayer(packet.ReadByte());
                 CardLocation loc = (CardLocation)packet.ReadByte();
+                int nloc = (int)loc;
                 int seq = packet.ReadByte();
                 int pos = packet.ReadByte(); // pos
                 Console.WriteLine("select_card:["+i.ToString()+"]={");
-                Console.WriteLine("id:{0},player:{1},loc:{2},seq:{3},pos:{4}},",id,player,loc,seq,pos);
+                Console.WriteLine("id: "+id+",player: "+player+",loc: "+(int)loc+",seq: "+seq+",pos: "+pos+"},");
                 ClientCard card;
                 if (((int)loc & (int)CardLocation.Overlay) != 0)
                     card = new ClientCard(id, CardLocation.Overlay);

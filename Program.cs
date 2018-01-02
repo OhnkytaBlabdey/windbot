@@ -179,7 +179,7 @@ namespace WindBot
                 return;
             }
             Console.SetOut(writer);
-            
+
             //redirect
 
 
