@@ -698,7 +698,7 @@ namespace WindBot.Game
                 CardLocation loc = (CardLocation)packet.ReadByte();
                 int seq = packet.ReadByte();
                 int pos = packet.ReadByte(); // pos
-                Console.WriteLine("select_card:["+i+"]={");
+                Console.WriteLine("select_card:["+i.ToString()+"]={");
                 Console.WriteLine("id:{0},player:{1},loc:{2},seq:{3},pos:{4}},",id,player,loc,seq,pos);
                 ClientCard card;
                 if (((int)loc & (int)CardLocation.Overlay) != 0)
@@ -722,7 +722,7 @@ namespace WindBot.Game
 
             byte[] result = new byte[selected.Count + 1];
             result[0] = (byte)selected.Count;
-            Console.WriteLine("result_count=" + result[0]);
+            Console.WriteLine("result_count=" + result[0].ToString());
             for (int i = 0; i < selected.Count; ++i)
             {
                 int id = 0;
@@ -736,7 +736,7 @@ namespace WindBot.Game
                     }
                 }
                 result[i + 1] = (byte)id;
-                Console.WriteLine("result["+i+"]={"+result[i]+"},");
+                Console.WriteLine("result["+i.ToString()+"]={"+result[i].ToString()+"},");
                 //Console.WriteLine("result[i + 1] is {0}", result[i + 1]);
             }
 
