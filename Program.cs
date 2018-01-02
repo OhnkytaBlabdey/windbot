@@ -163,6 +163,7 @@ namespace WindBot
 
 
             //redirect
+            
             FileStream ostrm;
             StreamWriter writer;
             TextWriter oldOut = Console.Out;
@@ -178,6 +179,7 @@ namespace WindBot
                 return;
             }
             Console.SetOut(writer);
+            
             //redirect
 
 
@@ -201,12 +203,14 @@ namespace WindBot
 
 
             //redirect
-            Console.WriteLine("This is a line of text");
-            Console.WriteLine("Everything written to Console.Write() or");
-            Console.WriteLine("Console.WriteLine() will be written to a file");
+            
+            //Console.WriteLine("This is a line of text");
+            //Console.WriteLine("Everything written to Console.Write() or");
+            //Console.WriteLine("Console.WriteLine() will be written to a file");
             Console.SetOut(oldOut);
             writer.Close();
             ostrm.Close();
+            
             //redirect
 
 

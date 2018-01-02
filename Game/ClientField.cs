@@ -303,49 +303,56 @@ namespace WindBot.Game
             Console.WriteLine("Hand={");
             foreach(ClientCard c in Hand)
             {
-                c.Show();
+                if(c!=null)
+                    c.Show();
             }
             Console.WriteLine("},");
 
             Console.WriteLine("MonsterZone={");
             foreach (ClientCard c in MonsterZone)
             {
-                c.Show();
+                if (c != null)
+                    c.Show();
             }
             Console.WriteLine("},");
 
             Console.WriteLine("SpellZone={");
             foreach (ClientCard c in SpellZone)
             {
-                c.Show();
+                if (c != null)
+                    c.Show();
             }
             Console.WriteLine("},");
 
             Console.WriteLine("Graveyard={");
             foreach (ClientCard c in Graveyard)
             {
-                c.Show();
+                if (c != null)
+                    c.Show();
             }
             Console.WriteLine("},");
 
             Console.WriteLine("Banished={");
             foreach (ClientCard c in Banished)
             {
-                c.Show();
+                if (c != null)
+                    c.Show();
             }
             Console.WriteLine("},");
 
             Console.WriteLine("Deck={");
             foreach (ClientCard c in Deck)
             {
-                c.Show();
+                if (c != null)
+                    c.Show();
             }
             Console.WriteLine("},");
 
             Console.WriteLine("ExtraDeck={");
             foreach (ClientCard c in ExtraDeck)
             {
-                c.Show();
+                if (c != null)
+                    c.Show();
             }
             Console.WriteLine("},");
 

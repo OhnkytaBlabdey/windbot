@@ -255,7 +255,8 @@ namespace WindBot.Game
             public int[] ActionIndex { get; set; }
             public IDictionary<int, int> ActionActivateIndex { get; private set; }
             */
-            Console.WriteLine("Id"+Id+"Name"+Name+"Position"+Position+"Location"+Location+"Level"+Location+"Rank"+Rank+"Race"+Race+"Attribute"+Attribute+"Type"+Type+"Attack"+Attack+"Defense"+Defense+"Owner"+Owner+"Controller"+Controller+"Disabled"+Disabled+"Attacked"+Attacked);
+            if(this != null)
+            Console.WriteLine("Id:"+Id+"Name:"+Name+"Position:"+Position+"Location:"+Location+"Level:"+Location+"Rank:"+Rank+"Race:"+Race+"Attribute:"+Attribute+"Type:"+Type+"Attack:"+Attack+"Defense:"+Defense+"Owner:"+Owner+"Controller:"+Controller+"Disabled:"+Disabled+"Attacked:"+Attacked);
         }
     }
 }
