@@ -689,6 +689,8 @@ namespace WindBot.Game
             int min = packet.ReadByte();
             int max = packet.ReadByte();
 
+            Console.WriteLine("choices={");
+            
             IList<ClientCard> cards = new List<ClientCard>();
             int count = packet.ReadByte();
             for (int i = 0; i < count; ++i)
@@ -712,6 +714,9 @@ namespace WindBot.Game
                 cards.Add(card);
             }
 
+            Console.WriteLine("}");
+
+
             IList<ClientCard> selected = func(cards, min, max, _select_hint, cancelable);
             _select_hint = 0;
 
@@ -723,7 +728,11 @@ namespace WindBot.Game
 
             byte[] result = new byte[selected.Count + 1];
             result[0] = (byte)selected.Count;
+
+            Console.WriteLine("selected={");
             Console.WriteLine("result_count=" + result[0].ToString());
+
+
             for (int i = 0; i < selected.Count; ++i)
             {
                 int id = 0;
@@ -740,6 +749,8 @@ namespace WindBot.Game
                 Console.WriteLine("result["+i.ToString()+"]={"+result[i].ToString()+"},");
                 //Console.WriteLine("result[i + 1] is {0}", result[i + 1]);
             }
+
+            Console.WriteLine("}");
 
             BinaryWriter reply = GamePacketFactory.Create(CtosMessage.Response);
             reply.Write(result);
