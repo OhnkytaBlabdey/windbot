@@ -169,7 +169,7 @@ namespace WindBot
             TextWriter oldOut = Console.Out;
             try
             {
-                ostrm = new FileStream("./Redirect.txt", FileMode.Create, FileAccess.Write,FileShare.None);
+                ostrm = new FileStream("./"+ "[" + DateTime.Now.ToString("yy-MM-dd HH-mm-ss") + "] " + ".json", FileMode.Create, FileAccess.Write,FileShare.None);
                 writer = new StreamWriter(ostrm);
             }
             catch (Exception e)
@@ -215,7 +215,7 @@ namespace WindBot
 
 
             Logger.DebugWriteLine(client.Username + " end.");
-            Console.ReadLine();
+            //Console.ReadLine();
 #if !DEBUG
     }
     catch (Exception ex)
