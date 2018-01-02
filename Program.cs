@@ -160,6 +160,27 @@ namespace WindBot
             GameClient client = new GameClient(Info);
             client.Start();
             Logger.DebugWriteLine(client.Username + " started.");
+
+
+            //redirect
+            FileStream ostrm;
+            StreamWriter writer;
+            TextWriter oldOut = Console.Out;
+            try
+            {
+                ostrm = new FileStream("./Redirect.txt", FileMode.Create, FileAccess.Write,FileShare.None);
+                writer = new StreamWriter(ostrm);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Cannot open Redirect.txt for writing");
+                Console.WriteLine(e.Message);
+                return;
+            }
+            Console.SetOut(writer);
+            //redirect
+
+
             while (client.Connection.IsConnected)
             {
 #if !DEBUG
@@ -176,6 +197,19 @@ namespace WindBot
         }
 #endif
             }
+            
+
+
+            //redirect
+            Console.WriteLine("This is a line of text");
+            Console.WriteLine("Everything written to Console.Write() or");
+            Console.WriteLine("Console.WriteLine() will be written to a file");
+            Console.SetOut(oldOut);
+            writer.Close();
+            ostrm.Close();
+            //redirect
+
+
             Logger.DebugWriteLine(client.Username + " end.");
             Console.ReadLine();
 #if !DEBUG
