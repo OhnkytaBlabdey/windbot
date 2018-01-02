@@ -101,11 +101,14 @@ namespace WindBot.Game
             _messages.Add(GameMessage.PosChange, OnPosChange);
             _messages.Add(GameMessage.Chaining, OnChaining);
             _messages.Add(GameMessage.ChainEnd, OnChainEnd);
-            _messages.Add(GameMessage.SortCard, OnCardSorting);
-            _messages.Add(GameMessage.SortChain, OnChainSorting);
+            
             _messages.Add(GameMessage.UpdateCard, OnUpdateCard);
             _messages.Add(GameMessage.UpdateData, OnUpdateData);
             _messages.Add(GameMessage.BecomeTarget, OnBecomeTarget);
+
+            _messages.Add(GameMessage.SortCard, OnCardSorting);
+            _messages.Add(GameMessage.SortChain, OnChainSorting);
+
             _messages.Add(GameMessage.SelectBattleCmd, OnSelectBattleCmd);
             _messages.Add(GameMessage.SelectCard, OnSelectCard);
             _messages.Add(GameMessage.SelectChain, OnSelectChain);
@@ -694,7 +697,8 @@ namespace WindBot.Game
                 int player = GetLocalPlayer(packet.ReadByte());
                 CardLocation loc = (CardLocation)packet.ReadByte();
                 int seq = packet.ReadByte();
-                packet.ReadByte(); // pos
+                int pos = packet.ReadByte(); // pos
+                Console.WriteLine("id:{0},player:{1},loc:{2},seq:{3},pos:{4}",id,player,loc,seq,pos);
                 ClientCard card;
                 if (((int)loc & (int)CardLocation.Overlay) != 0)
                     card = new ClientCard(id, CardLocation.Overlay);
