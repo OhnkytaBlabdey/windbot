@@ -177,6 +177,7 @@ namespace WindBot
 #endif
             }
             Logger.DebugWriteLine(client.Username + " end.");
+            Console.ReadLine();
 #if !DEBUG
     }
     catch (Exception ex)

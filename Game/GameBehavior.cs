@@ -730,6 +730,7 @@ namespace WindBot.Game
                     }
                 }
                 result[i + 1] = (byte)id;
+                Console.WriteLine("result[i + 1] is {0}", result[i + 1]);
             }
 
             BinaryWriter reply = GamePacketFactory.Create(CtosMessage.Response);
