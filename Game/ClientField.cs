@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using YGOSharp.OCGWrapper.Enums;
+using System;
 
 namespace WindBot.Game
 {
@@ -283,6 +284,72 @@ namespace WindBot.Game
                     return true;
             }
             return false;
+        }
+
+        public void Show()
+        {
+            /*
+        public IList<ClientCard> Hand { get; private set; }
+        public ClientCard[] MonsterZone { get; private set; }
+        public ClientCard[] SpellZone { get; private set; }
+        public IList<ClientCard> Graveyard { get; private set; }
+        public IList<ClientCard> Banished { get; private set; }
+        public IList<ClientCard> Deck { get; private set; }
+        public IList<ClientCard> ExtraDeck { get; private set; }
+             */
+            
+            Console.WriteLine("Field={");
+
+            Console.WriteLine("Hand={");
+            foreach(ClientCard c in Hand)
+            {
+                c.Show();
+            }
+            Console.WriteLine("},");
+
+            Console.WriteLine("MonsterZone={");
+            foreach (ClientCard c in MonsterZone)
+            {
+                c.Show();
+            }
+            Console.WriteLine("},");
+
+            Console.WriteLine("SpellZone={");
+            foreach (ClientCard c in SpellZone)
+            {
+                c.Show();
+            }
+            Console.WriteLine("},");
+
+            Console.WriteLine("Graveyard={");
+            foreach (ClientCard c in Graveyard)
+            {
+                c.Show();
+            }
+            Console.WriteLine("},");
+
+            Console.WriteLine("Banished={");
+            foreach (ClientCard c in Banished)
+            {
+                c.Show();
+            }
+            Console.WriteLine("},");
+
+            Console.WriteLine("Deck={");
+            foreach (ClientCard c in Deck)
+            {
+                c.Show();
+            }
+            Console.WriteLine("},");
+
+            Console.WriteLine("ExtraDeck={");
+            foreach (ClientCard c in ExtraDeck)
+            {
+                c.Show();
+            }
+            Console.WriteLine("},");
+
+            Console.WriteLine("},");
         }
     }
 }

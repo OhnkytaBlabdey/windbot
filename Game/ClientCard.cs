@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System;
 using System.IO;
 using YGOSharp.OCGWrapper;
 using YGOSharp.OCGWrapper.Enums;
@@ -216,6 +217,45 @@ namespace WindBot.Game
         public bool Equals(ClientCard card)
         {
             return ReferenceEquals(this, card);
+        }
+
+        public void Show()
+        {
+            /*
+            public int Id { get; private set; }
+            public NamedCard Data { get; private set; }
+            public string Name { get; private set; }
+
+            public int Position { get; set; }
+            public CardLocation Location { get; set; }
+            public int Alias { get; private set; }
+            public int Level { get; private set; }
+            public int Rank { get; private set; }
+            public int Type { get; private set; }
+            public int Attribute { get; private set; }
+            public int Race { get; private set; }
+            public int Attack { get; private set; }
+            public int Defense { get; private set; }
+            public int LScale { get; private set; }
+            public int RScale { get; private set; }
+            public int BaseAttack { get; private set; }
+            public int BaseDefense { get; private set; }
+            public int RealPower { get; set; }
+            public List<int> Overlays { get; private set; }
+            public int Owner { get; private set; }
+            public int Controller { get; private set; }
+            public int Disabled { get; private set; }
+            public int SelectSeq { get; set; }
+            public int OpParam1 { get; set; }
+            public int OpParam2 { get; set; }
+            public bool CanDirectAttack { get; set; }
+            public bool ShouldDirectAttack { get; set; }
+            public bool Attacked { get; set; }
+
+            public int[] ActionIndex { get; set; }
+            public IDictionary<int, int> ActionActivateIndex { get; private set; }
+            */
+            Console.WriteLine("Id"+Id+"Name"+Name+"Position"+Position+"Location"+Location+"Level"+Location+"Rank"+Rank+"Race"+Race+"Attribute"+Attribute+"Type"+Type+"Attack"+Attack+"Defense"+Defense+"Owner"+Owner+"Controller"+Controller+"Disabled"+Disabled+"Attacked"+Attacked);
         }
     }
 }

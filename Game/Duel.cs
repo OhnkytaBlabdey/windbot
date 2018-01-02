@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using YGOSharp.OCGWrapper.Enums;
+using System;
 
 namespace WindBot.Game
 {
@@ -143,6 +144,36 @@ namespace WindBot.Game
         public int GetLocalPlayer(int player)
         {
             return IsFirst ? player : 1 - player;
+        }
+
+        public void Show()
+        {
+            /*
+        public bool IsFirst { get; set; }
+        public bool IsNewRule { get; set; }
+
+        public int[] LifePoints { get; private set; }
+        public ClientField[] Fields { get; private set; }
+
+        public int Turn { get; set; }
+        public int Player { get; set; }
+        public DuelPhase Phase { get; set; }
+        public MainPhase MainPhase { get; set; }
+        public BattlePhase BattlePhase { get; set; }
+        public IList<ClientCard> ChainTargets { get; set; }
+        public int LastSummonPlayer { get; set; }
+            */
+            Console.WriteLine("Duel={");
+
+            Console.WriteLine("IsFirst"+ IsFirst+ "IsNewRule"+ IsNewRule);
+
+            Console.WriteLine("LifePoints:"+ LifePoints[0]+ LifePoints[1]);
+            Console.Write("Field 0:");
+            Fields[0].Show();
+            Console.Write("Field 1:");
+            Fields[1].Show();
+
+            Console.WriteLine("},");
         }
     }
 }
