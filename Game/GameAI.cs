@@ -171,7 +171,7 @@ namespace WindBot.Game
             const int HINTMSG_LMATERIAL = 533;
             const int HINTMSG_SPSUMMON = 509;
 
-            Logger.DebugWriteLine("this is in GameAI.OnSelectCard");
+            //Logger.DebugWriteLine("this is in GameAI.OnSelectCard");
             Duel.Show();
             // Check for the executor.
             IList<ClientCard> result = Executor.OnSelectCard(cards, min, max, hint, cancelable);

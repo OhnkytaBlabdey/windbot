@@ -683,7 +683,7 @@ namespace WindBot.Game
 
         private void InternalOnSelectCard(BinaryReader packet, Func<IList<ClientCard>, int, int, int, bool, IList<ClientCard>> func)
         {
-            Logger.DebugWriteLine("this is in GameBehavier.InternalOnSelectCard");
+            //Logger.DebugWriteLine("this is in GameBehavier.InternalOnSelectCard");
             packet.ReadByte(); // player
             bool cancelable = packet.ReadByte() != 0;
             int min = packet.ReadByte();
@@ -698,7 +698,8 @@ namespace WindBot.Game
                 CardLocation loc = (CardLocation)packet.ReadByte();
                 int seq = packet.ReadByte();
                 int pos = packet.ReadByte(); // pos
-                Console.WriteLine("id:{0},player:{1},loc:{2},seq:{3},pos:{4}",id,player,loc,seq,pos);
+                Console.WriteLine("select_card:["+i+"]={");
+                Console.WriteLine("id:{0},player:{1},loc:{2},seq:{3},pos:{4}},",id,player,loc,seq,pos);
                 ClientCard card;
                 if (((int)loc & (int)CardLocation.Overlay) != 0)
                     card = new ClientCard(id, CardLocation.Overlay);
@@ -721,6 +722,7 @@ namespace WindBot.Game
 
             byte[] result = new byte[selected.Count + 1];
             result[0] = (byte)selected.Count;
+            Console.WriteLine("result_count=" + result[0]);
             for (int i = 0; i < selected.Count; ++i)
             {
                 int id = 0;
@@ -734,7 +736,8 @@ namespace WindBot.Game
                     }
                 }
                 result[i + 1] = (byte)id;
-                Console.WriteLine("result[i + 1] is {0}", result[i + 1]);
+                Console.WriteLine("result["+i+"]={"+result[i]+"},");
+                //Console.WriteLine("result[i + 1] is {0}", result[i + 1]);
             }
 
             BinaryWriter reply = GamePacketFactory.Create(CtosMessage.Response);
@@ -744,7 +747,7 @@ namespace WindBot.Game
 
         private void OnSelectCard(BinaryReader packet)
         {
-            Logger.DebugWriteLine("this is in GameBehavier.OnSelectCard");
+            //Logger.DebugWriteLine("this is in GameBehavier.OnSelectCard");
             InternalOnSelectCard(packet, _ai.OnSelectCard);
         }
 
