@@ -689,7 +689,7 @@ namespace WindBot.Game
             int min = packet.ReadByte();
             int max = packet.ReadByte();
 
-            Console.WriteLine("choices:{" + "[category]:OnSelectCard");
+            Console.WriteLine("choices:{" + "[category]:OnSelectCard,");
             
             IList<ClientCard> cards = new List<ClientCard>();
             int count = packet.ReadByte();
@@ -729,7 +729,7 @@ namespace WindBot.Game
             byte[] result = new byte[selected.Count + 1];
             result[0] = (byte)selected.Count;
 
-            Console.WriteLine("selected:{" + "[category]:OnSelectCard");
+            Console.WriteLine("selected:{" + "[category]:OnSelectCard,");
             Console.WriteLine("result_count:" + result[0].ToString());
 
 
@@ -750,7 +750,7 @@ namespace WindBot.Game
                 //Console.WriteLine("result[i + 1] is {0}", result[i + 1]);
             }
 
-            Console.WriteLine("}");
+            Console.WriteLine("},");
 
             BinaryWriter reply = GamePacketFactory.Create(CtosMessage.Response);
             reply.Write(result);
@@ -775,7 +775,7 @@ namespace WindBot.Game
             IList<ClientCard> cards = new List<ClientCard>();
             IList<int> descs = new List<int>();
 
-            Console.WriteLine("choices={" + "[category:OnSelectChain]");
+            Console.WriteLine("choices:{" + "[category]:OnSelectChain,");
             
             for (int i = 0; i < count; ++i)
             {
@@ -788,7 +788,7 @@ namespace WindBot.Game
 
                 int desc = packet.ReadInt32();
 
-                Console.WriteLine("[" + i + "]={maybeflag:" + maybeflag + ",maybeid:" + maybeid + ",controller:" + con + ",loc:" + (CardLocation)loc + ",seq:" + seq + ",sseq:" + sseq + ",desc:" + desc + "},");
+                Console.WriteLine("[" + i + "]:{maybeflag:" + maybeflag + ",maybeid:" + maybeid + ",controller:" + con + ",loc:" + (CardLocation)loc + ",seq:" + seq + ",sseq:" + sseq + ",desc:" + desc + "},");
 
                 cards.Add(_duel.GetCard(con, loc, seq, sseq));
                 descs.Add(desc);
@@ -799,14 +799,14 @@ namespace WindBot.Game
 
             if (cards.Count == 0)
             {
-                Console.WriteLine("selected:{[category]:OnSelectChain" + "[cards.Count == 0]" + "},");
+                Console.WriteLine("selected:{[category]:OnSelectChain," + "\"cards.Count == 0\"" + "},");
                 Connection.Send(CtosMessage.Response, -1);
                 return;
             }
 
             if (cards.Count == 1 && forced)
             {
-                Console.WriteLine("selected:{[category]:OnSelectChain" + "[cards.Count == 1 && forced]" );
+                Console.WriteLine("selected:{[category]:OnSelectChain," + "\"cards.Count == 1 && forced\"" );
                 cards[0].Show();
                 Console.WriteLine("},");
                 Connection.Send(CtosMessage.Response, 0);

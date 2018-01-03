@@ -241,7 +241,7 @@ namespace WindBot.Game
         /// <returns>Index of the activated card or -1.</returns>
         public int OnSelectChain(IList<ClientCard> cards, IList<int> descs, bool forced)
         {
-            Console.WriteLine("selected:{" + "[category]:OnSelectChain");
+            Console.WriteLine("selected:{" + "[category]:OnSelectChain,");
             foreach (CardExecutor exec in Executor.Executors)
             {
                 for (int i = 0; i < cards.Count; ++i)
@@ -254,10 +254,12 @@ namespace WindBot.Game
                         card.Show();
                         Console.WriteLine("},\ndesc:" + descs[i] + "},");
                         Console.WriteLine("},");
+                        Console.WriteLine("},");
                         return i;
                     }
                 }
             }
+            Console.WriteLine("},");
             // If we're forced to chain, we chain the first card. However don't do anything.
             return forced ? 0 : -1;
         }

@@ -257,12 +257,13 @@ namespace WindBot.Game
             public IDictionary<int, int> ActionActivateIndex { get; private set; }
             */
             if(this != null)
-            Console.WriteLine("Id:"+Id+",Name:"+Name+",Position:"+Position+",Location:"+Location+",Level:"+Level+",Rank:"+Rank+",LScale:"+LScale+",RScale:"+RScale+",Race:"+Race+",Attribute:"+Attribute+",Type:"+Type+",Attack:"+Attack+",Defense:"+Defense+",Owner:"+Owner+",Controller:"+Controller+",Disabled:"+Disabled+",Attacked:"+Attacked+","+"BaseAttack:"+BaseAttack+",BaseDefense:"+BaseDefense+",");
+            Console.WriteLine("{Id:"+Id+",Name:"+Name+",Position:"+Position+",Location:"+Location+",Level:"+Level+",Rank:"+Rank+",LScale:"+LScale+",RScale:"+RScale+",Race:"+Race+",Attribute:"+Attribute+",Type:"+Type+",Attack:"+Attack+",Defense:"+Defense+",Owner:"+Owner+",Controller:"+Controller+",Disabled:"+Disabled+",Attacked:"+Attacked+","+"BaseAttack:"+BaseAttack+",BaseDefense:"+BaseDefense+",");
             Console.WriteLine("ActionActivateIndex={");
             foreach (KeyValuePair<int,int>pair in ActionActivateIndex)
             {
                 Console.WriteLine("{key:" + pair.Key + ",value:" + pair.Value + "},");
             }
+            Console.WriteLine("},");
             Console.WriteLine("},");
         }
     }
