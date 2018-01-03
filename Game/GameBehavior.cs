@@ -689,7 +689,7 @@ namespace WindBot.Game
             int min = packet.ReadByte();
             int max = packet.ReadByte();
 
-            Console.WriteLine("choices={" + "[category:OnSelectCard]");
+            Console.WriteLine("choices:{" + "[category]:OnSelectCard");
             
             IList<ClientCard> cards = new List<ClientCard>();
             int count = packet.ReadByte();
@@ -701,7 +701,7 @@ namespace WindBot.Game
                 int nloc = (int)loc;
                 int seq = packet.ReadByte();
                 int pos = packet.ReadByte(); // pos
-                Console.WriteLine("select_card:["+i.ToString()+"]={");
+                Console.WriteLine("["+i.ToString()+"]:{");
                 Console.WriteLine("id: "+id+",player: "+player+",loc: "+(int)loc+",seq: "+seq+",pos: "+pos+"},");
                 ClientCard card;
                 if (((int)loc & (int)CardLocation.Overlay) != 0)
@@ -729,8 +729,8 @@ namespace WindBot.Game
             byte[] result = new byte[selected.Count + 1];
             result[0] = (byte)selected.Count;
 
-            Console.WriteLine("selected={"+ "[category:OnSelectCard]");
-            Console.WriteLine("result_count=" + result[0].ToString());
+            Console.WriteLine("selected:{" + "[category]:OnSelectCard");
+            Console.WriteLine("result_count:" + result[0].ToString());
 
 
             for (int i = 0; i < selected.Count; ++i)
@@ -746,7 +746,7 @@ namespace WindBot.Game
                     }
                 }
                 result[i + 1] = (byte)id;
-                Console.WriteLine("result["+i.ToString()+"]={"+result[i].ToString()+"},");
+                Console.WriteLine("["+i.ToString()+"]:{"+result[i].ToString()+"},");
                 //Console.WriteLine("result[i + 1] is {0}", result[i + 1]);
             }
 
@@ -795,23 +795,24 @@ namespace WindBot.Game
             }
 
             Console.WriteLine("},");
-            this._duel.Show();
+            
 
             if (cards.Count == 0)
             {
-                Console.WriteLine("selected={[category:OnSelectChain]" + "[cards.Count == 0]" + "},");
+                Console.WriteLine("selected:{[category]:OnSelectChain" + "[cards.Count == 0]" + "},");
                 Connection.Send(CtosMessage.Response, -1);
                 return;
             }
 
             if (cards.Count == 1 && forced)
             {
-                Console.WriteLine("selected={[category:OnSelectChain]" + "[cards.Count == 1 && forced]" );
+                Console.WriteLine("selected:{[category]:OnSelectChain" + "[cards.Count == 1 && forced]" );
                 cards[0].Show();
                 Console.WriteLine("},");
                 Connection.Send(CtosMessage.Response, 0);
                 return;
             }
+            this._duel.Show();
             //chaining
             Connection.Send(CtosMessage.Response, _ai.OnSelectChain(cards, descs, forced));
         }
@@ -819,8 +820,8 @@ namespace WindBot.Game
         private void OnSelectCounter(BinaryReader packet)
         {
             packet.ReadByte(); // player
-            int type = packet.ReadInt16();
-            int quantity = packet.ReadInt16();
+            int type = packet.ReadInt16(); //种类
+            int quantity = packet.ReadInt16(); //数量
 
             IList<ClientCard> cards = new List<ClientCard>();
             IList<int> counters = new List<int>();

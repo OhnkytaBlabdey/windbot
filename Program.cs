@@ -180,8 +180,8 @@ namespace WindBot
             }
             Console.SetOut(writer);
 
-            //redirect
-
+                //redirect
+                Console.WriteLine("{");
 
             while (client.Connection.IsConnected)
             {
@@ -199,9 +199,9 @@ namespace WindBot
         }
 #endif
             }
-            
 
 
+                Console.WriteLine("}");
             //redirect
             
             //Console.WriteLine("This is a line of text");
