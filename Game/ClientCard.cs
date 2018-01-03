@@ -26,11 +26,12 @@ namespace WindBot.Game
         public int RScale { get; private set; }
         public int BaseAttack { get; private set; }
         public int BaseDefense { get; private set; }
-        public int RealPower { get; set; }
         public List<int> Overlays { get; private set; }
         public int Owner { get; private set; }
         public int Controller { get; private set; }
         public int Disabled { get; private set; }
+
+        public int RealPower { get; set; }
         public int SelectSeq { get; set; }
         public int OpParam1 { get; set; }
         public int OpParam2 { get; set; }
@@ -256,7 +257,13 @@ namespace WindBot.Game
             public IDictionary<int, int> ActionActivateIndex { get; private set; }
             */
             if(this != null)
-            Console.WriteLine("Id:"+Id+"Name:"+Name+"Position:"+Position+"Location:"+Location+"Level:"+Location+"Rank:"+Rank+"Race:"+Race+"Attribute:"+Attribute+"Type:"+Type+"Attack:"+Attack+"Defense:"+Defense+"Owner:"+Owner+"Controller:"+Controller+"Disabled:"+Disabled+"Attacked:"+Attacked);
+            Console.WriteLine("Id:"+Id+",Name:"+Name+",Position:"+Position+",Location:"+Location+",Level:"+Level+",Rank:"+Rank+",LScale:"+LScale+",RScale:"+RScale+",Race:"+Race+",Attribute:"+Attribute+",Type:"+Type+",Attack:"+Attack+",Defense:"+Defense+",Owner:"+Owner+",Controller:"+Controller+",Disabled:"+Disabled+",Attacked:"+Attacked+","+"BaseAttack:"+BaseAttack+",BaseDefense:"+BaseDefense+",");
+            Console.WriteLine("ActionActivateIndex={");
+            foreach (KeyValuePair<int,int>pair in ActionActivateIndex)
+            {
+                Console.WriteLine("{key:" + pair.Key + ",value:" + pair.Value + "},");
+            }
+            Console.WriteLine("},");
         }
     }
 }

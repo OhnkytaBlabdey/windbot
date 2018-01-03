@@ -689,7 +689,7 @@ namespace WindBot.Game
             int min = packet.ReadByte();
             int max = packet.ReadByte();
 
-            Console.WriteLine("choices={");
+            Console.WriteLine("choices={" + "[category:OnSelectCard]");
             
             IList<ClientCard> cards = new List<ClientCard>();
             int count = packet.ReadByte();
@@ -729,7 +729,7 @@ namespace WindBot.Game
             byte[] result = new byte[selected.Count + 1];
             result[0] = (byte)selected.Count;
 
-            Console.WriteLine("selected={");
+            Console.WriteLine("selected={"+ "[category:OnSelectCard]");
             Console.WriteLine("result_count=" + result[0].ToString());
 
 
@@ -775,19 +775,25 @@ namespace WindBot.Game
             IList<ClientCard> cards = new List<ClientCard>();
             IList<int> descs = new List<int>();
 
+            Console.WriteLine("choices={" + "[category:OnSelectChain]");
+            
             for (int i = 0; i < count; ++i)
             {
-                packet.ReadByte(); // flag
-                packet.ReadInt32(); // card id
+                int maybeflag = packet.ReadByte(); // flag
+                int maybeid = packet.ReadInt32(); // card id
                 int con = GetLocalPlayer(packet.ReadByte());
                 int loc = packet.ReadByte();
                 int seq = packet.ReadByte();
                 int sseq = packet.ReadByte();
 
+                Console.WriteLine("[" + i + "]={maybeflag:"+maybeflag+",maybeid:" + maybeid + ",con:" + con + ",loc:" + loc + ",seq:" + seq + ",sseq:" + sseq + "},");
+
                 int desc = packet.ReadInt32();
                 cards.Add(_duel.GetCard(con, loc, seq, sseq));
                 descs.Add(desc);
             }
+
+            Console.WriteLine("},");
 
             if (cards.Count == 0)
             {
