@@ -264,7 +264,7 @@ namespace WindBot.Game
                 Console.WriteLine("{key:" + pair.Key + ",value:" + pair.Value + "},");
             }
             Console.WriteLine("},");
-            Console.WriteLine("},");
+            Console.WriteLine("}");
         }
     }
 }

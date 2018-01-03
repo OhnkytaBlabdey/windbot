@@ -250,11 +250,11 @@ namespace WindBot.Game
                     if (ShouldExecute(exec, card, ExecutorType.Activate, descs[i]))
                     {
                         _dialogs.SendChaining(card.Name);
-                        Console.WriteLine("[" + i + "]:{" + "ExecutorType:" + exec.Type + ",ExecutorCardId:" + exec.CardId + ",card:{");
+                        Console.WriteLine("[" + i + "]:{" + "ExecutorType:" + exec.Type + ",ExecutorCardId:" + exec.CardId + ",card:");
                         card.Show();
-                        Console.WriteLine("},\ndesc:" + descs[i] + "},");
+                        Console.WriteLine(",\ndesc:" + descs[i] + "},");
                         Console.WriteLine("},");
-                        Console.WriteLine("},");
+                        
                         return i;
                     }
                 }
