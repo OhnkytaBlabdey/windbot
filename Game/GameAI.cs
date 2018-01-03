@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System;
 using System.Collections.Generic;
 using WindBot.Game.AI;
 using YGOSharp.OCGWrapper.Enums;
@@ -240,6 +241,7 @@ namespace WindBot.Game
         /// <returns>Index of the activated card or -1.</returns>
         public int OnSelectChain(IList<ClientCard> cards, IList<int> descs, bool forced)
         {
+            Console.WriteLine("selected={" + "[category:OnSelectChain]");
             foreach (CardExecutor exec in Executor.Executors)
             {
                 for (int i = 0; i < cards.Count; ++i)
@@ -248,6 +250,10 @@ namespace WindBot.Game
                     if (ShouldExecute(exec, card, ExecutorType.Activate, descs[i]))
                     {
                         _dialogs.SendChaining(card.Name);
+                        Console.WriteLine("[" + i + "]={" + "ExecutorType:" + exec.Type + ",ExecutorCardId:" + exec.CardId + ",card:{");
+                        card.Show();
+                        Console.WriteLine("},\ndesc:" + descs[i] + "},");
+                        Console.WriteLine("},");
                         return i;
                     }
                 }

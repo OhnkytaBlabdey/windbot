@@ -786,23 +786,29 @@ namespace WindBot.Game
                 int seq = packet.ReadByte();
                 int sseq = packet.ReadByte();
 
-                Console.WriteLine("[" + i + "]={maybeflag:"+maybeflag+",maybeid:" + maybeid + ",con:" + con + ",loc:" + loc + ",seq:" + seq + ",sseq:" + sseq + "},");
-
                 int desc = packet.ReadInt32();
+
+                Console.WriteLine("[" + i + "]={maybeflag:" + maybeflag + ",maybeid:" + maybeid + ",controller:" + con + ",loc:" + (CardLocation)loc + ",seq:" + seq + ",sseq:" + sseq + ",desc:" + desc + "},");
+
                 cards.Add(_duel.GetCard(con, loc, seq, sseq));
                 descs.Add(desc);
             }
 
             Console.WriteLine("},");
+            this._duel.Show();
 
             if (cards.Count == 0)
             {
+                Console.WriteLine("selected={[category:OnSelectChain]" + "[cards.Count == 0]" + "},");
                 Connection.Send(CtosMessage.Response, -1);
                 return;
             }
 
             if (cards.Count == 1 && forced)
             {
+                Console.WriteLine("selected={[category:OnSelectChain]" + "[cards.Count == 1 && forced]" );
+                cards[0].Show();
+                Console.WriteLine("},");
                 Connection.Send(CtosMessage.Response, 0);
                 return;
             }
