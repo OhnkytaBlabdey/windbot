@@ -765,9 +765,9 @@ namespace WindBot.Game
         private void OnSelectCard(BinaryReader packet)
         {
             //Logger.DebugWriteLine("this is in GameBehavier.OnSelectCard");
-            Console.WriteLine("{");
+            Console.WriteLine("[");
             InternalOnSelectCard(packet, _ai.OnSelectCard);
-            Console.WriteLine("},");
+            Console.WriteLine("],");
         }
 
         private void OnSelectChain(BinaryReader packet)
@@ -782,7 +782,7 @@ namespace WindBot.Game
             IList<ClientCard> cards = new List<ClientCard>();
             IList<int> descs = new List<int>();
 
-            Console.WriteLine("{");
+            Console.WriteLine("[");
 
             Console.WriteLine("\"choices\":{\"category\":\"OnSelectChain\",");
             Console.WriteLine("\"list\":[");
@@ -815,7 +815,7 @@ namespace WindBot.Game
 
                 Console.WriteLine("}");
 
-                Console.WriteLine("},");
+                Console.WriteLine("],");
                 Connection.Send(CtosMessage.Response, -1);
                 return;
             }
@@ -830,7 +830,7 @@ namespace WindBot.Game
 
                 Console.WriteLine("}");
 
-                Console.WriteLine("},");
+                Console.WriteLine("],");
                 Connection.Send(CtosMessage.Response, 0);
                 return;
             }
