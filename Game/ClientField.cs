@@ -298,65 +298,79 @@ namespace WindBot.Game
         public IList<ClientCard> ExtraDeck { get; private set; }
              */
             
-            Console.WriteLine("Field={");
+            Console.WriteLine("{");
 
-            Console.WriteLine("Hand={");
+            Console.WriteLine("\"Hand\":[");
             foreach(ClientCard c in Hand)
             {
-                if(c!=null)
+                if (c != null) { 
                     c.Show();
+                Console.Write(",\n");
+                }
             }
-            Console.WriteLine("},");
+            Console.WriteLine("{}\n],");
 
-            Console.WriteLine("MonsterZone={");
+            Console.WriteLine("\"MonsterZone\":[");
             foreach (ClientCard c in MonsterZone)
             {
-                if (c != null)
+                if (c != null) { 
                     c.Show();
+                Console.Write(",\n");
+                }
             }
-            Console.WriteLine("},");
+            Console.WriteLine("{}\n],");
 
-            Console.WriteLine("SpellZone={");
+            Console.WriteLine("\"SpellZone\":[");
             foreach (ClientCard c in SpellZone)
             {
-                if (c != null)
+                if (c != null) { 
                     c.Show();
+                Console.Write(",\n");
+                }
             }
-            Console.WriteLine("},");
+            Console.WriteLine("{}\n],");
 
-            Console.WriteLine("Graveyard={");
+            Console.WriteLine("\"Graveyard\":[");
             foreach (ClientCard c in Graveyard)
             {
-                if (c != null)
+                if (c != null) { 
                     c.Show();
+                Console.Write(",\n");
+                }
             }
-            Console.WriteLine("},");
+            Console.WriteLine("{}\n],");
 
-            Console.WriteLine("Banished={");
+            Console.WriteLine("\"Banished\":[");
             foreach (ClientCard c in Banished)
             {
-                if (c != null)
+                if (c != null) { 
                     c.Show();
+                Console.Write(",\n");
+                }
             }
-            Console.WriteLine("},");
+            Console.WriteLine("{}\n],");
 
-            Console.WriteLine("Deck={");
+            Console.WriteLine("\"Deck\":[");
             foreach (ClientCard c in Deck)
             {
-                if (c != null)
+                if (c != null) { 
                     c.Show();
+                Console.Write(",\n");
+                }
             }
-            Console.WriteLine("},");
+            Console.WriteLine("{}\n],");
 
-            Console.WriteLine("ExtraDeck={");
+            Console.WriteLine("\"ExtraDeck\":[");
             foreach (ClientCard c in ExtraDeck)
             {
-                if (c != null)
+                if (c != null) { 
                     c.Show();
+                Console.Write(",\n");
+                }
             }
-            Console.WriteLine("},");
+            Console.WriteLine("{}\n],");
 
-            Console.WriteLine("},");
+            Console.WriteLine("}");
         }
     }
 }

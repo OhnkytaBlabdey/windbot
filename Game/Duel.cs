@@ -163,16 +163,16 @@ namespace WindBot.Game
         public IList<ClientCard> ChainTargets { get; set; }
         public int LastSummonPlayer { get; set; }
             */
-            Console.WriteLine("Duel={");
+            Console.WriteLine("\"Duel\":{");
 
-            Console.WriteLine("IsFirst"+ IsFirst+ "IsNewRule"+ IsNewRule);
+            Console.WriteLine("\"IsFirst\":\"" + IsFirst + "\",\n\"IsNewRule\":\"" + IsNewRule + "\",");
 
-            Console.WriteLine("LifePoints:"+ LifePoints[0]+ LifePoints[1]);
-            Console.Write("Field 0:");
+            Console.WriteLine("\"LifePoints\":[" + LifePoints[0] + "," + LifePoints[1] + "],");
+            Console.Write("\"Fields\":[");
             Fields[0].Show();
-            Console.Write("Field 1:");
+            Console.Write(",");
             Fields[1].Show();
-
+            Console.WriteLine("]");
             Console.WriteLine("},");
         }
     }

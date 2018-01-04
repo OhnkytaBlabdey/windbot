@@ -775,6 +775,8 @@ namespace WindBot.Game
             IList<ClientCard> cards = new List<ClientCard>();
             IList<int> descs = new List<int>();
 
+            Console.WriteLine("{");
+
             Console.WriteLine("\"choices\":{\"category\":\"OnSelectChain\",");
             Console.WriteLine("\"list\":[");
 
@@ -802,19 +804,23 @@ namespace WindBot.Game
             if (cards.Count == 0)
             {
                 Console.WriteLine("\"selected\":{\"category\":\"OnSelectChain\"" + "}");
+
+                Console.WriteLine("},");
                 Connection.Send(CtosMessage.Response, -1);
                 return;
             }
 
             if (cards.Count == 1 && forced)
             {
-                Console.WriteLine("\"selected\":{\"category\":\"OnSelectChain\"," );
+                Console.WriteLine("\"selected\":{\"category\":\"OnSelectChain\",");
 
                 Console.WriteLine("\"list\":[");
                 cards[0].Show();
                 Console.WriteLine("]");
 
                 Console.WriteLine("}");
+
+                Console.WriteLine("},");
                 Connection.Send(CtosMessage.Response, 0);
                 return;
             }
