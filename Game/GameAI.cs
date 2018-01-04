@@ -272,7 +272,7 @@ namespace WindBot.Game
             Console.WriteLine("]");
             Console.WriteLine("}");
 
-            Console.WriteLine("],");
+            Console.WriteLine("},");
             // If we're forced to chain, we chain the first card. However don't do anything.
             return forced ? 0 : -1;
         }
