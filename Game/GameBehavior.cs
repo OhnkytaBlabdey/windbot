@@ -775,8 +775,9 @@ namespace WindBot.Game
             IList<ClientCard> cards = new List<ClientCard>();
             IList<int> descs = new List<int>();
 
-            Console.WriteLine("choices:{" + "[category]:OnSelectChain,");
-            
+            Console.WriteLine("\"choices\":{\"category\":\"OnSelectChain\",");
+            Console.WriteLine("\"list\":[");
+
             for (int i = 0; i < count; ++i)
             {
                 int maybeflag = packet.ReadByte(); // flag
@@ -788,27 +789,32 @@ namespace WindBot.Game
 
                 int desc = packet.ReadInt32();
 
-                Console.WriteLine("[" + i + "]:{maybeflag:" + maybeflag + ",maybeid:" + maybeid + ",controller:" + con + ",loc:" + (CardLocation)loc + ",seq:" + seq + ",sseq:" + sseq + ",desc:" + desc + "},");
+                Console.WriteLine("{\"flag\":" + maybeflag + ",\"id\":" + maybeid + ",\"controller\":" + con + ",\"loc\":\"" + (CardLocation)loc + "\",\"seq\":" + seq + ",\"sseq\":" + sseq + ",\"desc\":" + desc + "},");
 
                 cards.Add(_duel.GetCard(con, loc, seq, sseq));
                 descs.Add(desc);
             }
 
+            Console.WriteLine("{}\n]");
             Console.WriteLine("},");
             
 
             if (cards.Count == 0)
             {
-                Console.WriteLine("selected:{[category]:OnSelectChain," + "\"cards.Count == 0\"" + "},");
+                Console.WriteLine("\"selected\":{\"category\":\"OnSelectChain\"" + "}");
                 Connection.Send(CtosMessage.Response, -1);
                 return;
             }
 
             if (cards.Count == 1 && forced)
             {
-                Console.WriteLine("selected:{[category]:OnSelectChain," + "\"cards.Count == 1 && forced\"" );
+                Console.WriteLine("\"selected\":{\"category\":\"OnSelectChain\"," );
+
+                Console.WriteLine("\"list\":[");
                 cards[0].Show();
-                Console.WriteLine("},");
+                Console.WriteLine("]");
+
+                Console.WriteLine("}");
                 Connection.Send(CtosMessage.Response, 0);
                 return;
             }
