@@ -810,7 +810,7 @@ namespace WindBot.Game
 
             if (cards.Count == 0)
             {
-                Console.WriteLine("\"selected\":{\"category\":\"OnSelectChain\"");
+                Console.WriteLine("\"selected\":{\"category\":\"OnSelectChain\",");
                 Console.WriteLine("\"list\":[]");
 
                 Console.WriteLine("}");
