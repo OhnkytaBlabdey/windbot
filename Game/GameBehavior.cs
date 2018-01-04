@@ -717,7 +717,7 @@ namespace WindBot.Game
             }
 
             Console.WriteLine("{}\n]");
-            Console.WriteLine("},");
+            Console.WriteLine("},"); //choices,
 
 
             IList<ClientCard> selected = func(cards, min, max, _select_hint, cancelable);
@@ -726,7 +726,9 @@ namespace WindBot.Game
             if (selected.Count == 0 && cancelable)
             {
                 Connection.Send(CtosMessage.Response, -1);
-                Console.WriteLine("{}");
+                Console.WriteLine("\"selected\":{" + "\"category\":\"OnSelectCard\",");
+                Console.WriteLine("\"list\":[]\n}");
+                //selected
                 return;
             }
 
@@ -756,7 +758,7 @@ namespace WindBot.Game
 
             Console.WriteLine("{}\n]");
 
-            Console.WriteLine("}");
+            Console.WriteLine("}"); //selected
 
             BinaryWriter reply = GamePacketFactory.Create(CtosMessage.Response);
             reply.Write(result);
@@ -806,7 +808,10 @@ namespace WindBot.Game
             }
 
             Console.WriteLine("{}\n]");
-            Console.WriteLine("},");
+            Console.WriteLine("},"); //choices,
+
+            _duel.Show();
+            //duel,
             
 
             if (cards.Count == 0)
@@ -835,7 +840,7 @@ namespace WindBot.Game
                 Connection.Send(CtosMessage.Response, 0);
                 return;
             }
-            this._duel.Show();
+            
             //chaining
             Connection.Send(CtosMessage.Response, _ai.OnSelectChain(cards, descs, forced));
         }
