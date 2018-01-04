@@ -368,7 +368,7 @@ namespace WindBot.Game
                 Console.Write(",\n");
                 }
             }
-            Console.WriteLine("{}\n],");
+            Console.WriteLine("{}\n]");
 
             Console.WriteLine("}");
         }

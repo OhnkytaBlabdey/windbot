@@ -689,8 +689,10 @@ namespace WindBot.Game
             int min = packet.ReadByte();
             int max = packet.ReadByte();
 
-            Console.WriteLine("choices:{" + "[category]:OnSelectCard,");
-            
+            Console.WriteLine("\"choices\":{" + "\"category\":\"OnSelectCard\",");
+
+            Console.WriteLine("\"list\":[");
+
             IList<ClientCard> cards = new List<ClientCard>();
             int count = packet.ReadByte();
             for (int i = 0; i < count; ++i)
@@ -701,8 +703,8 @@ namespace WindBot.Game
                 int nloc = (int)loc;
                 int seq = packet.ReadByte();
                 int pos = packet.ReadByte(); // pos
-                Console.WriteLine("["+i.ToString()+"]:{");
-                Console.WriteLine("id: "+id+",player: "+player+",loc: "+(int)loc+",seq: "+seq+",pos: "+pos+"},");
+                Console.WriteLine("{");
+                Console.WriteLine("\"id\": " + id+ ",\"player\": " + player+ ",\"loc\": \"" + (int)loc+ "\",\"seq\": " + seq+ ",\"pos\": " + pos+"},");
                 ClientCard card;
                 if (((int)loc & (int)CardLocation.Overlay) != 0)
                     card = new ClientCard(id, CardLocation.Overlay);
@@ -714,7 +716,8 @@ namespace WindBot.Game
                 cards.Add(card);
             }
 
-            Console.WriteLine("}");
+            Console.WriteLine("{}\n]");
+            Console.WriteLine("},");
 
 
             IList<ClientCard> selected = func(cards, min, max, _select_hint, cancelable);
@@ -729,9 +732,9 @@ namespace WindBot.Game
             byte[] result = new byte[selected.Count + 1];
             result[0] = (byte)selected.Count;
 
-            Console.WriteLine("selected:{" + "[category]:OnSelectCard,");
-            Console.WriteLine("result_count:" + result[0].ToString());
-
+            Console.WriteLine("\"selected\":{" + "\"category\":\"OnSelectCard\",");
+            //Console.WriteLine("\"result_count\":" + result[0].ToString());
+            Console.WriteLine("\"list\":[");
 
             for (int i = 0; i < selected.Count; ++i)
             {
@@ -746,9 +749,11 @@ namespace WindBot.Game
                     }
                 }
                 result[i + 1] = (byte)id;
-                Console.WriteLine("["+i.ToString()+"]:{"+result[i].ToString()+"},");
+                Console.WriteLine(result[i].ToString()+",");
                 //Console.WriteLine("result[i + 1] is {0}", result[i + 1]);
             }
+
+            Console.WriteLine("{}\n]");
 
             Console.WriteLine("},");
 
@@ -760,7 +765,9 @@ namespace WindBot.Game
         private void OnSelectCard(BinaryReader packet)
         {
             //Logger.DebugWriteLine("this is in GameBehavier.OnSelectCard");
+            Console.WriteLine("{");
             InternalOnSelectCard(packet, _ai.OnSelectCard);
+            Console.WriteLine("},");
         }
 
         private void OnSelectChain(BinaryReader packet)
@@ -803,7 +810,10 @@ namespace WindBot.Game
 
             if (cards.Count == 0)
             {
-                Console.WriteLine("\"selected\":{\"category\":\"OnSelectChain\"" + "}");
+                Console.WriteLine("\"selected\":{\"category\":\"OnSelectChain\"");
+                Console.WriteLine("\"list\":[]");
+
+                Console.WriteLine("}");
 
                 Console.WriteLine("},");
                 Connection.Send(CtosMessage.Response, -1);
