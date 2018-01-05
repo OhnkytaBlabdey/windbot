@@ -169,7 +169,7 @@ namespace WindBot
             TextWriter oldOut = Console.Out;
             try
             {
-                ostrm = new FileStream("./logs/" + "[" + DateTime.Now.ToString("yy-MM-dd HH-mm-ss") + "] " + client.Username + ".json", FileMode.Create, FileAccess.Write, FileShare.None);
+                ostrm = new FileStream("./logs/" + "[" + DateTime.Now.ToString("yy-MM-dd HH-mm-ss") + "] " + client.Username + ".json", FileMode.Create, FileAccess.Write, FileShare.ReadWrite);
                 writer = new StreamWriter(ostrm);
             }
             catch (Exception e)
@@ -178,7 +178,18 @@ namespace WindBot
                 Console.WriteLine(e.Message);
                 return;
             }
-            Console.SetOut(writer);
+
+                Console.WriteLine("start ! ");
+                try
+                {
+                    Console.SetOut(writer);
+                }
+                catch(Exception e)
+                {
+                    Console.WriteLine("redirect error" + e.Message);
+                    return;
+                }
+            
 
                 //redirect
                 Console.WriteLine("[");
@@ -202,16 +213,25 @@ namespace WindBot
 
 
                 Console.WriteLine("{}\n]");
-            //redirect
-            
-            //Console.WriteLine("This is a line of text");
-            //Console.WriteLine("Everything written to Console.Write() or");
-            //Console.WriteLine("Console.WriteLine() will be written to a file");
-            Console.SetOut(oldOut);
-            writer.Close();
-            ostrm.Close();
-            
-            //redirect
+                //redirect
+
+                //Console.WriteLine("This is a line of text");
+                //Console.WriteLine("Everything written to Console.Write() or");
+                //Console.WriteLine("Console.WriteLine() will be written to a file");
+                try
+                { 
+                    Console.SetOut(oldOut);
+                    writer.Close();
+                    ostrm.Close();
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("error 2 !" + e.Message);
+                    return;
+                }
+
+                //redirect
+                Console.WriteLine("end !");
 
 
             Logger.DebugWriteLine(client.Username + " end.");
