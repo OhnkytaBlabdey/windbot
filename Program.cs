@@ -169,7 +169,7 @@ namespace WindBot
             TextWriter oldOut = Console.Out;
             try
             {
-                    ostrm = new FileStream("./logs/" + "[" + DateTime.Now.ToString("yy-MM-dd HH-mm-ss") + "] " + client.Username + ".json", FileMode.Create, FileAccess.Write, FileShare.None);
+                ostrm = new FileStream("./logs/" + "[" + DateTime.Now.ToString("yy-MM-dd HH-mm-ss") + "] " + client.Username + ".json", FileMode.Create, FileAccess.Write, FileShare.None);
                 writer = new StreamWriter(ostrm);
             }
             catch (Exception e)

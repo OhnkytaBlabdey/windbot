@@ -259,8 +259,8 @@ namespace WindBot.Game
             if (this != null) { 
             
             Console.WriteLine("{");
-            
-            Console.WriteLine("\"Id\":" + Id + ",\"Name\":\"" + Name + "\",\"Position\":" + Position + ",\"Location\":\"" + Location + "\",\"Level\":" + Level + ",\"Rank\":" + Rank + ",\"LScale\":" + LScale + ",\"RScale\":" + RScale + ",\"Race\":" + Race + ",\"Attribute\":" + Attribute + ",\"Type\":" + Type + ",\"Attack\":" + Attack + ",\"Defense\":" + Defense + ",\"Owner\":" + Owner + ",\"Controller\":" + Controller + ",\"Disabled\":" + Disabled + ",\"Attacked\":\"" + Attacked + "\",\"" + "BaseAttack\":" + BaseAttack + ",\"BaseDefense\":" + BaseDefense + ",");
+            // ",\"Name\":\"" + Name + "\"
+            Console.WriteLine("\"Id\":" + Id +",\"Position\":" + Position + ",\"Location\":\"" + Location + "\",\"Level\":" + Level + ",\"Rank\":" + Rank + ",\"LScale\":" + LScale + ",\"RScale\":" + RScale + ",\"Race\":" + Race + ",\"Attribute\":" + Attribute + ",\"Type\":" + Type + ",\"Attack\":" + Attack + ",\"Defense\":" + Defense + ",\"Owner\":" + Owner + ",\"Controller\":" + Controller + ",\"Disabled\":" + Disabled + ",\"Attacked\":\"" + Attacked + "\",\"" + "BaseAttack\":" + BaseAttack + ",\"BaseDefense\":" + BaseDefense + ",");
             //name attacked location.
             Console.WriteLine("\"ActionActivateIndex\":{");
             foreach (KeyValuePair<int, int> pair in ActionActivateIndex)
