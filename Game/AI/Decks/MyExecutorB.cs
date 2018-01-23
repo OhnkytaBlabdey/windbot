@@ -7,7 +7,7 @@ using WindBot.Game.AI;
 namespace WindBot.Game.AI.Decks
 {
     [Deck("B", "AI_DeckB")]
-    class ExecutorB : DefaultExecutor
+    class ExecutorB : Executor
     {
         public class CardId
         {

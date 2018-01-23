@@ -179,8 +179,10 @@ namespace WindBot.Game
 
             // Check for the executor.
             IList<ClientCard> result = Executor.OnSelectCard(cards, min, max, hint, cancelable);
+            //进入AI的executor，默认没有操作
             if (result != null)
                 return result;
+            //考虑一下，其实选择是不会改变决斗盘的关键状态的。
 
             //if no overriding
             if (hint == HINTMSG_SPSUMMON && min == 1 && max > min) // pendulum summon
@@ -188,7 +190,7 @@ namespace WindBot.Game
                 result = Executor.OnSelectPendulumSummon(cards, max);
                 if (result != null)
                     return result;
-            }
+            }//默认是空的
 
             CardSelector selector = null;
             if (hint == HINTMSG_FMATERIAL || hint == HINTMSG_SMATERIAL || hint == HINTMSG_XMATERIAL || hint == HINTMSG_LMATERIAL)
