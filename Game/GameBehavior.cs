@@ -681,6 +681,7 @@ namespace WindBot.Game
             battle.CanEndPhase = packet.ReadByte() != 0;
 
             Connection.Send(CtosMessage.Response, _ai.OnSelectBattleCmd(battle).ToValue());
+            //不影响同步的操作
         }
 
         private void InternalOnSelectCard(BinaryReader packet, Func<IList<ClientCard>, int, int, int, bool, IList<ClientCard>> func)
