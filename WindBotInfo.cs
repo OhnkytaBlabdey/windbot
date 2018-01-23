@@ -15,7 +15,7 @@ namespace WindBot
 
         public WindBotInfo()
         {
-            Name = "BotA";
+            Name = "BotB";
             Deck = "Qliphort";
             Dialog = "default";
             Host = "127.0.0.1";
