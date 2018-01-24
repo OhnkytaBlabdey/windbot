@@ -1118,7 +1118,7 @@ namespace WindBot.Game
             {
                 Console.WriteLine("[");
                 int count = packet.ReadByte();
-                Console.WriteLine("{\"count\":" + count + "},\"list\":[");//count,list
+                Console.WriteLine("{\"count\":" + count + "},{\"cardlist\":[");//count,cardlist
                 for (int i = 0; i < count; ++i)
                 {
                     int cardId = packet.ReadInt32();
@@ -1155,7 +1155,7 @@ namespace WindBot.Game
                         Console.WriteLine(",");
                     }
                 }
-                Console.WriteLine("{}]\n],");//count,list
+                Console.WriteLine("{}]\n]},");//count,cardlist
             }
             Console.WriteLine("{}]");//list
             Console.WriteLine("},");//choices
