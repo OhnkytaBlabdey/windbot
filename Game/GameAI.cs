@@ -428,10 +428,16 @@ namespace WindBot.Game
 
             //enter bp
             if (main.CanBattlePhase && Duel.Fields[0].HasAttackingMonster())
+            {
+                Console.WriteLine("\"list\":[\"bp\"");//list
+                Console.WriteLine("]\n}");//list end, selected end
                 return new MainPhaseAction(MainPhaseAction.MainAction.ToBattlePhase);
+            }
 
             //enter ep
             _dialogs.SendEndTurn();
+            Console.WriteLine("\"list\":[\"ep\"");//list
+            Console.WriteLine("]\n}");//list end, selected end
             return new MainPhaseAction(MainPhaseAction.MainAction.ToEndPhase); 
         }
 
