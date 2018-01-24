@@ -917,22 +917,30 @@ namespace WindBot.Game
         private void OnSelectIdleCmd(BinaryReader packet)
         {
             packet.ReadByte(); // player
-
+            Console.WriteLine("{");//select idle
+            Console.WriteLine("\"choices\":{\"category\":\"OnSelectIdleCmd\",");//choices
             _duel.MainPhase = new MainPhase();
             MainPhase main = _duel.MainPhase;
+            Console.WriteLine("\"list\":[");//list
             int count;
             for (int k = 0; k < 5; k++)
             {
+                //k是card 的seq
                 count = packet.ReadByte();
+                Console.WriteLine("[");
                 for (int i = 0; i < count; ++i)
                 {
                     packet.ReadInt32(); // card id
-                    int con = GetLocalPlayer(packet.ReadByte());
+                    int con = GetLocalPlayer(packet.ReadByte());//player
                     CardLocation loc = (CardLocation)packet.ReadByte();
                     int seq = packet.ReadByte();
                     ClientCard card = _duel.GetCard(con, loc, seq);
                     if (card == null) continue;
                     card.ActionIndex[k] = i;
+
+                    card.Show();
+                    Console.WriteLine(",");
+                    //主要阶段1的idle操作
                     switch (k)
                     {
                         case 0:
@@ -952,6 +960,7 @@ namespace WindBot.Game
                             break;
                     }
                 }
+                Console.WriteLine("{}],");
             }
             count = packet.ReadByte();
             for (int i = 0; i < count; ++i)
@@ -970,13 +979,18 @@ namespace WindBot.Game
                 card.ActionActivateIndex.Add(desc, i);
                 main.ActivableCards.Add(card);
                 main.ActivableDescs.Add(desc);
-            }
+            }//不明觉厉
 
             main.CanBattlePhase = packet.ReadByte() != 0;
             main.CanEndPhase = packet.ReadByte() != 0;
             packet.ReadByte(); // CanShuffle
+            Console.WriteLine("],");//list end
+            Console.WriteLine("\"can_bp\":" + "\"" + main.CanBattlePhase + "\"" + ",\"can_ep\":" + "\"" + main.CanEndPhase + "\",");
+            Console.WriteLine("},");
+            //choices
 
             Connection.Send(CtosMessage.Response, _ai.OnSelectIdleCmd(main).ToValue());
+            Console.WriteLine("},");//select idle end
         }
 
         private void OnSelectOption(BinaryReader packet)

@@ -345,7 +345,7 @@ namespace WindBot.Game
                         _dialogs.SendActivate(card.Name);
                         return new MainPhaseAction(MainPhaseAction.MainAction.Activate, card.ActionActivateIndex[main.ActivableDescs[i]]);
                     }
-                }
+                }//发动、诱发、发动效果
                 foreach (ClientCard card in main.MonsterSetableCards)
                 {
                     if (ShouldExecute(exec, card, ExecutorType.MonsterSet))
@@ -353,12 +353,12 @@ namespace WindBot.Game
                         _dialogs.SendSetMonster();
                         return new MainPhaseAction(MainPhaseAction.MainAction.SetMonster, card.ActionIndex);
                     }
-                }
+                }//盖放怪兽
                 foreach (ClientCard card in main.ReposableCards)
                 {
                     if (ShouldExecute(exec, card, ExecutorType.Repos))
                         return new MainPhaseAction(MainPhaseAction.MainAction.Repos, card.ActionIndex);
-                }
+                }//改变pos
                 foreach (ClientCard card in main.SpecialSummonableCards)
                 {
                     if (ShouldExecute(exec, card, ExecutorType.SpSummon))
@@ -367,7 +367,7 @@ namespace WindBot.Game
                         Duel.LastSummonPlayer = 0;
                         return new MainPhaseAction(MainPhaseAction.MainAction.SpSummon, card.ActionIndex);
                     }
-                }
+                }//特殊召唤
                 foreach (ClientCard card in main.SummonableCards)
                 {
                     if (ShouldExecute(exec, card, ExecutorType.Summon))
@@ -388,12 +388,12 @@ namespace WindBot.Game
                         Duel.LastSummonPlayer = 0;
                         return new MainPhaseAction(MainPhaseAction.MainAction.Summon, card.ActionIndex);
                     }
-                }                
+                }//通常召唤
                 foreach (ClientCard card in main.SpellSetableCards)
                 {
                     if (ShouldExecute(exec, card, ExecutorType.SpellSet))
                         return new MainPhaseAction(MainPhaseAction.MainAction.SetSpell, card.ActionIndex);
-                }
+                }//盖放魔法
             }
             //允许例外
             if (main.CanBattlePhase && Duel.Fields[0].HasAttackingMonster())
