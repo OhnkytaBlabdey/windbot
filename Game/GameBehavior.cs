@@ -937,7 +937,7 @@ namespace WindBot.Game
                     ClientCard card = _duel.GetCard(con, loc, seq);
                     if (card == null) continue;
                     card.ActionIndex[k] = i;
-
+                    //cmd的主体卡片
                     card.Show();
                     Console.WriteLine(",");
                     //主要阶段1的idle操作

@@ -335,6 +335,7 @@ namespace WindBot.Game
         public MainPhaseAction OnSelectIdleCmd(MainPhase main)
         {
             Executor.SetMain(main);
+            Console.WriteLine("\"selected\":{");//selected
             foreach (CardExecutor exec in Executor.Executors)
             {
                 for (int i = 0; i < main.ActivableCards.Count; ++i)
@@ -343,6 +344,10 @@ namespace WindBot.Game
                     if (ShouldExecute(exec, card, ExecutorType.Activate, main.ActivableDescs[i]))
                     {
                         _dialogs.SendActivate(card.Name);
+                        Console.WriteLine("\"list\":[");//list
+                        card.Show();
+                        Console.WriteLine("]\n}");//list end, selected end
+                        Console.WriteLine("},");//select idle cmd end 
                         return new MainPhaseAction(MainPhaseAction.MainAction.Activate, card.ActionActivateIndex[main.ActivableDescs[i]]);
                     }
                 }//发动、诱发、发动效果
@@ -351,13 +356,23 @@ namespace WindBot.Game
                     if (ShouldExecute(exec, card, ExecutorType.MonsterSet))
                     {
                         _dialogs.SendSetMonster();
+                        Console.WriteLine("\"list\":[");//list
+                        card.Show();
+                        Console.WriteLine("]\n}");//list end, selected end
+                        Console.WriteLine("},");//select idle cmd end 
                         return new MainPhaseAction(MainPhaseAction.MainAction.SetMonster, card.ActionIndex);
                     }
                 }//盖放怪兽
                 foreach (ClientCard card in main.ReposableCards)
                 {
                     if (ShouldExecute(exec, card, ExecutorType.Repos))
+                    {
+                        Console.WriteLine("\"list\":[");//list
+                        card.Show();
+                        Console.WriteLine("]\n}");//list end, selected end
+                        Console.WriteLine("},");//select idle cmd end 
                         return new MainPhaseAction(MainPhaseAction.MainAction.Repos, card.ActionIndex);
+                    }
                 }//改变pos
                 foreach (ClientCard card in main.SpecialSummonableCards)
                 {
@@ -365,6 +380,10 @@ namespace WindBot.Game
                     {
                         _dialogs.SendSummon(card.Name);
                         Duel.LastSummonPlayer = 0;
+                        Console.WriteLine("\"list\":[");//list
+                        card.Show();
+                        Console.WriteLine("]\n}");//list end, selected end
+                        Console.WriteLine("},");//select idle cmd end 
                         return new MainPhaseAction(MainPhaseAction.MainAction.SpSummon, card.ActionIndex);
                     }
                 }//特殊召唤
@@ -374,6 +393,10 @@ namespace WindBot.Game
                     {
                         _dialogs.SendSummon(card.Name);
                         Duel.LastSummonPlayer = 0;
+                        Console.WriteLine("\"list\":[");//list
+                        card.Show();
+                        Console.WriteLine("]\n}");//list end, selected end
+                        Console.WriteLine("},");//select idle cmd end 
                         return new MainPhaseAction(MainPhaseAction.MainAction.Summon, card.ActionIndex);
                     }
                     if (ShouldExecute(exec, card, ExecutorType.SummonOrSet))
@@ -392,13 +415,22 @@ namespace WindBot.Game
                 foreach (ClientCard card in main.SpellSetableCards)
                 {
                     if (ShouldExecute(exec, card, ExecutorType.SpellSet))
+                    {
+                        Console.WriteLine("\"list\":[");//list
+                        card.Show();
+                        Console.WriteLine("]\n}");//list end, selected end
+                        Console.WriteLine("},");//select idle cmd end 
                         return new MainPhaseAction(MainPhaseAction.MainAction.SetSpell, card.ActionIndex);
+                    }
                 }//盖放魔法
             }
             //允许例外
+
+            //enter bp
             if (main.CanBattlePhase && Duel.Fields[0].HasAttackingMonster())
                 return new MainPhaseAction(MainPhaseAction.MainAction.ToBattlePhase);
 
+            //enter ep
             _dialogs.SendEndTurn();
             return new MainPhaseAction(MainPhaseAction.MainAction.ToEndPhase); 
         }
