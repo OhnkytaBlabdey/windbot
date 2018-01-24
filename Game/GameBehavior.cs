@@ -776,7 +776,7 @@ namespace WindBot.Game
         private void OnSelectCard(BinaryReader packet)
         {
             //Logger.DebugWriteLine("this is in GameBehavier.OnSelectCard");
-            Console.WriteLine("{");
+            Console.Write("{");
             InternalOnSelectCard(packet, _ai.OnSelectCard);
             Console.WriteLine("},");
         }
@@ -984,7 +984,7 @@ namespace WindBot.Game
             main.CanBattlePhase = packet.ReadByte() != 0;
             main.CanEndPhase = packet.ReadByte() != 0;
             packet.ReadByte(); // CanShuffle
-            Console.WriteLine("\b\n],");//list end
+            Console.WriteLine("{}],");//list end
             Console.WriteLine("\"can_bp\":" + "\"" + main.CanBattlePhase + "\"" + ",\"can_ep\":" + "\"" + main.CanEndPhase + "\",");
             Console.WriteLine("},");
             //choices
