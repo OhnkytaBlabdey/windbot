@@ -29,6 +29,10 @@ namespace WindBot.Game.AI.Decks
         {
             return true;
         }
+        public override int OnRockPaperScissors()
+        {
+            return 2;
+        }
         public override IList<ClientCard> OnSelectCard(IList<ClientCard> cards, int min, int max, int hint, bool cancelable)
         {
             Logger.DebugWriteLine("OnSelectCard " + cards.Count + " " + min + " " + max);
