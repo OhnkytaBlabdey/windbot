@@ -1092,13 +1092,19 @@ namespace WindBot.Game
 
             if (max <= 0)
                 max = 99;
-            
+
+            Console.WriteLine("{\"choices\":{\"category\":\"OnSelectSum\",");//select_sum choices
+
+            Console.WriteLine("\"sumval\":" + sumval + ",\"min\":" + min + ",\"max\":" + max + ",");
+
             IList<ClientCard> mandatoryCards = new List<ClientCard>();
             IList<ClientCard> cards = new List<ClientCard>();
-
+            Console.WriteLine("\"list\":[");//list
             for (int j = 0; j < 2; ++j)
             {
+                Console.WriteLine("[");
                 int count = packet.ReadByte();
+                Console.WriteLine("{\"count\":" + count + "},\"list\":[");//count,list
                 for (int i = 0; i < count; ++i)
                 {
                     int cardId = packet.ReadInt32();
@@ -1123,11 +1129,22 @@ namespace WindBot.Game
                         card.OpParam2 = OpParam2;
                     }
                     if (j == 0)
+                    {
                         mandatoryCards.Add(card);
+                        card.Show();
+                        Console.WriteLine(",");
+                    }
                     else
+                    {
                         cards.Add(card);
+                        card.Show();
+                        Console.WriteLine(",");
+                    }
                 }
+                Console.WriteLine("{}]\n],");//count,list
             }
+            Console.WriteLine("{}]");//list
+            Console.WriteLine("},");//choices
 
             for (int k = 0; k < mandatoryCards.Count; ++k)
             {
@@ -1144,12 +1161,22 @@ namespace WindBot.Game
             while (index <= mandatoryCards.Count)
             {
                 result[index++] = 0;
-            }
+            }//mandatory cards
             for (int i = 0; i < selected.Count; ++i)
             {
                 result[index++] = (byte)selected[i].SelectSeq;
             }
 
+            Console.WriteLine("\"selected\":{");//selected
+            Console.WriteLine("\"list\":[");
+            for (int i=0;i<selected.Count;++i)
+            {
+                Console.Write("{\"" + result[i] + "\":");
+                selected[i].Show();
+                Console.WriteLine("},");
+            }
+            Console.WriteLine("{}]");
+            Console.WriteLine("}\n},");//selected . select_sum
             BinaryWriter reply = GamePacketFactory.Create(CtosMessage.Response);
             reply.Write(result);
             Connection.Send(reply);
