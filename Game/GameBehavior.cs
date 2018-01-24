@@ -1181,6 +1181,9 @@ namespace WindBot.Game
                 result[index++] = (byte)selected[i].SelectSeq;
             }
 
+            //_duel.Show();
+            //duel
+
             Console.WriteLine("\"selected\":{");//selected
             Console.WriteLine("\"list\":[");
             for (int i=0;i<selected.Count;++i)
