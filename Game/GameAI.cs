@@ -347,7 +347,7 @@ namespace WindBot.Game
                         Console.WriteLine("\"list\":[");//list
                         card.Show();
                         Console.WriteLine("]\n}");//list end, selected end
-                        Console.WriteLine("},");//select idle cmd end 
+                        //Console.WriteLine("},");//select idle cmd end 
                         return new MainPhaseAction(MainPhaseAction.MainAction.Activate, card.ActionActivateIndex[main.ActivableDescs[i]]);
                     }
                 }//发动、诱发、发动效果
@@ -359,7 +359,7 @@ namespace WindBot.Game
                         Console.WriteLine("\"list\":[");//list
                         card.Show();
                         Console.WriteLine("]\n}");//list end, selected end
-                        Console.WriteLine("},");//select idle cmd end 
+                        //Console.WriteLine("},");//select idle cmd end 
                         return new MainPhaseAction(MainPhaseAction.MainAction.SetMonster, card.ActionIndex);
                     }
                 }//盖放怪兽
@@ -370,7 +370,7 @@ namespace WindBot.Game
                         Console.WriteLine("\"list\":[");//list
                         card.Show();
                         Console.WriteLine("]\n}");//list end, selected end
-                        Console.WriteLine("},");//select idle cmd end 
+                        //Console.WriteLine("},");//select idle cmd end 
                         return new MainPhaseAction(MainPhaseAction.MainAction.Repos, card.ActionIndex);
                     }
                 }//改变pos
@@ -383,7 +383,7 @@ namespace WindBot.Game
                         Console.WriteLine("\"list\":[");//list
                         card.Show();
                         Console.WriteLine("]\n}");//list end, selected end
-                        Console.WriteLine("},");//select idle cmd end 
+                        //Console.WriteLine("},");//select idle cmd end 
                         return new MainPhaseAction(MainPhaseAction.MainAction.SpSummon, card.ActionIndex);
                     }
                 }//特殊召唤
@@ -396,7 +396,7 @@ namespace WindBot.Game
                         Console.WriteLine("\"list\":[");//list
                         card.Show();
                         Console.WriteLine("]\n}");//list end, selected end
-                        Console.WriteLine("},");//select idle cmd end 
+                        //Console.WriteLine("},");//select idle cmd end 
                         return new MainPhaseAction(MainPhaseAction.MainAction.Summon, card.ActionIndex);
                     }
                     if (ShouldExecute(exec, card, ExecutorType.SummonOrSet))
@@ -419,7 +419,7 @@ namespace WindBot.Game
                         Console.WriteLine("\"list\":[");//list
                         card.Show();
                         Console.WriteLine("]\n}");//list end, selected end
-                        Console.WriteLine("},");//select idle cmd end 
+                        //Console.WriteLine("},");//select idle cmd end 
                         return new MainPhaseAction(MainPhaseAction.MainAction.SetSpell, card.ActionIndex);
                     }
                 }//盖放魔法
