@@ -60,10 +60,12 @@ namespace WindBot.Game
                 GameMessage msg = (GameMessage)packet.ReadByte();
                 if (_messages.ContainsKey(msg))
                     _messages[msg](packet);
+                Console.WriteLine("{\"msg\":\"" + msg + "\"},");
                 return;
             }
             if (_packets.ContainsKey(id))
                 _packets[id](packet);
+            Console.WriteLine("{\"id\":\"" + id + "\"},");
         }
 
         private void RegisterPackets()
