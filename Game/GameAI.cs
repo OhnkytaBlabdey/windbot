@@ -174,7 +174,7 @@ namespace WindBot.Game
 
             //Logger.DebugWriteLine("this is in GameAI.OnSelectCard");
 
-            Duel.Show();
+            //Duel.Show();
             //duel,
 
             // Check for the executor.
@@ -616,7 +616,7 @@ namespace WindBot.Game
 
             for (int i = 0; i < min && i < sorted.Count; ++i)
                 selected.Add(sorted[i]);
-
+            Console.WriteLine("\"type\":\"OnSelectTribute\",");
             return selected;
         }
 

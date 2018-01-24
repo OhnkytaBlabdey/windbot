@@ -694,6 +694,7 @@ namespace WindBot.Game
 
             Console.WriteLine("\"choices\":{" + "\"category\":\"OnSelectCard\",");
 
+            Console.WriteLine("\"cancelable\":\"" + cancelable + "\",\"min\":" + min + ",\"max\":" + max + ",");
             Console.WriteLine("\"list\":[");
 
             IList<ClientCard> cards = new List<ClientCard>();
@@ -730,7 +731,7 @@ namespace WindBot.Game
             {
                 Connection.Send(CtosMessage.Response, -1);
                 Console.WriteLine("\"selected\":{" + "\"category\":\"OnSelectCard\",");
-                Console.WriteLine("\"list\":[]\n}");
+                Console.WriteLine("\"list\":[-1]\n}");
                 //selected
                 return;
             }
@@ -755,7 +756,9 @@ namespace WindBot.Game
                     }
                 }
                 result[i + 1] = (byte)id;
-                Console.WriteLine(result[i].ToString()+",");
+                Console.WriteLine("{\""+result[i].ToString()+"\":");
+                selected[i].Show();
+                Console.WriteLine("},");
                 //Console.WriteLine("result[i + 1] is {0}", result[i + 1]);
             }
 
@@ -813,14 +816,14 @@ namespace WindBot.Game
             Console.WriteLine("{}\n]");
             Console.WriteLine("},"); //choices,
 
-            _duel.Show();
+            //_duel.Show();
             //duel,
             
 
             if (cards.Count == 0)
             {
                 Console.WriteLine("\"selected\":{\"category\":\"OnSelectChain\",");
-                Console.WriteLine("\"list\":[]");
+                Console.WriteLine("\"list\":[-1]");
 
                 Console.WriteLine("}");
 
@@ -1152,7 +1155,9 @@ namespace WindBot.Game
 
         private void OnSelectTribute(BinaryReader packet)
         {
+            Console.WriteLine("{");
             InternalOnSelectCard(packet, _ai.OnSelectTribute);
+            Console.WriteLine("},");
         }
 
         private void OnSelectYesNo(BinaryReader packet)
