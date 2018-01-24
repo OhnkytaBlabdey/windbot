@@ -917,7 +917,7 @@ namespace WindBot.Game
         private void OnSelectIdleCmd(BinaryReader packet)
         {
             packet.ReadByte(); // player
-            Console.WriteLine("{");//select idle
+            Console.Write("{");//select idle
             Console.WriteLine("\"choices\":{\"category\":\"OnSelectIdleCmd\",");//choices
             _duel.MainPhase = new MainPhase();
             MainPhase main = _duel.MainPhase;
@@ -984,7 +984,7 @@ namespace WindBot.Game
             main.CanBattlePhase = packet.ReadByte() != 0;
             main.CanEndPhase = packet.ReadByte() != 0;
             packet.ReadByte(); // CanShuffle
-            Console.WriteLine("],");//list end
+            Console.WriteLine("\b\n],");//list end
             Console.WriteLine("\"can_bp\":" + "\"" + main.CanBattlePhase + "\"" + ",\"can_ep\":" + "\"" + main.CanEndPhase + "\",");
             Console.WriteLine("},");
             //choices
