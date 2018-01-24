@@ -1155,7 +1155,7 @@ namespace WindBot.Game
                         Console.WriteLine(",");
                     }
                 }
-                Console.WriteLine("{}]\n]},");//count,cardlist
+                Console.WriteLine("{}]\n}],");//count,cardlist
             }
             Console.WriteLine("{}]");//list
             Console.WriteLine("},");//choices
