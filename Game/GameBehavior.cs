@@ -1129,9 +1129,9 @@ namespace WindBot.Game
             Console.WriteLine("\"list\":[");//list
             for (int j = 0; j < 2; ++j)
             {
-                Console.WriteLine("[");
+                Console.WriteLine("{");
                 int count = packet.ReadByte();
-                Console.WriteLine("{\"count\":" + count + "},{\"cardlist\":[");//count,cardlist
+                Console.WriteLine("\"count\":" + count + ",\"cardlist\":[");//count,cardlist
                 for (int i = 0; i < count; ++i)
                 {
                     int cardId = packet.ReadInt32();
@@ -1159,7 +1159,7 @@ namespace WindBot.Game
                     {
                         mandatoryCards.Add(card);
                         card.Show();
-                        Console.WriteLine(",");
+                        Console.WriteLine(",-1,"); //mark for mandatory
                     }
                     else
                     {
@@ -1168,7 +1168,7 @@ namespace WindBot.Game
                         Console.WriteLine(",");
                     }
                 }
-                Console.WriteLine("null]\n}],");//count,cardlist
+                Console.WriteLine("null]\n},");//count,cardlist
             }
             Console.WriteLine("null]");//list
             Console.WriteLine("},");//choices
@@ -1197,13 +1197,13 @@ namespace WindBot.Game
             //_duel.Show();
             //duel
 
-            Console.WriteLine("\"selected\":{");//selected
+            Console.WriteLine("\"selected\":{\"category\":\"OnSelectSum\",");//selected
             Console.WriteLine("\"list\":[");
             for (int i=0;i<selected.Count;++i)
             {
-                Console.Write("{\"" + result[i] + "\":");
+                Console.Write("{\"result\":" + result[i] + ",\"cardlist\":["); //为了一致性
                 selected[i].Show();
-                Console.WriteLine("},");
+                Console.WriteLine("]},");
             }
             Console.WriteLine("null]");
             Console.WriteLine("}\n},");//selected . select_sum
