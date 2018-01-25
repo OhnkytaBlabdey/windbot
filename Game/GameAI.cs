@@ -345,7 +345,7 @@ namespace WindBot.Game
                     {
                         _dialogs.SendActivate(card.Name);
                         Console.WriteLine("\"list\":[");//list
-                        Console.WriteLine("{\"cmd\":"); //cmd
+                        Console.WriteLine("{"); //cmd
                         Console.WriteLine("\"cmd_type\":" + (int)ExecutorType.Activate + ","); //type
                         Console.WriteLine("\"cardlist\":["); //card list
                         card.Show();
@@ -362,7 +362,7 @@ namespace WindBot.Game
                     {
                         _dialogs.SendSetMonster();
                         Console.WriteLine("\"list\":[");//list
-                        Console.WriteLine("{\"cmd\":"); //cmd
+                        Console.WriteLine("{"); //cmd
                         Console.WriteLine("\"cmd_type\":" + (int)ExecutorType.MonsterSet + ","); //type
                         Console.WriteLine("\"cardlist\":["); //card list
                         card.Show();
@@ -378,7 +378,7 @@ namespace WindBot.Game
                     if (ShouldExecute(exec, card, ExecutorType.Repos))
                     {
                         Console.WriteLine("\"list\":[");//list
-                        Console.WriteLine("{\"cmd\":"); //cmd
+                        Console.WriteLine("{"); //cmd
                         Console.WriteLine("\"cmd_type\":" + (int)ExecutorType.Repos + ","); //type
                         Console.WriteLine("\"cardlist\":["); //card list
                         card.Show();
@@ -396,7 +396,7 @@ namespace WindBot.Game
                         _dialogs.SendSummon(card.Name);
                         Duel.LastSummonPlayer = 0;
                         Console.WriteLine("\"list\":[");//list
-                        Console.WriteLine("{\"cmd\":"); //cmd
+                        Console.WriteLine("{"); //cmd
                         Console.WriteLine("\"cmd_type\":" + (int)ExecutorType.SpSummon + ","); //type
                         Console.WriteLine("\"cardlist\":["); //card list
                         card.Show();
@@ -414,7 +414,7 @@ namespace WindBot.Game
                         _dialogs.SendSummon(card.Name);
                         Duel.LastSummonPlayer = 0;
                         Console.WriteLine("\"list\":[");//list
-                        Console.WriteLine("{\"cmd\":"); //cmd
+                        Console.WriteLine("{"); //cmd
                         Console.WriteLine("\"cmd_type\":" + (int)ExecutorType.Summon + ","); //type
                         Console.WriteLine("\"cardlist\":["); //card list
                         card.Show();
@@ -431,7 +431,7 @@ namespace WindBot.Game
                         {
                             _dialogs.SendSetMonster();
                             Console.WriteLine("\"list\":[");//list
-                            Console.WriteLine("{\"cmd\":"); //cmd
+                            Console.WriteLine("{"); //cmd
                             Console.WriteLine("\"cmd_type\":" + (int)ExecutorType.MonsterSet + ","); //type
                             Console.WriteLine("\"cardlist\":["); //card list
                             card.Show();
@@ -443,7 +443,7 @@ namespace WindBot.Game
                         _dialogs.SendSummon(card.Name);
                         Duel.LastSummonPlayer = 0;
                         Console.WriteLine("\"list\":[");//list
-                        Console.WriteLine("{\"cmd\":"); //cmd
+                        Console.WriteLine("{"); //cmd
                         Console.WriteLine("\"cmd_type\":" + (int)ExecutorType.Summon + ","); //type
                         Console.WriteLine("\"cardlist\":["); //card list
                         card.Show();
@@ -458,7 +458,7 @@ namespace WindBot.Game
                     if (ShouldExecute(exec, card, ExecutorType.SpellSet))
                     {
                         Console.WriteLine("\"list\":[");//list
-                        Console.WriteLine("{\"cmd\":"); //cmd
+                        Console.WriteLine("{"); //cmd
                         Console.WriteLine("\"cmd_type\":" + (int)ExecutorType.SpellSet + ","); //type
                         Console.WriteLine("\"cardlist\":["); //card list
                         card.Show();
@@ -476,7 +476,7 @@ namespace WindBot.Game
             if (main.CanBattlePhase && Duel.Fields[0].HasAttackingMonster())
             {
                 Console.WriteLine("\"list\":[");//list
-                Console.WriteLine("{\"cmd\":"); //cmd
+                Console.WriteLine("{"); //cmd
                 Console.WriteLine("\"cmd_type\":" + 6 + ","); //type
                 Console.WriteLine("}"); //cmd end
                 Console.WriteLine("]\n}");//list end, selected end
@@ -486,7 +486,7 @@ namespace WindBot.Game
             //enter ep
             _dialogs.SendEndTurn();
             Console.WriteLine("\"list\":[");//list
-            Console.WriteLine("{\"cmd\":"); //cmd
+            Console.WriteLine("{"); //cmd
             Console.WriteLine("\"cmd_type\":" + 7 + ","); //type
             Console.WriteLine("}"); //cmd end
             Console.WriteLine("]\n}");//list end, selected end
