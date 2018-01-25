@@ -267,7 +267,7 @@ namespace WindBot.Game
             {
                 Console.WriteLine("\"" + pair.Key + "\":" + pair.Value + ",");
             }
-            Console.WriteLine("\"-1\":-1");
+            Console.WriteLine("\"null\"");
             Console.WriteLine("}");
 
             Console.WriteLine("}");

@@ -345,7 +345,12 @@ namespace WindBot.Game
                     {
                         _dialogs.SendActivate(card.Name);
                         Console.WriteLine("\"list\":[");//list
+                        Console.WriteLine("{\"cmd\":"); //cmd
+                        Console.WriteLine("\"cmd_type\":" + (int)ExecutorType.Activate + ","); //type
+                        Console.WriteLine("\"cardlist\":["); //card list
                         card.Show();
+                        Console.WriteLine("]"); //card list end
+                        Console.WriteLine("}"); //cmd end
                         Console.WriteLine("]\n}");//list end, selected end
                         //Console.WriteLine("},");//select idle cmd end 
                         return new MainPhaseAction(MainPhaseAction.MainAction.Activate, card.ActionActivateIndex[main.ActivableDescs[i]]);
@@ -357,7 +362,12 @@ namespace WindBot.Game
                     {
                         _dialogs.SendSetMonster();
                         Console.WriteLine("\"list\":[");//list
+                        Console.WriteLine("{\"cmd\":"); //cmd
+                        Console.WriteLine("\"cmd_type\":" + (int)ExecutorType.MonsterSet + ","); //type
+                        Console.WriteLine("\"cardlist\":["); //card list
                         card.Show();
+                        Console.WriteLine("]"); //card list end
+                        Console.WriteLine("}"); //cmd end
                         Console.WriteLine("]\n}");//list end, selected end
                         //Console.WriteLine("},");//select idle cmd end 
                         return new MainPhaseAction(MainPhaseAction.MainAction.SetMonster, card.ActionIndex);
@@ -368,7 +378,12 @@ namespace WindBot.Game
                     if (ShouldExecute(exec, card, ExecutorType.Repos))
                     {
                         Console.WriteLine("\"list\":[");//list
+                        Console.WriteLine("{\"cmd\":"); //cmd
+                        Console.WriteLine("\"cmd_type\":" + (int)ExecutorType.Repos + ","); //type
+                        Console.WriteLine("\"cardlist\":["); //card list
                         card.Show();
+                        Console.WriteLine("]"); //card list end
+                        Console.WriteLine("}"); //cmd end
                         Console.WriteLine("]\n}");//list end, selected end
                         //Console.WriteLine("},");//select idle cmd end 
                         return new MainPhaseAction(MainPhaseAction.MainAction.Repos, card.ActionIndex);
@@ -381,7 +396,12 @@ namespace WindBot.Game
                         _dialogs.SendSummon(card.Name);
                         Duel.LastSummonPlayer = 0;
                         Console.WriteLine("\"list\":[");//list
+                        Console.WriteLine("{\"cmd\":"); //cmd
+                        Console.WriteLine("\"cmd_type\":" + (int)ExecutorType.SpSummon + ","); //type
+                        Console.WriteLine("\"cardlist\":["); //card list
                         card.Show();
+                        Console.WriteLine("]"); //card list end
+                        Console.WriteLine("}"); //cmd end
                         Console.WriteLine("]\n}");//list end, selected end
                         //Console.WriteLine("},");//select idle cmd end 
                         return new MainPhaseAction(MainPhaseAction.MainAction.SpSummon, card.ActionIndex);
@@ -394,7 +414,12 @@ namespace WindBot.Game
                         _dialogs.SendSummon(card.Name);
                         Duel.LastSummonPlayer = 0;
                         Console.WriteLine("\"list\":[");//list
+                        Console.WriteLine("{\"cmd\":"); //cmd
+                        Console.WriteLine("\"cmd_type\":" + (int)ExecutorType.Summon + ","); //type
+                        Console.WriteLine("\"cardlist\":["); //card list
                         card.Show();
+                        Console.WriteLine("]"); //card list end
+                        Console.WriteLine("}"); //cmd end
                         Console.WriteLine("]\n}");//list end, selected end
                         //Console.WriteLine("},");//select idle cmd end 
                         return new MainPhaseAction(MainPhaseAction.MainAction.Summon, card.ActionIndex);
@@ -405,10 +430,26 @@ namespace WindBot.Game
                             main.MonsterSetableCards.Contains(card))
                         {
                             _dialogs.SendSetMonster();
+                            Console.WriteLine("\"list\":[");//list
+                            Console.WriteLine("{\"cmd\":"); //cmd
+                            Console.WriteLine("\"cmd_type\":" + (int)ExecutorType.MonsterSet + ","); //type
+                            Console.WriteLine("\"cardlist\":["); //card list
+                            card.Show();
+                            Console.WriteLine("]"); //card list end
+                            Console.WriteLine("}"); //cmd end
+                            Console.WriteLine("]\n}");//list end, selected end
                             return new MainPhaseAction(MainPhaseAction.MainAction.SetMonster, card.ActionIndex);
                         }
                         _dialogs.SendSummon(card.Name);
                         Duel.LastSummonPlayer = 0;
+                        Console.WriteLine("\"list\":[");//list
+                        Console.WriteLine("{\"cmd\":"); //cmd
+                        Console.WriteLine("\"cmd_type\":" + (int)ExecutorType.Summon + ","); //type
+                        Console.WriteLine("\"cardlist\":["); //card list
+                        card.Show();
+                        Console.WriteLine("]"); //card list end
+                        Console.WriteLine("}"); //cmd end
+                        Console.WriteLine("]\n}");//list end, selected end
                         return new MainPhaseAction(MainPhaseAction.MainAction.Summon, card.ActionIndex);
                     }
                 }//通常召唤
@@ -417,7 +458,12 @@ namespace WindBot.Game
                     if (ShouldExecute(exec, card, ExecutorType.SpellSet))
                     {
                         Console.WriteLine("\"list\":[");//list
+                        Console.WriteLine("{\"cmd\":"); //cmd
+                        Console.WriteLine("\"cmd_type\":" + (int)ExecutorType.SpellSet + ","); //type
+                        Console.WriteLine("\"cardlist\":["); //card list
                         card.Show();
+                        Console.WriteLine("]"); //card list end
+                        Console.WriteLine("}"); //cmd end
                         Console.WriteLine("]\n}");//list end, selected end
                         //Console.WriteLine("},");//select idle cmd end 
                         return new MainPhaseAction(MainPhaseAction.MainAction.SetSpell, card.ActionIndex);
@@ -429,14 +475,20 @@ namespace WindBot.Game
             //enter bp
             if (main.CanBattlePhase && Duel.Fields[0].HasAttackingMonster())
             {
-                Console.WriteLine("\"list\":[\"bp\"");//list
+                Console.WriteLine("\"list\":[");//list
+                Console.WriteLine("{\"cmd\":"); //cmd
+                Console.WriteLine("\"cmd_type\":" + 6 + ","); //type
+                Console.WriteLine("}"); //cmd end
                 Console.WriteLine("]\n}");//list end, selected end
                 return new MainPhaseAction(MainPhaseAction.MainAction.ToBattlePhase);
             }
 
             //enter ep
             _dialogs.SendEndTurn();
-            Console.WriteLine("\"list\":[\"ep\"");//list
+            Console.WriteLine("\"list\":[");//list
+            Console.WriteLine("{\"cmd\":"); //cmd
+            Console.WriteLine("\"cmd_type\":" + 7 + ","); //type
+            Console.WriteLine("}"); //cmd end
             Console.WriteLine("]\n}");//list end, selected end
             return new MainPhaseAction(MainPhaseAction.MainAction.ToEndPhase); 
         }

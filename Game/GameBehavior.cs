@@ -710,7 +710,7 @@ namespace WindBot.Game
                 int seq = packet.ReadByte();
                 int pos = packet.ReadByte(); // pos
                 Console.WriteLine("{");
-                Console.WriteLine("\"id\": " + id+ ",\"player\": " + player+ ",\"loc\": \"" + (int)loc+ "\",\"seq\": " + seq+ ",\"pos\": " + pos+"},");
+                Console.WriteLine("\"id\": " + id+ ",\"player\": " + player+ ",\"loc\": \"" + (int)loc+ "\",\"seq\": " + seq+ ",\"pos\": " + pos+",");
                 ClientCard card;
                 if (((int)loc & (int)CardLocation.Overlay) != 0)
                     card = new ClientCard(id, CardLocation.Overlay);
@@ -720,9 +720,12 @@ namespace WindBot.Game
                 if (card.Id == 0)
                     card.SetId(id);
                 cards.Add(card);
+                Console.Write("\"card\":");
+                card.Show();
+                Console.WriteLine("},");
             }
 
-            Console.WriteLine("{}\n]");
+            Console.WriteLine("null\n]");
             Console.WriteLine("},"); //choices,
 
 
@@ -733,7 +736,7 @@ namespace WindBot.Game
             {
                 Connection.Send(CtosMessage.Response, -1);
                 Console.WriteLine("\"selected\":{" + "\"category\":\"OnSelectCard\",");
-                Console.WriteLine("\"list\":[-1]\n}");
+                Console.WriteLine("\"list\":[null]\n}");
                 //selected
                 return;
             }
@@ -758,13 +761,13 @@ namespace WindBot.Game
                     }
                 }
                 result[i + 1] = (byte)id;
-                Console.WriteLine("{\""+result[i].ToString()+"\":");
+                Console.Write("{\"result\":"+result[i].ToString()+",\"card\":");
                 selected[i].Show();
                 Console.WriteLine("},");
                 //Console.WriteLine("result[i + 1] is {0}", result[i + 1]);
             }
 
-            Console.WriteLine("{}\n]");
+            Console.WriteLine("null\n]");
 
             Console.WriteLine("}"); //selected
 
@@ -809,13 +812,15 @@ namespace WindBot.Game
 
                 int desc = packet.ReadInt32();
 
-                Console.WriteLine("{\"flag\":" + maybeflag + ",\"id\":" + maybeid + ",\"controller\":" + con + ",\"loc\":\"" + (CardLocation)loc + "\",\"seq\":" + seq + ",\"sseq\":" + sseq + ",\"desc\":" + desc + "},");
-
+                Console.WriteLine("{\"flag\":" + maybeflag + ",\"id\":" + maybeid + ",\"controller\":" + con + ",\"loc\":\"" + (CardLocation)loc + "\",\"seq\":" + seq + ",\"sseq\":" + sseq + ",\"desc\":" + desc );
+                Console.Write(",\"card\":");
+                _duel.GetCard(con, loc, seq, sseq).Show();
+                Console.WriteLine("},");
                 cards.Add(_duel.GetCard(con, loc, seq, sseq));
                 descs.Add(desc);
             }
 
-            Console.WriteLine("{}\n]");
+            Console.WriteLine("null\n]");
             Console.WriteLine("},"); //choices,
 
             //_duel.Show();
@@ -825,7 +830,7 @@ namespace WindBot.Game
             if (cards.Count == 0)
             {
                 Console.WriteLine("\"selected\":{\"category\":\"OnSelectChain\",");
-                Console.WriteLine("\"list\":[-1]");
+                Console.WriteLine("\"list\":[null]");
 
                 Console.WriteLine("}");
 
@@ -839,7 +844,9 @@ namespace WindBot.Game
                 Console.WriteLine("\"selected\":{\"category\":\"OnSelectChain\",");
 
                 Console.WriteLine("\"list\":[");
+                Console.Write("{\"card\":");
                 cards[0].Show();
+                Console.WriteLine("}");
                 Console.WriteLine("]");
 
                 Console.WriteLine("}");
@@ -925,9 +932,11 @@ namespace WindBot.Game
             int count;
             for (int k = 0; k < 5; k++)
             {
-                //k是card 的seq
+                //k是cmd 的代号
                 count = packet.ReadByte();
-                Console.WriteLine("[");
+                Console.WriteLine("{");//cmd
+                Console.WriteLine("\"cmd_type\":" + k + ","); //idle type
+                Console.WriteLine("\"cardlist\":[");//card list
                 for (int i = 0; i < count; ++i)
                 {
                     packet.ReadInt32(); // card id
@@ -938,6 +947,9 @@ namespace WindBot.Game
                     if (card == null) continue;
                     card.ActionIndex[k] = i;
                     //cmd的主体卡片
+                    
+                    //Console.Write("\"card\":");
+                    // in card list 
                     card.Show();
                     Console.WriteLine(",");
                     //主要阶段1的idle操作
@@ -960,7 +972,8 @@ namespace WindBot.Game
                             break;
                     }
                 }
-                Console.WriteLine("{}],");
+                Console.WriteLine("null]");//cardlist end
+                Console.WriteLine("},");//cmd end
             }
             count = packet.ReadByte();
             for (int i = 0; i < count; ++i)
@@ -984,7 +997,7 @@ namespace WindBot.Game
             main.CanBattlePhase = packet.ReadByte() != 0;
             main.CanEndPhase = packet.ReadByte() != 0;
             packet.ReadByte(); // CanShuffle
-            Console.WriteLine("{}],");//list end
+            Console.WriteLine("null],");//list end
             Console.WriteLine("\"can_bp\":" + "\"" + main.CanBattlePhase + "\"" + ",\"can_ep\":" + "\"" + main.CanEndPhase + "\"");
             Console.WriteLine("},");
             //choices
@@ -1155,9 +1168,9 @@ namespace WindBot.Game
                         Console.WriteLine(",");
                     }
                 }
-                Console.WriteLine("{}]\n}],");//count,cardlist
+                Console.WriteLine("null]\n}],");//count,cardlist
             }
-            Console.WriteLine("{}]");//list
+            Console.WriteLine("null]");//list
             Console.WriteLine("},");//choices
 
             for (int k = 0; k < mandatoryCards.Count; ++k)
@@ -1192,7 +1205,7 @@ namespace WindBot.Game
                 selected[i].Show();
                 Console.WriteLine("},");
             }
-            Console.WriteLine("{}]");
+            Console.WriteLine("null]");
             Console.WriteLine("}\n},");//selected . select_sum
             BinaryWriter reply = GamePacketFactory.Create(CtosMessage.Response);
             reply.Write(result);
