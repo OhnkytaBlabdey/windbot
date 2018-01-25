@@ -477,7 +477,7 @@ namespace WindBot.Game
             {
                 Console.WriteLine("\"list\":[");//list
                 Console.WriteLine("{"); //cmd
-                Console.WriteLine("\"cmd_type\":" + 6 + ","); //type
+                Console.WriteLine("\"cmd_type\":" + 6); //type
                 Console.WriteLine("}"); //cmd end
                 Console.WriteLine("]\n}");//list end, selected end
                 return new MainPhaseAction(MainPhaseAction.MainAction.ToBattlePhase);
@@ -487,7 +487,7 @@ namespace WindBot.Game
             _dialogs.SendEndTurn();
             Console.WriteLine("\"list\":[");//list
             Console.WriteLine("{"); //cmd
-            Console.WriteLine("\"cmd_type\":" + 7 + ","); //type
+            Console.WriteLine("\"cmd_type\":" + 7); //type
             Console.WriteLine("}"); //cmd end
             Console.WriteLine("]\n}");//list end, selected end
             return new MainPhaseAction(MainPhaseAction.MainAction.ToEndPhase); 
