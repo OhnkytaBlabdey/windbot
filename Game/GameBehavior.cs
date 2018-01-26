@@ -848,6 +848,10 @@ namespace WindBot.Game
             Console.WriteLine("null\n]");
             Console.WriteLine("},"); //choices,
 
+
+            //wait
+            AddNote();
+
             //_duel.Show();
             //duel,
             
@@ -1026,6 +1030,9 @@ namespace WindBot.Game
             Console.WriteLine("\"can_bp\":" + "\"" + main.CanBattlePhase + "\"" + ",\"can_ep\":" + "\"" + main.CanEndPhase + "\"");
             Console.WriteLine("},");
             //choices
+
+            //wait
+            AddNote();
 
             Connection.Send(CtosMessage.Response, _ai.OnSelectIdleCmd(main).ToValue());
             Console.WriteLine("},");//select idle end
