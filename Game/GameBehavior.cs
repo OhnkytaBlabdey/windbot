@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text.RegularExpressions;
 using WindBot.Game.AI;
 using YGOSharp.Network;
 using YGOSharp.Network.Enums;
@@ -267,7 +266,15 @@ namespace WindBot.Game
         
         private void OnDuelEnd(BinaryReader packet)
         {
+            EndNote();
             Connection.Close();
+        }
+
+        private void EndNote()
+        {
+            System.IO.File.Move("./logs/q.txt", "./logs/q" + System.DateTime.Now.ToString("yy-MM-dd HH-mm-ss") + ".txt");
+            FileStream file = new FileStream("./logs/q.txt", FileMode.Create);
+            file.Close();
         }
 
         private void OnChat(BinaryReader packet)
@@ -337,6 +344,7 @@ namespace WindBot.Game
             extra = packet.ReadInt16();
             _duel.Fields[GetLocalPlayer(1)].Init(deck, extra);
 
+            EndNote();
             Logger.DebugWriteLine("Duel started: " + _room.Names[0] + " versus " + _room.Names[1]);
             _ai.OnStart();
         }
@@ -569,7 +577,7 @@ namespace WindBot.Game
             ClientCard card = _duel.GetCard(player, (CardLocation)loc, seq);
             if (card == null) return;
 
-            card.Update(packet, _duel);
+            card.Update(packet, _duel); //无需改动
         }
 
         private void OnUpdateData(BinaryReader packet)
@@ -730,6 +738,10 @@ namespace WindBot.Game
             Console.WriteLine("null\n]");
             Console.WriteLine("},"); //choices,
 
+            // add note
+            AddNote();
+
+            // read note
 
             IList<ClientCard> selected = func(cards, min, max, _select_hint, cancelable);
             _select_hint = 0;
@@ -784,6 +796,17 @@ namespace WindBot.Game
             Console.Write("{");
             InternalOnSelectCard(packet, _ai.OnSelectCard);
             Console.WriteLine("},");
+        }
+
+        private void AddNote()
+        {
+            FileStream fileStream = new FileStream("./logs/q.txt", FileMode.Append);
+            StreamWriter streamWriter = new StreamWriter(fileStream);
+            streamWriter.Write("Q");
+            //streamWriter.Flush();
+            streamWriter.Close();
+            //fileStream.Flush();
+            fileStream.Close();
         }
 
         private void OnSelectChain(BinaryReader packet)
@@ -1174,6 +1197,9 @@ namespace WindBot.Game
             }
             Console.WriteLine("null]");//list
             Console.WriteLine("},");//choices
+
+            //add
+            AddNote();
 
             for (int k = 0; k < mandatoryCards.Count; ++k)
             {
