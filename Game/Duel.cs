@@ -85,6 +85,14 @@ namespace WindBot.Game
             return cards[index];
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="loc"></param>
+        /// <param name="cardId"></param>
+        /// <param name="player"></param>
+        /// <param name="zone">is sequence</param>
+        /// <param name="pos"></param>
         public void AddCard(CardLocation loc, int cardId, int player, int zone, int pos)
         {
             switch (loc)
@@ -99,10 +107,12 @@ namespace WindBot.Game
                     Fields[player].Banished.Add(new ClientCard(cardId, loc, pos));
                     break;
                 case CardLocation.MonsterZone:
-                    Fields[player].MonsterZone[zone] = new ClientCard(cardId, loc, pos);
+                    //Fields[player].MonsterZone[zone] = new ClientCard(cardId, loc, pos);
+                    Fields[player].MonsterZone[zone] = new ClientCard(cardId, loc, pos, zone);
                     break;
                 case CardLocation.SpellZone:
-                    Fields[player].SpellZone[zone] = new ClientCard(cardId, loc, pos);
+                    //Fields[player].SpellZone[zone] = new ClientCard(cardId, loc, pos);
+                    Fields[player].SpellZone[zone] = new ClientCard(cardId, loc, pos, zone);
                     break;
                 case CardLocation.Deck:
                     Fields[player].Deck.Add(new ClientCard(cardId, loc, pos));

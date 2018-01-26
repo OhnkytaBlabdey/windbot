@@ -453,14 +453,14 @@ namespace WindBot.Game
         private void OnMove(BinaryReader packet)
         {
             int cardId = packet.ReadInt32(); //cardid
-            int pc = GetLocalPlayer(packet.ReadByte()); //player
-            int pl = packet.ReadByte(); //location
-            int ps = packet.ReadSByte(); //sequence
-            packet.ReadSByte(); // pp
-            int cc = GetLocalPlayer(packet.ReadByte()); //player
-            int cl = packet.ReadByte(); //location
-            int cs = packet.ReadSByte(); //sequence
-            int cp = packet.ReadSByte(); //position
+            int pc = GetLocalPlayer(packet.ReadByte()); //pre controler
+            int pl = packet.ReadByte(); //pre location
+            int ps = packet.ReadSByte(); //pre sequence
+            packet.ReadSByte(); // pre position
+            int cc = GetLocalPlayer(packet.ReadByte()); //cur player
+            int cl = packet.ReadByte(); //cur location
+            int cs = packet.ReadSByte(); //cur sequence
+            int cp = packet.ReadSByte(); //cur position
             packet.ReadInt32(); // reason
 
             ClientCard card = _duel.GetCard(pc, (CardLocation)pl, ps);
@@ -474,6 +474,7 @@ namespace WindBot.Game
             }
             else
                 _duel.RemoveCard((CardLocation)pl, card, pc, ps);
+            //del
 
             if ((cl & (int)CardLocation.Overlay) != 0)
             {
@@ -484,7 +485,7 @@ namespace WindBot.Game
             }
             else
             {
-                _duel.AddCard((CardLocation)cl, cardId, cc, cs, cp);
+                _duel.AddCard((CardLocation)cl, cardId, cc, cs, cp); //新的card实例
                 if ((pl & (int)CardLocation.Overlay) == 0 && card != null)
                 {
                     ClientCard newcard = _duel.GetCard(cc, (CardLocation)cl, cs);
@@ -492,6 +493,7 @@ namespace WindBot.Game
                         newcard.Overlays.AddRange(card.Overlays);
                 }
             }
+            //add
         }
 
         private void OnAttack(BinaryReader packet)

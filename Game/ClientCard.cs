@@ -12,6 +12,7 @@ namespace WindBot.Game
         public NamedCard Data { get; private set; }
         public string Name { get; private set; }
 
+        public int Sequence { get; set; }
         public int Position { get; set; }
         public CardLocation Location { get; set; }
         public int Alias { get; private set; }
@@ -47,6 +48,12 @@ namespace WindBot.Game
         {
         }
 
+        public ClientCard(int id, CardLocation loc, int position, int seq)
+            :this(id,loc,position)
+        {
+            Sequence = seq;
+        }
+
         public ClientCard(int id, CardLocation loc, int position)
         {
             SetId(id);
@@ -73,10 +80,10 @@ namespace WindBot.Game
                 SetId(packet.ReadInt32());
             if ((flag & (int)Query.Position) != 0)
             {
-                Controller = duel.GetLocalPlayer(packet.ReadByte());
-                packet.ReadByte();
-                packet.ReadByte();
-                Position = packet.ReadByte();
+                Controller = duel.GetLocalPlayer(packet.ReadByte()); //player
+                packet.ReadByte(); //location
+                Sequence = packet.ReadByte(); //sequence
+                Position = packet.ReadByte(); //position
             }
             if ((flag & (int)Query.Alias) != 0)
                 Alias = packet.ReadInt32();
@@ -260,7 +267,7 @@ namespace WindBot.Game
             
             Console.WriteLine("{");
             // ",\"Name\":\"" + Name + "\"
-            Console.WriteLine("\"Id\":" + Id +",\"Position\":" + Position + ",\"Location\":\"" + Location + "\",\"Level\":" + Level + ",\"Rank\":" + Rank + ",\"LScale\":" + LScale + ",\"RScale\":" + RScale + ",\"Race\":" + Race + ",\"Attribute\":" + Attribute + ",\"Type\":" + Type + ",\"Attack\":" + Attack + ",\"Defense\":" + Defense + ",\"Owner\":" + Owner + ",\"Controller\":" + Controller + ",\"Disabled\":" + Disabled + ",\"Attacked\":\"" + Attacked + "\",\"" + "BaseAttack\":" + BaseAttack + ",\"BaseDefense\":" + BaseDefense + ",");
+            Console.WriteLine("\"Id\":" + Id +","+"\"Sequence\":"+Sequence+",\"Position\":" + Position + ",\"Location\":\"" + Location + "\",\"Level\":" + Level + ",\"Rank\":" + Rank + ",\"LScale\":" + LScale + ",\"RScale\":" + RScale + ",\"Race\":" + Race + ",\"Attribute\":" + Attribute + ",\"Type\":" + Type + ",\"Attack\":" + Attack + ",\"Defense\":" + Defense + ",\"Owner\":" + Owner + ",\"Controller\":" + Controller + ",\"Disabled\":" + Disabled + ",\"Attacked\":\"" + Attacked + "\",\"" + "BaseAttack\":" + BaseAttack + ",\"BaseDefense\":" + BaseDefense + ",");
             //name attacked location.
             Console.WriteLine("\"ActionActivateIndex\":{");
             foreach (KeyValuePair<int, int> pair in ActionActivateIndex)
