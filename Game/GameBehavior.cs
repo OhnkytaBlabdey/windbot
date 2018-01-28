@@ -757,13 +757,14 @@ namespace WindBot.Game
             }
 
             // read note
-            IList<ClientCard> selected = ReadCard("OnSelectCard");
-
+            IList<ClientCard> selected = ReadCard(1);//"OnSelectCard"
+            bool mode = true;
 
             //if(ApplyNote("OnSelectCard"))
             //    return;
-            if( selected == null)
+            if( selected == null && !mode)
                 selected = func(cards, min, max, _select_hint, cancelable);
+
             _select_hint = 0;
 
             if (selected.Count == 0 && cancelable)
@@ -818,18 +819,18 @@ namespace WindBot.Game
             Console.WriteLine("},");
         }
 
-        private IList<ClientCard> ReadCard(string category)
+        private IList<ClientCard> ReadCard(int category)
         {
             IList<ClientCard> selected = new List<ClientCard>();
             int count = 0;
             switch (category)
             {
-                case "OnSelectCard":
+                case 1://"OnSelectCard"
                     {
                         FileStream file = new FileStream("./logs/a.txt", FileMode.Open);
                         StreamReader reader = new StreamReader(file);
                         string line = null;
-                        while( (line = reader.ReadLine())!= null)
+                        while( (line = reader.ReadLine())!= null )
                         {
                             int id, con, loc, seq, sub;
                             //Console.Read("{0},{1},{2},{3},{4}", id, con, loc, seq, sub);
