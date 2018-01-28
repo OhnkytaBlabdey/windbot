@@ -825,7 +825,7 @@ namespace WindBot.Game
 
             //streamWriter.Flush();
             FileStream file = new FileStream("./logs/q.txt", FileMode.Truncate);
-            StreamWriter streamWriter = new StreamWriter(fileStream);
+            StreamWriter streamWriter = new StreamWriter(file);
             streamWriter.Write(ct+1);
             streamWriter.Close();
             file.Close();
