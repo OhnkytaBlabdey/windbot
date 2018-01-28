@@ -273,7 +273,7 @@ namespace WindBot.Game
         private void EndNote()
         {
             System.IO.File.Move("./logs/q.txt", "./logs/q" + System.DateTime.Now.ToString("yy-MM-dd HH-mm-ss") + ".txt");
-            
+            File.Move("./logs/a.txt", "./logs/a" + DateTime.Now.ToString("yy-MM-dd HH-mm-ss") + ".txt");
         }
 
         private void OnChat(BinaryReader packet)
@@ -356,6 +356,8 @@ namespace WindBot.Game
             writer.Write("0");
             writer.Close();
             file.Close();
+            FileStream file2 = new FileStream("./logs/a.txt", FileMode.Create);
+            file2.Close();
         }
 
         private void OnWin(BinaryReader packet)
@@ -755,8 +757,13 @@ namespace WindBot.Game
             }
 
             // read note
+            IList<ClientCard> selected = ReadCard("OnSelectCard");
 
-            IList<ClientCard> selected = func(cards, min, max, _select_hint, cancelable);
+
+            //if(ApplyNote("OnSelectCard"))
+            //    return;
+            if( selected == null)
+                selected = func(cards, min, max, _select_hint, cancelable);
             _select_hint = 0;
 
             if (selected.Count == 0 && cancelable)
@@ -810,6 +817,83 @@ namespace WindBot.Game
             InternalOnSelectCard(packet, _ai.OnSelectCard);
             Console.WriteLine("},");
         }
+
+        private IList<ClientCard> ReadCard(string category)
+        {
+            IList<ClientCard> selected = new List<ClientCard>();
+            int count = 0;
+            switch (category)
+            {
+                case "OnSelectCard":
+                    {
+                        FileStream file = new FileStream("./logs/a.txt", FileMode.Open);
+                        StreamReader reader = new StreamReader(file);
+                        string line = null;
+                        while( (line = reader.ReadLine())!= null)
+                        {
+                            int id, con, loc, seq, sub;
+                            //Console.Read("{0},{1},{2},{3},{4}", id, con, loc, seq, sub);
+                            string[] arr = line.Split(',');
+                            id = int.Parse(arr[0]);
+                            con = int.Parse(arr[1]);
+                            loc = int.Parse(arr[2]);
+                            seq = int.Parse(arr[3]);
+                            sub = int.Parse(arr[4]);
+                            ClientCard card;
+                            if (((int)loc & (int)CardLocation.Overlay) != 0)
+                                card = new ClientCard(id, CardLocation.Overlay);
+                            else
+                                card = _duel.GetCard(con, (CardLocation)loc, seq);
+                            if (card != null)
+                            {
+                                count++;
+                                selected.Add(card);
+                            }
+                                
+                        }
+                        reader.Close();
+                        file.Close();
+                    }
+                    break;
+                default:
+                    break;
+            }
+            if (count > 0)
+                return selected;
+            return null;
+        }
+
+        /*
+        private bool ApplyNote(string category)
+        {
+            int ct = 0;
+            switch(category)
+            {
+                case "OnSelectCard":
+                    Connection.Send(ReadNote("OnSelectCard"));
+                    ct++;
+                    break;
+                default:
+                    break;
+            }
+            return ct > 0;
+        }
+
+        private BinaryWriter ReadNote(string category)
+        {
+            BinaryWriter reply = GamePacketFactory.Create(CtosMessage.Response);
+            switch (category)
+            {
+                case "OnSelectCard":
+                    reply.Write(result);
+                    break;
+                default:
+                    break;
+
+            }
+
+            return reply;
+        }*/
 
         private void AddNote()
         {
