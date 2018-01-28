@@ -358,8 +358,8 @@ namespace WindBot.Game
             writer.Write("0");
             writer.Close();
             file.Close();
-            //FileStream file2 = new FileStream("./logs/a.txt", FileMode.Create);
-            //file2.Close();
+            FileStream file2 = new FileStream("./logs/a.txt", FileMode.Create);
+            file2.Close();
         }
 
         private void OnWin(BinaryReader packet)
@@ -752,42 +752,52 @@ namespace WindBot.Game
             Console.WriteLine("},"); //choices,
 
             // add note
+            bool mode = false;
             //AddNote(); 多于2种选择再询问
-            if(count > 1)
+            if (count > 1)
             {
                 AddNote();
+                mode = true;
             }
 
-            // read note
-            IList<ClientCard> selected = ReadCard(1);//"OnSelectCard"
-            bool mode = true;
 
-            Process choicemaker = new Process();
-            try
-            {
-                choicemaker.StartInfo.UseShellExecute = false;
-                choicemaker.StartInfo.FileName = "runscript";
-                choicemaker.StartInfo.CreateNoWindow = true;
-            }
-            catch(Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-                mode = false;
-            }
+            IList<ClientCard> selected = new List<ClientCard>();
 
-            choicemaker.Start();
-            choicemaker.WaitForExit(500);
-            if (!choicemaker.HasExited)
+            if (mode)
             {
-                mode = false;
+                Process choicemaker = new Process();
                 try
                 {
-                    choicemaker.Kill();
+                    choicemaker.StartInfo.UseShellExecute = false;
+                    choicemaker.StartInfo.FileName = "runscript";
+                    choicemaker.StartInfo.CreateNoWindow = true;
                 }
-                catch (Exception e)
+                catch (Exception ex)
                 {
-                    Console.WriteLine(e.Source + e.Message);
+                    Console.WriteLine(ex.Message);
+                    mode = false;
                 }
+
+                choicemaker.Start();
+                choicemaker.WaitForExit(500);
+                if (!choicemaker.HasExited)
+                {
+                    mode = false;
+                    try
+                    {
+                        choicemaker.Kill();
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e.Source + e.Message);
+                    }
+                }
+            }
+
+            if (mode)
+            {
+                // read note
+                selected = ReadCard(1);//"OnSelectCard"
             }
             //if(ApplyNote("OnSelectCard"))
             //    return;
