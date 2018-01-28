@@ -1032,6 +1032,9 @@ namespace WindBot.Game
                 Console.WriteLine("},");//cmd end
             }
             count = packet.ReadByte();
+            Console.WriteLine("{");//cmd
+            Console.WriteLine("\"cmd_type\":" + 5 + ","); //idle type
+            Console.WriteLine("\"cardlist\":[");//card list
             for (int i = 0; i < count; ++i)
             {
                 packet.ReadInt32(); // card id
@@ -1046,9 +1049,15 @@ namespace WindBot.Game
                 if (card.ActionActivateIndex.ContainsKey(desc))
                     card.ActionActivateIndex.Remove(desc);
                 card.ActionActivateIndex.Add(desc, i);
+                //
+                card.Show();
+                Console.WriteLine(",");
+                //
                 main.ActivableCards.Add(card);
                 main.ActivableDescs.Add(desc);
             }//不明觉厉，也是发动吧
+            Console.WriteLine("null]");//cardlist end
+            Console.WriteLine("},");//cmd end
 
             main.CanBattlePhase = packet.ReadByte() != 0;
             main.CanEndPhase = packet.ReadByte() != 0;
