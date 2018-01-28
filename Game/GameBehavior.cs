@@ -816,15 +816,21 @@ namespace WindBot.Game
             int ct;
             FileStream fileStream = new FileStream("./logs/q.txt", FileMode.Open);
             StreamReader reader = new StreamReader(fileStream);
+            
             ct = Convert.ToInt32(reader.ReadLine());
             reader.Close();
-            fileStream.Seek(0, SeekOrigin.Begin);
+            //fileStream.Seek(0, SeekOrigin.Begin);
+            fileStream.Close();
+
+
+            //streamWriter.Flush();
+            FileStream file = new FileStream("./logs/q.txt", FileMode.Truncate);
             StreamWriter streamWriter = new StreamWriter(fileStream);
             streamWriter.Write(ct+1);
-            //streamWriter.Flush();
             streamWriter.Close();
+            file.Close();
             //fileStream.Flush();
-            fileStream.Close();
+            
         }
 
         private void OnSelectChain(BinaryReader packet)
