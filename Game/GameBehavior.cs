@@ -7,6 +7,8 @@ using YGOSharp.Network.Enums;
 using YGOSharp.Network.Utils;
 using YGOSharp.OCGWrapper;
 using YGOSharp.OCGWrapper.Enums;
+using System.Threading;
+using System.Diagnostics;
 
 namespace WindBot.Game
 {
@@ -760,9 +762,36 @@ namespace WindBot.Game
             IList<ClientCard> selected = ReadCard(1);//"OnSelectCard"
             bool mode = true;
 
+            Process choicemaker = new Process();
+            try
+            {
+                choicemaker.StartInfo.UseShellExecute = false;
+                choicemaker.StartInfo.FileName = "runscript";
+                choicemaker.StartInfo.CreateNoWindow = true;
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                mode = false;
+            }
+
+            choicemaker.Start();
+            choicemaker.WaitForExit(500);
+            if (!choicemaker.HasExited)
+            {
+                mode = false;
+                try
+                {
+                    choicemaker.Kill();
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Source + e.Message);
+                }
+            }
             //if(ApplyNote("OnSelectCard"))
             //    return;
-            if( selected == null && !mode)
+            if ( selected == null && !mode)
                 selected = func(cards, min, max, _select_hint, cancelable);
 
             _select_hint = 0;
