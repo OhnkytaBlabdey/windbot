@@ -273,8 +273,7 @@ namespace WindBot.Game
         private void EndNote()
         {
             System.IO.File.Move("./logs/q.txt", "./logs/q" + System.DateTime.Now.ToString("yy-MM-dd HH-mm-ss") + ".txt");
-            FileStream file = new FileStream("./logs/q.txt", FileMode.Create);
-            file.Close();
+            
         }
 
         private void OnChat(BinaryReader packet)
@@ -344,9 +343,19 @@ namespace WindBot.Game
             extra = packet.ReadInt16();
             _duel.Fields[GetLocalPlayer(1)].Init(deck, extra);
 
-            EndNote();
+            //EndNote();
+            StartNote();
             Logger.DebugWriteLine("Duel started: " + _room.Names[0] + " versus " + _room.Names[1]);
             _ai.OnStart();
+        }
+
+        private void StartNote()
+        {
+            FileStream file = new FileStream("./logs/q.txt", FileMode.Create);
+            StreamWriter writer = new StreamWriter(file);
+            writer.Write("0");
+            writer.Close();
+            file.Close();
         }
 
         private void OnWin(BinaryReader packet)
@@ -739,7 +748,11 @@ namespace WindBot.Game
             Console.WriteLine("},"); //choices,
 
             // add note
-            AddNote();
+            //AddNote(); 多于2种选择再询问
+            if(count > 1)
+            {
+                AddNote();
+            }
 
             // read note
 
@@ -800,9 +813,14 @@ namespace WindBot.Game
 
         private void AddNote()
         {
-            FileStream fileStream = new FileStream("./logs/q.txt", FileMode.Append);
+            int ct;
+            FileStream fileStream = new FileStream("./logs/q.txt", FileMode.Open);
+            StreamReader reader = new StreamReader(fileStream);
+            ct = Convert.ToInt32(reader.ReadLine());
+            reader.Close();
+            fileStream.Seek(0, SeekOrigin.Begin);
             StreamWriter streamWriter = new StreamWriter(fileStream);
-            streamWriter.Write("Q");
+            streamWriter.Write(ct+1);
             //streamWriter.Flush();
             streamWriter.Close();
             //fileStream.Flush();
@@ -850,7 +868,10 @@ namespace WindBot.Game
 
 
             //wait
-            AddNote();
+            if (!forced && count > 1)
+            {
+                AddNote();
+            }
 
             //_duel.Show();
             //duel,
@@ -1021,7 +1042,7 @@ namespace WindBot.Game
                 card.ActionActivateIndex.Add(desc, i);
                 main.ActivableCards.Add(card);
                 main.ActivableDescs.Add(desc);
-            }//不明觉厉
+            }//不明觉厉，也是发动吧
 
             main.CanBattlePhase = packet.ReadByte() != 0;
             main.CanEndPhase = packet.ReadByte() != 0;
@@ -1032,6 +1053,7 @@ namespace WindBot.Game
             //choices
 
             //wait
+            //一定是有多种选择，或者是只有一种选择(废话嘛
             AddNote();
 
             Connection.Send(CtosMessage.Response, _ai.OnSelectIdleCmd(main).ToValue());
@@ -1205,8 +1227,8 @@ namespace WindBot.Game
             Console.WriteLine("null]");//list
             Console.WriteLine("},");//choices
 
-            //add
-            AddNote();
+            //add 结构看不懂
+            //AddNote();
 
             for (int k = 0; k < mandatoryCards.Count; ++k)
             {
