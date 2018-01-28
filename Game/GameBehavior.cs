@@ -768,9 +768,9 @@ namespace WindBot.Game
                 Process choicemaker = new Process();
                 try
                 {
-                    choicemaker.StartInfo.UseShellExecute = false;
+                    //choicemaker.StartInfo.UseShellExecute = false;
                     choicemaker.StartInfo.FileName = "runscript";
-                    choicemaker.StartInfo.CreateNoWindow = true;
+                    //choicemaker.StartInfo.CreateNoWindow = true;
                 }
                 catch (Exception ex)
                 {
@@ -779,7 +779,7 @@ namespace WindBot.Game
                 }
 
                 choicemaker.Start();
-                choicemaker.WaitForExit(500);
+                choicemaker.WaitForExit(1000);
                 if (!choicemaker.HasExited)
                 {
                     mode = false;
