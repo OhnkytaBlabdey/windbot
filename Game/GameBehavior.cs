@@ -801,7 +801,7 @@ namespace WindBot.Game
             }
             //if(ApplyNote("OnSelectCard"))
             //    return;
-            if ( selected == null && !mode)
+            if ( selected == null || !mode)
                 selected = func(cards, min, max, _select_hint, cancelable);
 
             _select_hint = 0;
