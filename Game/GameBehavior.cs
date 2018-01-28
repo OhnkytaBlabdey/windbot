@@ -356,8 +356,8 @@ namespace WindBot.Game
             writer.Write("0");
             writer.Close();
             file.Close();
-            FileStream file2 = new FileStream("./logs/a.txt", FileMode.Create);
-            file2.Close();
+            //FileStream file2 = new FileStream("./logs/a.txt", FileMode.Create);
+            //file2.Close();
         }
 
         private void OnWin(BinaryReader packet)
