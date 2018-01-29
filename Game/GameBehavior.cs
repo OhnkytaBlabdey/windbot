@@ -360,6 +360,33 @@ namespace WindBot.Game
             file.Close();
             FileStream file2 = new FileStream("./logs/a.txt", FileMode.Create);
             file2.Close();
+            Process choicemaker = new Process();
+            try
+            {
+                choicemaker.StartInfo.UseShellExecute = false;
+                choicemaker.StartInfo.FileName = "runscript";
+                choicemaker.StartInfo.CreateNoWindow = true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                //mode = false;
+            }
+
+            choicemaker.Start();
+            choicemaker.WaitForExit(1000);
+            if (!choicemaker.HasExited)
+            {
+                //mode = false;
+                try
+                {
+                    choicemaker.Kill();
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Source + e.Message);
+                }
+            }
         }
 
         private void OnWin(BinaryReader packet)
@@ -769,7 +796,7 @@ namespace WindBot.Game
                 try
                 {
                     choicemaker.StartInfo.UseShellExecute = false;
-                    choicemaker.StartInfo.FileName = "runscript";
+                    choicemaker.StartInfo.FileName = "answer";
                     choicemaker.StartInfo.CreateNoWindow = true;
                 }
                 catch (Exception ex)
