@@ -830,15 +830,26 @@ namespace WindBot.Game
             //    return;
             if (selected == null || !mode)
             { 
-                ClientCard minid = new ClientCard(101221614, CardLocation.Deck);
+                //后期再加入按序号作为第二排序
+                int minid = 101221614;
                 foreach(ClientCard c in cards)
                 {
-                    if(c.Id < minid.Id)
+                    if(c.Id < minid)
                     {
-                        minid = c;
+                        minid = c.Id;
+                        selected.Clear();
+                        ClientCard card;
+                        if (((int)c.Location & (int)CardLocation.Overlay) != 0)
+                            card = new ClientCard(c.Id, CardLocation.Overlay);
+                        else
+                            card = _duel.GetCard(c.Controller, c.Location, c.Sequence);
+                        if (card == null) continue;
+                        if (card.Id == 0)
+                            card.SetId(c.Id);
+                        selected.Add(card);
                     }
                 }
-                selected.Add(minid);
+                
             }
             if (selected == null || !mode)
                     selected = func(cards, min, max, _select_hint, cancelable);
