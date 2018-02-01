@@ -829,11 +829,14 @@ namespace WindBot.Game
             //if(ApplyNote("OnSelectCard"))
             //    return;
             if (selected == null || !mode)
-            { 
+            {
+                selected = new List<ClientCard>();
                 //后期再加入按序号作为第二排序
-                int minid = 101221614;
+                int minid = 101221614; //max
                 foreach(ClientCard c in cards)
                 {
+                    if (c == null)
+                        continue;
                     if(c.Id < minid)
                     {
                         minid = c.Id;
