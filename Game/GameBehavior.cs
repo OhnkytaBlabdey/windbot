@@ -887,8 +887,10 @@ namespace WindBot.Game
                         break;
                     }
                 }
+                //对选择card的同样的表示方式
+                //没有执行到这里的，说明selected不存在？还是说其实是空的？
                 result[i + 1] = (byte)id;
-                Console.Write("{\"result\":"+result[i].ToString()+",\"card\":");
+                Console.Write("{\"result\":"+result[i+1].ToString()+",\"card\":");
                 selected[i].Show();
                 Console.WriteLine("},");
                 //Console.WriteLine("result[i + 1] is {0}", result[i + 1]);
