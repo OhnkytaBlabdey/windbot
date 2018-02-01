@@ -830,6 +830,7 @@ namespace WindBot.Game
             //    return;
             if (selected == null || !mode)
             {
+                mode = false;
                 selected = new List<ClientCard>();
                 //后期再加入按序号作为第二排序
                 int minid = 101221614; //max
@@ -840,7 +841,7 @@ namespace WindBot.Game
                     if(c.Id < minid)
                     {
                         minid = c.Id;
-                        selected.Clear();
+                        
                         ClientCard card;
                         if (((int)c.Location & (int)CardLocation.Overlay) != 0)
                             card = new ClientCard(c.Id, CardLocation.Overlay);
@@ -849,7 +850,9 @@ namespace WindBot.Game
                         if (card == null) continue;
                         if (card.Id == 0)
                             card.SetId(c.Id);
+                        selected.Clear();
                         selected.Add(card);
+                        mode = true;
                     }
                 }
                 
@@ -859,7 +862,7 @@ namespace WindBot.Game
 
             _select_hint = 0;
 
-            if (selected.Count == 0 && cancelable)
+            if (selected.Count == 0 && cancelable) //cancel is true
             {
                 Connection.Send(CtosMessage.Response, -1);
                 Console.WriteLine("\"selected\":{" + "\"category\":\"OnSelectCard\",");
@@ -888,7 +891,7 @@ namespace WindBot.Game
                     }
                 }
                 //对选择card的同样的表示方式
-                //没有执行到这里的，说明selected不存在？还是说其实是空的？
+                //没有执行到这里的，说明selected不存在？还是说其实是空的？问题出在上面的一段
                 result[i + 1] = (byte)id;
                 Console.Write("{\"result\":"+result[i+1].ToString()+",\"card\":");
                 selected[i].Show();
