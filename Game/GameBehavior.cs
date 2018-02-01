@@ -828,8 +828,20 @@ namespace WindBot.Game
             }
             //if(ApplyNote("OnSelectCard"))
             //    return;
-            if ( selected == null || !mode)
-                selected = func(cards, min, max, _select_hint, cancelable);
+            if (selected == null || !mode)
+            { 
+                ClientCard minid = new ClientCard(101221614, CardLocation.Deck);
+                foreach(ClientCard c in cards)
+                {
+                    if(c.Id < minid.Id)
+                    {
+                        minid = c;
+                    }
+                }
+                selected.Add(minid);
+            }
+            if (selected == null || !mode)
+                    selected = func(cards, min, max, _select_hint, cancelable);
 
             _select_hint = 0;
 
