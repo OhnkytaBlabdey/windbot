@@ -853,6 +853,7 @@ namespace WindBot.Game
                     //Console.WriteLine("xx");
                 }
                 /*
+                {
                 int minid = 100000000; //max
                 foreach(ClientCard c in cards)
                 {
@@ -881,8 +882,11 @@ namespace WindBot.Game
                         mode = true;
                     }
                 }
+                }
                 */
             }
+
+            //默认的选择
             if (selected == null || !mode)
                     selected = func(cards, min, max, _select_hint, cancelable);
 
