@@ -753,7 +753,7 @@ namespace WindBot.Game
 
             IList<ClientCard> cards = new List<ClientCard>();
             int count = packet.ReadByte();
-            int minid = 100000000;
+            Int64 minid = 100000000;
             //int minindex = 0;
             ClientCard minc=null;
             for (int i = 0; i < count; ++i)
@@ -781,6 +781,7 @@ namespace WindBot.Game
                 if(id > 1000 && id < minid)
                 {
                     minc = card;
+                    minid = id;
                     //minindex = i;
                     //除非出现card==null,不然i就是正确的
                 }
@@ -847,6 +848,9 @@ namespace WindBot.Game
                 if(minc!=null)
                 {
                     selected.Add(minc);
+                    mode = true;
+                    //minc.Show();
+                    //Console.WriteLine("xx");
                 }
                 /*
                 int minid = 100000000; //max
