@@ -838,18 +838,24 @@ namespace WindBot.Game
                 {
                     if (c == null)
                         continue;
-                    if(c.Id < minid)
+                    if(c.Id < minid && c.Id > 128)
                     {
-                        minid = c.Id;
+                        
                         
                         ClientCard card;
                         if (((int)c.Location & (int)CardLocation.Overlay) != 0)
                             card = new ClientCard(c.Id, CardLocation.Overlay);
                         else
                             card = _duel.GetCard(c.Controller, c.Location, c.Sequence);
-                        if (card == null) continue;
+                        if (card == null)
+                        {
+                            //Console.WriteLine("\"error\":??,");
+                            continue;
+                        }
                         if (card.Id == 0)
                             card.SetId(c.Id);
+
+                        minid = c.Id;
                         selected.Clear();
                         selected.Add(card);
                         mode = true;
