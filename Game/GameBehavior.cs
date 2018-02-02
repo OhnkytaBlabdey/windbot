@@ -749,8 +749,13 @@ namespace WindBot.Game
             Console.WriteLine("\"cancelable\":\"" + cancelable + "\",\"min\":" + min + ",\"max\":" + max + ",");
             Console.WriteLine("\"list\":[");
 
+            IList<ClientCard> selected = new List<ClientCard>();
+
             IList<ClientCard> cards = new List<ClientCard>();
             int count = packet.ReadByte();
+            int minid = 100000000;
+            //int minindex = 0;
+            ClientCard minc=null;
             for (int i = 0; i < count; ++i)
             {
                 int id = packet.ReadInt32();
@@ -773,6 +778,12 @@ namespace WindBot.Game
                 Console.Write("\"card\":");
                 card.Show();
                 Console.WriteLine("},");
+                if(id > 1000 && id < minid)
+                {
+                    minc = card;
+                    //minindex = i;
+                    //除非出现card==null,不然i就是正确的
+                }
             }
 
             Console.WriteLine("null\n]");
@@ -788,7 +799,7 @@ namespace WindBot.Game
             }
 
 
-            IList<ClientCard> selected = new List<ClientCard>();
+            //IList<ClientCard> selected = new List<ClientCard>();
 
             if (mode)
             {
@@ -833,6 +844,11 @@ namespace WindBot.Game
                 mode = false;
                 selected = new List<ClientCard>();
                 //后期再加入按序号作为第二排序
+                if(minc!=null)
+                {
+                    selected.Add(minc);
+                }
+                /*
                 int minid = 100000000; //max
                 foreach(ClientCard c in cards)
                 {
@@ -861,7 +877,7 @@ namespace WindBot.Game
                         mode = true;
                     }
                 }
-                
+                */
             }
             if (selected == null || !mode)
                     selected = func(cards, min, max, _select_hint, cancelable);
