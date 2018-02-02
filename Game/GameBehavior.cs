@@ -833,12 +833,12 @@ namespace WindBot.Game
                 mode = false;
                 selected = new List<ClientCard>();
                 //后期再加入按序号作为第二排序
-                int minid = 101221614; //max
+                int minid = 100000000; //max
                 foreach(ClientCard c in cards)
                 {
                     if (c == null)
                         continue;
-                    if(c.Id < minid && c.Id > 128)
+                    if(c.Id < minid && c.Id > 1000)
                     {
                         
                         
@@ -849,7 +849,7 @@ namespace WindBot.Game
                             card = _duel.GetCard(c.Controller, c.Location, c.Sequence);
                         if (card == null)
                         {
-                            //Console.WriteLine("\"error\":??,");
+                            Console.WriteLine("\"error\":??,");
                             continue;
                         }
                         if (card.Id == 0)
