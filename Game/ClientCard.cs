@@ -12,6 +12,7 @@ namespace WindBot.Game
         public NamedCard Data { get; private set; }
         public string Name { get; private set; }
 
+        public bool Updated { get; set; }
         public int Sequence { get; set; }
         public int Position { get; set; }
         public CardLocation Location { get; set; }
@@ -75,6 +76,7 @@ namespace WindBot.Game
 
         public void Update(BinaryReader packet, Duel duel)
         {
+            Updated = true;
             int flag = packet.ReadInt32();
             if ((flag & (int)Query.Code) != 0)
                 SetId(packet.ReadInt32());
@@ -267,8 +269,10 @@ namespace WindBot.Game
             
             Console.WriteLine("{");
             // ",\"Name\":\"" + Name + "\"
+            
             Console.WriteLine("\"Id\":" + Id +","+"\"Sequence\":"+Sequence+",\"Position\":" + Position + ",\"Location\":\"" + Location + "\",\"Level\":" + Level + ",\"Rank\":" + Rank + ",\"LScale\":" + LScale + ",\"RScale\":" + RScale + ",\"Race\":" + Race + ",\"Attribute\":" + Attribute + ",\"Type\":" + Type + ",\"Attack\":" + Attack + ",\"Defense\":" + Defense + ",\"Owner\":" + Owner + ",\"Controller\":" + Controller + ",\"Disabled\":" + Disabled + ",\"Attacked\":\"" + Attacked + "\",\"" + "BaseAttack\":" + BaseAttack + ",\"BaseDefense\":" + BaseDefense + ",");
-            //name attacked location.
+                //name attacked location.
+                Console.WriteLine("\"Updated\":" + (Updated ? "true" : "false") + ",");
             Console.WriteLine("\"ActionActivateIndex\":{");
             foreach (KeyValuePair<int, int> pair in ActionActivateIndex)
             {

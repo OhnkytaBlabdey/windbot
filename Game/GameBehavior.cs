@@ -618,7 +618,7 @@ namespace WindBot.Game
             if (card == null) return;
             
             card.Update(packet, _duel); //无需改动
-            card.Sequence = seq;
+            //card.Sequence = seq;
         }
 
         private void OnUpdateData(BinaryReader packet)

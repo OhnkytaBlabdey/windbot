@@ -308,7 +308,7 @@ namespace WindBot.Game
                 Console.Write(",\n");
                 }
             }
-            Console.WriteLine("{}\n],");
+            Console.WriteLine("null\n],");
 
             Console.WriteLine("\"MonsterZone\":[");
             foreach (ClientCard c in MonsterZone)
@@ -318,7 +318,7 @@ namespace WindBot.Game
                 Console.Write(",\n");
                 }
             }
-            Console.WriteLine("{}\n],");
+            Console.WriteLine("null\n],");
 
             Console.WriteLine("\"SpellZone\":[");
             foreach (ClientCard c in SpellZone)
@@ -328,7 +328,7 @@ namespace WindBot.Game
                 Console.Write(",\n");
                 }
             }
-            Console.WriteLine("{}\n],");
+            Console.WriteLine("null\n],");
 
             Console.WriteLine("\"Graveyard\":[");
             foreach (ClientCard c in Graveyard)
@@ -338,7 +338,7 @@ namespace WindBot.Game
                 Console.Write(",\n");
                 }
             }
-            Console.WriteLine("{}\n],");
+            Console.WriteLine("null\n],");
 
             Console.WriteLine("\"Banished\":[");
             foreach (ClientCard c in Banished)
@@ -348,7 +348,7 @@ namespace WindBot.Game
                 Console.Write(",\n");
                 }
             }
-            Console.WriteLine("{}\n],");
+            Console.WriteLine("null\n],");
 
             Console.WriteLine("\"Deck\":[");
             foreach (ClientCard c in Deck)
@@ -358,7 +358,7 @@ namespace WindBot.Game
                 Console.Write(",\n");
                 }
             }
-            Console.WriteLine("{}\n],");
+            Console.WriteLine("null\n],");
 
             Console.WriteLine("\"ExtraDeck\":[");
             foreach (ClientCard c in ExtraDeck)
@@ -368,7 +368,7 @@ namespace WindBot.Game
                 Console.Write(",\n");
                 }
             }
-            Console.WriteLine("{}\n]");
+            Console.WriteLine("null\n]");
 
             Console.WriteLine("}");
         }
