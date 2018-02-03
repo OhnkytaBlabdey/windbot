@@ -978,7 +978,7 @@ namespace WindBot.Game
                             foreach(ClientCard c in cards)
                             {
                                 if (c == null) continue;
-                                if(c.Id == id && (c.Sequence == seq || loc == (int)CardLocation.Hand || loc==(int)CardLocation.Deck || loc == (int)CardLocation.Extra))
+                                if(c.Id == id && (c.Sequence == seq || loc == (int)CardLocation.Hand || loc==(int)CardLocation.Deck || loc == (int)CardLocation.Extra || ( loc == (int)CardLocation.Removed && (c.Position & (int)CardPosition.FaceDown)!=0) ))
                                 {
                                     card = c;
                                 }
