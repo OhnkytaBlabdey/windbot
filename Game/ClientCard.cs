@@ -14,7 +14,9 @@ namespace WindBot.Game
 
         public bool Updated { get; set; }
         public bool Fixed { get; set; }
+        public int Index { get; set; }
         public int Sequence { get; set; }
+
         public int Position { get; set; }
         public CardLocation Location { get; set; }
         public int Alias { get; private set; }
@@ -89,11 +91,13 @@ namespace WindBot.Game
                 packet.ReadByte(); //location
                 Sequence = packet.ReadByte(); //sequence
                 Position = packet.ReadByte(); //position
-                if(!Equals(duel.GetCard(Controller,Location,Sequence)))
-                {
-                    Sequence--;
-                    Fixed = true;
-                }
+                
+            }
+            Index = GetSequenceOf(duel);
+            if (!Equals(duel.GetCard(Controller, Location, Sequence)))
+            {
+                Sequence--;
+                Fixed = true;
             }
             if ((flag & (int)Query.Alias) != 0)
                 Alias = packet.ReadInt32();
@@ -237,6 +241,44 @@ namespace WindBot.Game
             return ReferenceEquals(this, card);
         }
 
+        public int GetSequenceOf(Duel duel)
+        {
+            IList<ClientCard> cards = new List<ClientCard>();
+            switch(Location)
+            {
+                case CardLocation.Deck:
+                    cards = duel.Fields[Controller].Deck;
+                    break;
+                case CardLocation.Extra:
+                    cards = duel.Fields[Controller].ExtraDeck;
+                    break;
+                case CardLocation.Grave:
+                    cards = duel.Fields[Controller].Graveyard;
+                    break;
+                case CardLocation.Hand:
+                    cards = duel.Fields[Controller].Hand;
+                    break;
+                case CardLocation.MonsterZone:
+                    cards = duel.Fields[Controller].MonsterZone;
+                    break;
+                case CardLocation.SpellZone:
+                    cards = duel.Fields[Controller].SpellZone;
+                    break;
+                case CardLocation.Removed:
+                    cards = duel.Fields[Controller].Banished;
+                    break;
+            }
+            int ct = cards.Count;
+            for(int i =0; i < ct;++i)
+            {
+                if(Equals(cards[i]))
+                {
+                    return i;
+                }
+            }
+            return -1;
+        }
+
         public void Show()
         {
             /*
@@ -282,6 +324,7 @@ namespace WindBot.Game
                 //name attacked location.
                 Console.WriteLine("\"Updated\":" + (Updated ? "true" : "false") + ",");
                 Console.WriteLine("\"Fixed\":" + (Fixed ? "true" : "false") + ",");
+                Console.WriteLine("\"InternalIndex\":" + Index);
             Console.WriteLine("\"ActionActivateIndex\":{");
             foreach (KeyValuePair<int, int> pair in ActionActivateIndex)
             {
