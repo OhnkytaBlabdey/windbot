@@ -13,6 +13,7 @@ namespace WindBot.Game
         public string Name { get; private set; }
 
         public bool Updated { get; set; }
+        public bool Fixed { get; set; }
         public int Sequence { get; set; }
         public int Position { get; set; }
         public CardLocation Location { get; set; }
@@ -63,6 +64,8 @@ namespace WindBot.Game
             ActionIndex = new int[16];
             ActionActivateIndex = new Dictionary<int, int>();
             Location = loc;
+            Updated = false;
+            Fixed = false;
         }
 
         public void SetId(int id)
@@ -86,6 +89,11 @@ namespace WindBot.Game
                 packet.ReadByte(); //location
                 Sequence = packet.ReadByte(); //sequence
                 Position = packet.ReadByte(); //position
+                if(!Equals(duel.GetCard(Controller,Location,Sequence)))
+                {
+                    Sequence--;
+                    Fixed = true;
+                }
             }
             if ((flag & (int)Query.Alias) != 0)
                 Alias = packet.ReadInt32();
@@ -273,6 +281,7 @@ namespace WindBot.Game
             Console.WriteLine("\"Id\":" + Id +","+"\"Sequence\":"+Sequence+",\"Position\":" + Position + ",\"Location\":\"" + Location + "\",\"Level\":" + Level + ",\"Rank\":" + Rank + ",\"LScale\":" + LScale + ",\"RScale\":" + RScale + ",\"Race\":" + Race + ",\"Attribute\":" + Attribute + ",\"Type\":" + Type + ",\"Attack\":" + Attack + ",\"Defense\":" + Defense + ",\"Owner\":" + Owner + ",\"Controller\":" + Controller + ",\"Disabled\":" + Disabled + ",\"Attacked\":\"" + Attacked + "\",\"" + "BaseAttack\":" + BaseAttack + ",\"BaseDefense\":" + BaseDefense + ",");
                 //name attacked location.
                 Console.WriteLine("\"Updated\":" + (Updated ? "true" : "false") + ",");
+                Console.WriteLine("\"Fixed\":" + (Fixed ? "true" : "false") + ",");
             Console.WriteLine("\"ActionActivateIndex\":{");
             foreach (KeyValuePair<int, int> pair in ActionActivateIndex)
             {
