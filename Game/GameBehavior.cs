@@ -842,6 +842,7 @@ namespace WindBot.Game
             //    return;
             if (selected == null || !mode)
             {
+                Console.WriteLine("\"default\":true,");
                 mode = false;
                 selected = new List<ClientCard>();
                 //后期再加入按序号作为第二排序
@@ -891,6 +892,8 @@ namespace WindBot.Game
                     selected = func(cards, min, max, _select_hint, cancelable);
 
             _select_hint = 0;
+
+            _duel.Show();
 
             if (selected.Count == 0 && cancelable) //cancel is true
             {
@@ -956,7 +959,7 @@ namespace WindBot.Game
                     {
                         FileStream file = new FileStream("./logs/a.txt", FileMode.Open);
                         StreamReader reader = new StreamReader(file);
-                        string line = null;
+                        string line ;
                         while( (line = reader.ReadLine())!= null )
                         {
                             int id, con, loc, seq, sub;
