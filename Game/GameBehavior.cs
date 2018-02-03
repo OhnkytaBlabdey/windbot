@@ -616,8 +616,9 @@ namespace WindBot.Game
 
             ClientCard card = _duel.GetCard(player, (CardLocation)loc, seq);
             if (card == null) return;
-
+            
             card.Update(packet, _duel); //无需改动
+            card.Sequence = seq;
         }
 
         private void OnUpdateData(BinaryReader packet)
