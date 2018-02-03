@@ -894,7 +894,7 @@ namespace WindBot.Game
 
             _select_hint = 0;
 
-            _duel.Show();
+            //_duel.Show();
 
             if (selected.Count == 0 && cancelable) //cancel is true
             {
