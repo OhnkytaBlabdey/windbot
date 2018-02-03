@@ -15,6 +15,7 @@ namespace WindBot.Game
         //public bool Updated { get; set; }
         //public bool Fixed { get; set; }
         //public int Index { get; set; }
+        public int IsPublic { get; set; }
         public int Sequence { get; set; }
 
         public int Position { get; set; }
@@ -149,7 +150,7 @@ namespace WindBot.Game
             if ((flag & (int)Query.IsDisabled) != 0)
                 Disabled = packet.ReadInt32();
             if ((flag & (int)Query.IsPublic) != 0)
-                packet.ReadInt32();
+                IsPublic = packet.ReadInt32();
             if ((flag & (int)Query.LScale) != 0)
                 LScale = packet.ReadInt32();
             if ((flag & (int)Query.RScale) != 0)
@@ -329,6 +330,7 @@ namespace WindBot.Game
                 //Console.WriteLine("\"Updated\":" + (Updated ? "true" : "false") + ",");
                 //Console.WriteLine("\"Fixed\":" + (Fixed ? "true" : "false") + ",");
                 //Console.WriteLine("\"InternalIndex\":" + Index);
+                Console.WriteLine("\"IsPublic\":" + IsPublic + ",");
             Console.WriteLine("\"ActionActivateIndex\":{");
             foreach (KeyValuePair<int, int> pair in ActionActivateIndex)
             {
