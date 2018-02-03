@@ -12,9 +12,9 @@ namespace WindBot.Game
         public NamedCard Data { get; private set; }
         public string Name { get; private set; }
 
-        public bool Updated { get; set; }
-        public bool Fixed { get; set; }
-        public int Index { get; set; }
+        //public bool Updated { get; set; }
+        //public bool Fixed { get; set; }
+        //public int Index { get; set; }
         public int Sequence { get; set; }
 
         public int Position { get; set; }
@@ -66,8 +66,8 @@ namespace WindBot.Game
             ActionIndex = new int[16];
             ActionActivateIndex = new Dictionary<int, int>();
             Location = loc;
-            Updated = false;
-            Fixed = false;
+            //Updated = false;
+            //Fixed = false;
         }
 
         public void SetId(int id)
@@ -81,7 +81,7 @@ namespace WindBot.Game
 
         public void Update(BinaryReader packet, Duel duel)
         {
-            Updated = true;
+            //Updated = true;
             int flag = packet.ReadInt32();
             if ((flag & (int)Query.Code) != 0)
                 SetId(packet.ReadInt32());
@@ -93,12 +93,12 @@ namespace WindBot.Game
                 Position = packet.ReadByte(); //position
                 
             }
-            Index = GetSequenceOf(duel);
-            if (!Equals(duel.GetCard(Controller, Location, Sequence)))
-            {
-                Sequence--;
-                Fixed = true;
-            }
+            //Index = GetSequenceOf(duel);
+            //if (!Equals(duel.GetCard(Controller, Location, Sequence)))
+            //{
+            //    Sequence--;
+            //    Fixed = true;
+            //}
             if ((flag & (int)Query.Alias) != 0)
                 Alias = packet.ReadInt32();
             if ((flag & (int)Query.Type) != 0)
@@ -240,7 +240,7 @@ namespace WindBot.Game
         {
             return ReferenceEquals(this, card);
         }
-
+        /*
         public int GetSequenceOf(Duel duel)
         {
             IList<ClientCard> cards = new List<ClientCard>();
@@ -269,7 +269,7 @@ namespace WindBot.Game
                     break;
             }
             return cards.IndexOf(this);
-            /*
+            //
             int ct = cards.Count;
             for(int i =0; i < ct;++i)
             {
@@ -279,8 +279,9 @@ namespace WindBot.Game
                 }
             }
             return -1;
-            */
+            //
         }
+        */
 
         public void Show()
         {
@@ -325,9 +326,9 @@ namespace WindBot.Game
             
             Console.WriteLine("\"Id\":" + Id +","+"\"Sequence\":"+Sequence+",\"Position\":" + Position + ",\"Location\":\"" + Location + "\",\"Level\":" + Level + ",\"Rank\":" + Rank + ",\"LScale\":" + LScale + ",\"RScale\":" + RScale + ",\"Race\":" + Race + ",\"Attribute\":" + Attribute + ",\"Type\":" + Type + ",\"Attack\":" + Attack + ",\"Defense\":" + Defense + ",\"Owner\":" + Owner + ",\"Controller\":" + Controller + ",\"Disabled\":" + Disabled + ",\"Attacked\":\"" + Attacked + "\",\"" + "BaseAttack\":" + BaseAttack + ",\"BaseDefense\":" + BaseDefense + ",");
                 //name attacked location.
-                Console.WriteLine("\"Updated\":" + (Updated ? "true" : "false") + ",");
-                Console.WriteLine("\"Fixed\":" + (Fixed ? "true" : "false") + ",");
-                Console.WriteLine("\"InternalIndex\":" + Index);
+                //Console.WriteLine("\"Updated\":" + (Updated ? "true" : "false") + ",");
+                //Console.WriteLine("\"Fixed\":" + (Fixed ? "true" : "false") + ",");
+                //Console.WriteLine("\"InternalIndex\":" + Index);
             Console.WriteLine("\"ActionActivateIndex\":{");
             foreach (KeyValuePair<int, int> pair in ActionActivateIndex)
             {

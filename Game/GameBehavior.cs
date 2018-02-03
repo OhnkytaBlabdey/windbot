@@ -971,11 +971,24 @@ namespace WindBot.Game
                             loc = int.Parse(arr[2]);
                             seq = int.Parse(arr[3]);
                             sub = int.Parse(arr[4]);
-                            ClientCard card;
-                            if (((int)loc & (int)CardLocation.Overlay) != 0)
-                                card = new ClientCard(id, CardLocation.Overlay);
-                            else
-                                card = _duel.GetCard(con, (CardLocation)loc, seq);
+
+                            ClientCard card = null;
+
+                            IList<ClientCard> cards = _duel.GetCards(con, (CardLocation)loc);
+                            foreach(ClientCard c in cards)
+                            {
+                                if (c == null) continue;
+                                if(c.Id == id && c.Sequence == seq)
+                                {
+                                    card = c;
+                                }
+                            }
+
+                            //if (((int)loc & (int)CardLocation.Overlay) != 0)
+                            //    card = new ClientCard(id, CardLocation.Overlay);
+                            //else
+                            //    card = _duel.GetCard(con, (CardLocation)loc, seq);
+
                             if (card != null)
                             {
                                 count++;

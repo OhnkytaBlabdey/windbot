@@ -156,6 +156,28 @@ namespace WindBot.Game
             return IsFirst ? player : 1 - player;
         }
 
+        public IList<ClientCard> GetCards(int player,CardLocation location)
+        {
+            switch(location)
+            {
+                case CardLocation.Deck:
+                    return Fields[player].Deck;
+                case CardLocation.Extra:
+                    return Fields[player].ExtraDeck;
+                case CardLocation.Grave:
+                    return Fields[player].Graveyard;
+                case CardLocation.Hand:
+                    return Fields[player].Hand;
+                case CardLocation.MonsterZone:
+                    return Fields[player].MonsterZone;
+                case CardLocation.SpellZone:
+                    return Fields[player].SpellZone;
+                case CardLocation.Removed:
+                    return Fields[player].Banished;
+            }
+            return null;
+        }
+
         public void Show()
         {
             /*
