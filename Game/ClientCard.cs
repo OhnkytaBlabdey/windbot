@@ -268,6 +268,8 @@ namespace WindBot.Game
                     cards = duel.Fields[Controller].Banished;
                     break;
             }
+            return cards.IndexOf(this);
+            /*
             int ct = cards.Count;
             for(int i =0; i < ct;++i)
             {
@@ -277,6 +279,7 @@ namespace WindBot.Game
                 }
             }
             return -1;
+            */
         }
 
         public void Show()
