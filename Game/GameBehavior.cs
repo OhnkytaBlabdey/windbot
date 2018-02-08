@@ -755,8 +755,11 @@ namespace WindBot.Game
             IList<ClientCard> cards = new List<ClientCard>();
             int count = packet.ReadByte();
             Int64 minid = 100000000;
-            //int minindex = 0;
-            ClientCard minc = null;
+            int minindex = 0;
+            //ClientCard minc = null;
+            int myindex = 0;
+            //byte[] myres = new byte[count + 1];
+            byte[] myres = new byte[2];
             for (int i = 0; i < count; ++i)
             {
                 int id = packet.ReadInt32();
@@ -765,8 +768,10 @@ namespace WindBot.Game
                 int nloc = (int)loc;
                 int seq = packet.ReadByte();
                 int pos = packet.ReadByte(); // pos
+
                 Console.WriteLine("{");
                 Console.WriteLine("\"id\": " + id + ",\"player\": " + player + ",\"loc\": \"" + (int)loc + "\",\"seq\": " + seq + ",\"pos\": " + pos + ",");
+
                 ClientCard card;
                 if (((int)loc & (int)CardLocation.Overlay) != 0)
                     card = new ClientCard(id, CardLocation.Overlay);
@@ -776,20 +781,34 @@ namespace WindBot.Game
                 if (card.Id == 0)
                     card.SetId(id);
                 cards.Add(card);
+
                 Console.Write("\"card\":");
                 card.Show();
                 Console.WriteLine("},");
+
                 if (id > 1000 && id < minid)
                 {
-                    minc = card;
+                    //minc = card;
                     minid = id;
-                    //minindex = i;
+                    minindex = i;
                     //除非出现card==null,不然i就是正确的
                 }
             }
+            
 
             Console.WriteLine("null\n]");
             Console.WriteLine("},"); //choices,
+
+            if(min==1)
+            {
+                myres[0] = 1;
+                myres[1] = (byte)minindex;
+                BinaryWriter myreply = GamePacketFactory.Create(CtosMessage.Response);
+                myreply.Write(myres);
+                Connection.Send(myreply);
+                Console.WriteLine("null},");
+                return;
+            }
 
             // add note
             bool mode = false;
@@ -933,7 +952,9 @@ namespace WindBot.Game
                 }
                 //对选择card的同样的表示方式
                 //没有执行到这里的，说明selected不存在？还是说其实是空的？问题出在上面的一段
+
                 result[i + 1] = (byte)id;
+
                 Console.Write("{\"result\":"+result[i+1].ToString()+",\"card\":");
                 selected[i].Show();
                 Console.WriteLine("},");
