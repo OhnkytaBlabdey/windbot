@@ -268,7 +268,7 @@ namespace WindBot.Game
         
         private void OnDuelEnd(BinaryReader packet)
         {
-            EndNote();
+            //EndNote();
             Connection.Close();
         }
 
@@ -346,7 +346,7 @@ namespace WindBot.Game
             _duel.Fields[GetLocalPlayer(1)].Init(deck, extra);
 
             //EndNote();
-            StartNote();
+            //StartNote();
             Logger.DebugWriteLine("Duel started: " + _room.Names[0] + " versus " + _room.Names[1]);
             _ai.OnStart();
         }
@@ -1133,7 +1133,7 @@ namespace WindBot.Game
             //wait
             if (!forced && count > 1)
             {
-                AddNote();
+                //AddNote();
             }
 
             //_duel.Show();
@@ -1326,7 +1326,7 @@ namespace WindBot.Game
 
             //wait
             //一定是有多种选择，或者是只有一种选择(废话嘛
-            AddNote();
+            //AddNote();
 
             Connection.Send(CtosMessage.Response, _ai.OnSelectIdleCmd(main).ToValue());
             Console.WriteLine("},");//select idle end
