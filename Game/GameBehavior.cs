@@ -756,7 +756,7 @@ namespace WindBot.Game
             int count = packet.ReadByte();
             Int64 minid = 100000000;
             //int minindex = 0;
-            ClientCard minc=null;
+            ClientCard minc = null;
             for (int i = 0; i < count; ++i)
             {
                 int id = packet.ReadInt32();
@@ -766,7 +766,7 @@ namespace WindBot.Game
                 int seq = packet.ReadByte();
                 int pos = packet.ReadByte(); // pos
                 Console.WriteLine("{");
-                Console.WriteLine("\"id\": " + id+ ",\"player\": " + player+ ",\"loc\": \"" + (int)loc+ "\",\"seq\": " + seq+ ",\"pos\": " + pos+",");
+                Console.WriteLine("\"id\": " + id + ",\"player\": " + player + ",\"loc\": \"" + (int)loc + "\",\"seq\": " + seq + ",\"pos\": " + pos + ",");
                 ClientCard card;
                 if (((int)loc & (int)CardLocation.Overlay) != 0)
                     card = new ClientCard(id, CardLocation.Overlay);
@@ -779,7 +779,7 @@ namespace WindBot.Game
                 Console.Write("\"card\":");
                 card.Show();
                 Console.WriteLine("},");
-                if(id > 1000 && id < minid)
+                if (id > 1000 && id < minid)
                 {
                     minc = card;
                     minid = id;
@@ -793,6 +793,9 @@ namespace WindBot.Game
 
             // add note
             bool mode = false;
+            if(false)
+            { 
+            /*
             //AddNote(); 多于2种选择再询问
             if (count > 1)
             {
@@ -839,8 +842,10 @@ namespace WindBot.Game
                 // read note
                 selected = ReadCard(1);//"OnSelectCard"
             }
+            */
             //if(ApplyNote("OnSelectCard"))
             //    return;
+            /*
             if (selected == null || !mode)
             {
                 Console.WriteLine("\"default\":true,");
@@ -854,7 +859,7 @@ namespace WindBot.Game
                     //minc.Show();
                     //Console.WriteLine("xx");
                 }
-                /*
+                
                 {
                 int minid = 100000000; //max
                 foreach(ClientCard c in cards)
@@ -885,7 +890,9 @@ namespace WindBot.Game
                     }
                 }
                 }
-                */
+                
+            }
+            */
             }
 
             //默认的选择
