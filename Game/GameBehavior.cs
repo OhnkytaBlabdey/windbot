@@ -67,6 +67,13 @@ namespace WindBot.Game
             //选择墓地中的不在意序列号的尸块部件
         }
 
+        private void InitCombo()
+        {
+            //if every key card has got enough count, then say that card materials are okay. 
+            //if opponent's lp is in a appropriate range and so on, then say that ... is okay. 
+            ison = true;
+        }
+
         public int GetLocalPlayer(int player)
         {
             return _duel.IsFirst ? player : 1 - player;
@@ -75,6 +82,10 @@ namespace WindBot.Game
         public void OnPacket(BinaryReader packet)
         {
             StocMessage id = (StocMessage)packet.ReadByte();
+            if(!ison)
+            {
+                InitCombo();
+            }
             if (id == StocMessage.GameMsg)
             {
                 GameMessage msg = (GameMessage)packet.ReadByte();
@@ -1153,13 +1164,37 @@ namespace WindBot.Game
 
             Console.WriteLine("{");
 
+            int index1 = -1;
+            ComboStep step = null;
+            StepObject obj = null;
+            int ida = 0, loca = 0, seqa = 0, ispuba = 0;
+            if (_combo.queue.Count > 0)
+            {
+                step = _combo.queue.Dequeue();
+            }
+
+            if (step == null || step.category != ChoiceCategory.OnSelectCard)
+            {
+                ison = false;
+            }
+
+            if (ison)
+            {
+                obj = step.objlist.Dequeue();
+                ida = obj.stepcard.id;
+                loca = obj.stepcard.loc;
+                seqa = obj.stepcard.seq;
+                ispuba = obj.stepcard.ispub;
+            }
+
+
             Console.WriteLine("\"choices\":{\"category\":\"OnSelectChain\",");
             Console.WriteLine("\"list\":[");
 
             for (int i = 0; i < count; ++i)
             {
                 int maybeflag = packet.ReadByte(); // flag
-                int maybeid = packet.ReadInt32(); // card id
+                int id = packet.ReadInt32(); // card id
                 int con = GetLocalPlayer(packet.ReadByte());
                 int loc = packet.ReadByte();
                 int seq = packet.ReadByte();
@@ -1167,18 +1202,39 @@ namespace WindBot.Game
 
                 int desc = packet.ReadInt32();
 
-                Console.WriteLine("{\"flag\":" + maybeflag + ",\"id\":" + maybeid + ",\"controller\":" + con + ",\"loc\":\"" + (CardLocation)loc + "\",\"seq\":" + seq + ",\"sseq\":" + sseq + ",\"desc\":" + desc );
+                Console.WriteLine("{\"flag\":" + maybeflag + ",\"id\":" + id + ",\"controller\":" + con + ",\"loc\":\"" + (CardLocation)loc + "\",\"seq\":" + seq + ",\"sseq\":" + sseq + ",\"desc\":" + desc );
                 Console.Write(",\"card\":");
                 _duel.GetCard(con, loc, seq, sseq).Show();
                 Console.WriteLine("},");
                 cards.Add(_duel.GetCard(con, loc, seq, sseq));
                 descs.Add(desc);
+
+                //
+                if (ison)
+                {
+                    if (id == ida && (loca == (int)loc || loca == 0))
+                    {
+                        if (seqa == seq || seqa == 0 || loca != 4 && loca != 8)
+                        {
+                            if (index1 < 0)
+                                index1 = i;
+                        }
+                    }
+                }
+                //
+
             }
 
             Console.WriteLine("null\n]");
             Console.WriteLine("},"); //choices,
 
 
+            if(ison && index1 > -1)
+            { 
+                Connection.Send(CtosMessage.Response, index1);
+                return;
+            }
+            ison = true;
             //wait
             if (!forced && count > 1)
             {
