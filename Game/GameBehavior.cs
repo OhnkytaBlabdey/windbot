@@ -20,6 +20,7 @@ namespace WindBot.Game
 
         private GameAI _ai;
         private BotCombo _combo;
+        private bool ison;
 
         private IDictionary<StocMessage, Action<BinaryReader>> _packets;
         private IDictionary<GameMessage, Action<BinaryReader>> _messages;
@@ -47,6 +48,17 @@ namespace WindBot.Game
             Deck = Deck.Load(_ai.Executor.Deck);
 
             _select_hint = 0;
+
+            _combo = new BotCombo();
+            LoadCombo();
+            ison = true;
+        }
+
+
+        private void LoadCombo()
+        {
+            _combo.queue.Enqueue(new ComboStep(ChoiceCategory.OnSelectIdlecmd, new StepObject(ObjectType.card, (int)MainPhaseAction.MainAction.SetSpell, 74848038, (int)CardLocation.Hand, 0, 0)));
+            //覆盖手卡中的不在意序列号的死者转生。
         }
 
         public int GetLocalPlayer(int player)
@@ -1239,6 +1251,32 @@ namespace WindBot.Game
         {
             packet.ReadByte(); // player
             Console.Write("{");//select idle
+            int action=-1;
+            //int index=-1;
+            MainPhaseAction mpa = null;
+            ComboStep step = null;
+            StepObject obj = null;
+            int ida = 0, loca = 0, seqa = 0, ispuba = 0;
+            if (_combo.queue.Count > 0)
+            { 
+                step = _combo.queue.Dequeue();
+            }
+
+                if(step==null || step.category!=ChoiceCategory.OnSelectIdlecmd)
+                {
+                    ison = false;
+                }
+            
+            if(ison)
+            {
+                obj = step.objlist.Dequeue();
+                action = obj.value;
+                ida = obj.stepcard.id;
+                loca = obj.stepcard.loc;
+                seqa = obj.stepcard.seq;
+                ispuba = obj.stepcard.ispub;
+            }
+
             Console.WriteLine("\"choices\":{\"category\":\"OnSelectIdleCmd\",");//choices
             _duel.MainPhase = new MainPhase();
             MainPhase main = _duel.MainPhase;
@@ -1253,7 +1291,7 @@ namespace WindBot.Game
                 Console.WriteLine("\"cardlist\":[");//card list
                 for (int i = 0; i < count; ++i)
                 {
-                    packet.ReadInt32(); // card id
+                    int id = packet.ReadInt32(); // card id
                     int con = GetLocalPlayer(packet.ReadByte());//player
                     CardLocation loc = (CardLocation)packet.ReadByte();
                     int seq = packet.ReadByte();
@@ -1285,6 +1323,18 @@ namespace WindBot.Game
                             main.SpellSetableCards.Add(card);
                             break;
                     }
+                    //
+                    if(ison)
+                    {
+                        if(k==action && id==ida && loca==(int)loc)
+                        {
+                            if(seqa==seq||loca ==4||loca==8)
+                            {
+                                mpa =new MainPhaseAction((MainPhaseAction.MainAction)action, i);
+                            }
+                        }
+                    }
+                    //
                 }
                 Console.WriteLine("null]");//cardlist end
                 Console.WriteLine("},");//cmd end
@@ -1324,11 +1374,16 @@ namespace WindBot.Game
             Console.WriteLine("\"can_bp\":" + "\"" + main.CanBattlePhase + "\"" + ",\"can_ep\":" + "\"" + main.CanEndPhase + "\"");
             Console.WriteLine("},");
             //choices
-
+            if(ison)
+            {
+                Console.WriteLine("null},");
+                Connection.Send(CtosMessage.Response, mpa.ToValue());
+                return;
+            }
             //wait
             //一定是有多种选择，或者是只有一种选择(废话嘛
             //AddNote();
-
+            ison = true;
             Connection.Send(CtosMessage.Response, _ai.OnSelectIdleCmd(main).ToValue());
             Console.WriteLine("},");//select idle end
         }
