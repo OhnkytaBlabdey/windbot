@@ -757,7 +757,7 @@ namespace WindBot.Game
             Int64 minid = 100000000;
             int minindex = 0;
             //ClientCard minc = null;
-            int myindex = 0;
+            //int myindex = 0;
             //byte[] myres = new byte[count + 1];
             byte[] myres = new byte[2];
             for (int i = 0; i < count; ++i)
