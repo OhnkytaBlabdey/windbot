@@ -11,7 +11,8 @@ namespace WindBot.Game
         OnSelectCard = 1,
         OnSelectIdleCmd = 2,
         OnSelectChain = 3,
-        OnSelectYesNo = 4
+        OnSelectYesNo = 4,
+        OnSelectPlace = 5
     }
 
     public enum ObjectType

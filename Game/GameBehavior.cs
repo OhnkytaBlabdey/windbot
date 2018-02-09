@@ -57,14 +57,17 @@ namespace WindBot.Game
 
         private void LoadCombo()
         {
-            _combo.queue.Enqueue(new ComboStep(ChoiceCategory.OnSelectIdleCmd, new StepObject(ObjectType.card, (int)MainPhaseAction.MainAction.SetSpell, 74848038, (int)CardLocation.Hand, 0, 0)));
+            //_combo.queue.Enqueue(new ComboStep(ChoiceCategory.OnSelectIdleCmd, new StepObject(ObjectType.card, (int)MainPhaseAction.MainAction.SetSpell, 74848038, (int)CardLocation.Hand, 0, 0)));
             //覆盖手卡中的不在意序列号的死者转生。
-            _combo.queue.Enqueue(new ComboStep(ChoiceCategory.OnSelectIdleCmd, new StepObject(ObjectType.card, (int)MainPhaseAction.MainAction.Activate, 74848038, (int)CardLocation.SpellZone, 0, 0)));
+            //_combo.queue.Enqueue(new ComboStep(ChoiceCategory.OnSelectIdleCmd, new StepObject(ObjectType.card, (int)MainPhaseAction.MainAction.Activate, 74848038, (int)CardLocation.SpellZone, 0, 0)));
             //发动魔法陷阱区域的不在意序列号的死者转生。
-            _combo.queue.Enqueue(new ComboStep(ChoiceCategory.OnSelectCard, new StepObject(ObjectType.card, 0, 74848038, (int)CardLocation.Hand, 0, 0)));
+            //_combo.queue.Enqueue(new ComboStep(ChoiceCategory.OnSelectCard, new StepObject(ObjectType.card, 0, 74848038, (int)CardLocation.Hand, 0, 0)));
             //选择手卡中的不在意序列号的死者转生
-            _combo.queue.Enqueue(new ComboStep(ChoiceCategory.OnSelectCard, new StepObject(ObjectType.card, 0, 70903634, (int)CardLocation.Grave, 0, 0)));
+            //_combo.queue.Enqueue(new ComboStep(ChoiceCategory.OnSelectCard, new StepObject(ObjectType.card, 0, 70903634, (int)CardLocation.Grave, 0, 0)));
             //选择墓地中的不在意序列号的尸块部件
+            _combo.queue.Enqueue(new ComboStep(ChoiceCategory.OnSelectIdleCmd, new StepObject(ObjectType.card, (int)MainPhaseAction.MainAction.SpSummon, 9929398, (int)CardLocation.Hand, 0, 0)));
+            _combo.queue.Enqueue(new ComboStep(ChoiceCategory.OnSelectYesNo, new StepObject(ObjectType.bin, 1, 0, 0, 0, 0)));
+            _combo.queue.Enqueue(new ComboStep(ChoiceCategory.OnSelectIdleCmd, new StepObject(ObjectType.card, (int)MainPhaseAction.MainAction.Activate, 71645242, (int)CardLocation.Hand, 0, 0, 0)));
         }
 
         private void InitCombo()
@@ -1508,6 +1511,7 @@ namespace WindBot.Game
 
         private void OnSelectPlace(BinaryReader packet)
         {
+            //这是啥操作？
             packet.ReadByte(); // player
             packet.ReadByte(); // min
             int field = ~packet.ReadInt32();
@@ -1558,13 +1562,13 @@ namespace WindBot.Game
 
             if (!pendulumZone)
             {
-                if ((filter & 0x40) != 0) resp[2] = 6;
-                else if ((filter & 0x20) != 0) resp[2] = 5;
-                else if ((filter & 0x4) != 0) resp[2] = 2;
-                else if ((filter & 0x2) != 0) resp[2] = 1;
-                else if ((filter & 0x8) != 0) resp[2] = 3;
-                else if ((filter & 0x1) != 0) resp[2] = 0;
-                else if ((filter & 0x10) != 0) resp[2] = 4;
+                if ((filter & 0x40) != 0) resp[2] = 6; //extra
+                else if ((filter & 0x20) != 0) resp[2] = 5; //removed/banished
+                else if ((filter & 0x4) != 0) resp[2] = 2; //monster
+                else if ((filter & 0x2) != 0) resp[2] = 1; //hand
+                else if ((filter & 0x8) != 0) resp[2] = 3; //spell/trap
+                else if ((filter & 0x1) != 0) resp[2] = 0; //deck
+                else if ((filter & 0x10) != 0) resp[2] = 4; //grave
             }
             else
             {
