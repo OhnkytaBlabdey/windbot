@@ -10,7 +10,8 @@ namespace WindBot.Game
     {
         OnSelectCard = 1,
         OnSelectIdleCmd = 2,
-        OnSelectChain = 3
+        OnSelectChain = 3,
+        OnSelectYesNo = 4
     }
 
     public enum ObjectType
@@ -58,9 +59,15 @@ namespace WindBot.Game
         }
 
         public StepObject(ObjectType objectType, int val, int id_a, int loc_a, int seq_a, int ispub_a, int desc)
-            :this(objectType,val,id_a,loc_a,seq_a,ispub_a)
+            :this(objectType, val,id_a, loc_a ,seq_a, ispub_a)
         {
             stepcard.desc = desc;
+        }
+
+        public StepObject(ObjectType objectType, int val, int id_a, int loc_a, int seq_a, int ispub_a, int desc,int pl)
+            : this(objectType, val, id_a, loc_a, seq_a, ispub_a, desc)
+        {
+            stepcard.player = pl;
         }
     }
 

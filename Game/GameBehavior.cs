@@ -848,7 +848,7 @@ namespace WindBot.Game
             Console.WriteLine("null\n]");
             Console.WriteLine("},"); //choices,
 
-            if(min==1)
+            if(ison&&min==1)
             {
                 myres[0] = 1;
                 myres[1] = (byte)index1;
@@ -1659,7 +1659,27 @@ namespace WindBot.Game
         private void OnSelectYesNo(BinaryReader packet)
         {
             packet.ReadByte(); // player
-            int reply = _ai.OnSelectYesNo(packet.ReadInt32()) ? (1) : (0); //desc
+            int desc = packet.ReadInt32();
+            ComboStep step = null;
+            StepObject obj = null;
+
+            if (_combo.queue.Count > 0)
+            {
+                step = _combo.queue.Dequeue();
+            }
+
+            if (step == null || step.category != ChoiceCategory.OnSelectYesNo)
+            {
+                ison = false;
+            }
+
+            if (ison)
+            {
+                obj = step.objlist.Dequeue();
+                Connection.Send(CtosMessage.Response, obj.value);
+                return;
+            }
+            int reply = _ai.OnSelectYesNo(desc) ? (1) : (0); //desc
             //内部没有发生影响同步的操作
             Connection.Send(CtosMessage.Response, reply);
         }
