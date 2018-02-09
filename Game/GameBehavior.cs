@@ -59,6 +59,8 @@ namespace WindBot.Game
         {
             _combo.queue.Enqueue(new ComboStep(ChoiceCategory.OnSelectIdlecmd, new StepObject(ObjectType.card, (int)MainPhaseAction.MainAction.SetSpell, 74848038, (int)CardLocation.Hand, 0, 0)));
             //覆盖手卡中的不在意序列号的死者转生。
+            _combo.queue.Enqueue(new ComboStep(ChoiceCategory.OnSelectIdlecmd, new StepObject(ObjectType.card, (int)MainPhaseAction.MainAction.Activate, 74848038, (int)CardLocation.SpellZone, 0, 0)));
+            //发动魔法陷阱区域的不在意序列号的死者转生。
         }
 
         public int GetLocalPlayer(int player)
@@ -1328,7 +1330,7 @@ namespace WindBot.Game
                     {
                         if(k==action && id==ida && loca==(int)loc)
                         {
-                            if(seqa==seq||loca ==4||loca==8)
+                            if(seqa==seq||seqa==0||loca ==4||loca==8)
                             {
                                 mpa =new MainPhaseAction((MainPhaseAction.MainAction)action, i);
                             }
@@ -1345,7 +1347,7 @@ namespace WindBot.Game
             Console.WriteLine("\"cardlist\":[");//card list
             for (int i = 0; i < count; ++i)
             {
-                packet.ReadInt32(); // card id
+                int id = packet.ReadInt32(); // card id
                 int con = GetLocalPlayer(packet.ReadByte());
                 CardLocation loc = (CardLocation)packet.ReadByte();
                 int seq = packet.ReadByte();
@@ -1363,7 +1365,19 @@ namespace WindBot.Game
                 //
                 main.ActivableCards.Add(card);
                 main.ActivableDescs.Add(desc);
-            }//不明觉厉，也是发动吧
+                //
+                if (ison)
+                {
+                    if ((int)MainPhaseAction.MainAction.Activate == action && id == ida && loca == (int)loc)
+                    {
+                        if (seqa == seq || seqa == 0 || loca != 4 && loca != 8)
+                        {
+                            mpa = new MainPhaseAction((MainPhaseAction.MainAction)action, i);
+                        }
+                    }
+                }
+                //
+            }//不明觉厉，是发动吧
             Console.WriteLine("null]");//cardlist end
             Console.WriteLine("},");//cmd end
 
@@ -1374,12 +1388,16 @@ namespace WindBot.Game
             Console.WriteLine("\"can_bp\":" + "\"" + main.CanBattlePhase + "\"" + ",\"can_ep\":" + "\"" + main.CanEndPhase + "\"");
             Console.WriteLine("},");
             //choices
+
+            //go on combo
             if(ison)
             {
                 Console.WriteLine("null},");
                 Connection.Send(CtosMessage.Response, mpa.ToValue());
                 return;
             }
+
+
             //wait
             //一定是有多种选择，或者是只有一种选择(废话嘛
             //AddNote();
