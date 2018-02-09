@@ -57,10 +57,14 @@ namespace WindBot.Game
 
         private void LoadCombo()
         {
-            _combo.queue.Enqueue(new ComboStep(ChoiceCategory.OnSelectIdlecmd, new StepObject(ObjectType.card, (int)MainPhaseAction.MainAction.SetSpell, 74848038, (int)CardLocation.Hand, 0, 0)));
+            _combo.queue.Enqueue(new ComboStep(ChoiceCategory.OnSelectIdleCmd, new StepObject(ObjectType.card, (int)MainPhaseAction.MainAction.SetSpell, 74848038, (int)CardLocation.Hand, 0, 0)));
             //覆盖手卡中的不在意序列号的死者转生。
-            _combo.queue.Enqueue(new ComboStep(ChoiceCategory.OnSelectIdlecmd, new StepObject(ObjectType.card, (int)MainPhaseAction.MainAction.Activate, 74848038, (int)CardLocation.SpellZone, 0, 0)));
+            _combo.queue.Enqueue(new ComboStep(ChoiceCategory.OnSelectIdleCmd, new StepObject(ObjectType.card, (int)MainPhaseAction.MainAction.Activate, 74848038, (int)CardLocation.SpellZone, 0, 0)));
             //发动魔法陷阱区域的不在意序列号的死者转生。
+            _combo.queue.Enqueue(new ComboStep(ChoiceCategory.OnSelectCard, new StepObject(ObjectType.card, 0, 74848038, (int)CardLocation.Hand, 0, 0)));
+            //选择手卡中的不在意序列号的死者转生
+            _combo.queue.Enqueue(new ComboStep(ChoiceCategory.OnSelectCard, new StepObject(ObjectType.card, 0, 70903634, (int)CardLocation.Grave, 0, 0)));
+            //选择墓地中的不在意序列号的尸块部件
         }
 
         public int GetLocalPlayer(int player)
@@ -762,6 +766,30 @@ namespace WindBot.Game
 
             Console.WriteLine("\"choices\":{" + "\"category\":\"OnSelectCard\",");
 
+            int index1 = -1;
+            ComboStep step = null;
+            StepObject obj = null;
+            int ida = 0, loca = 0, seqa = 0, ispuba = 0;
+            if (_combo.queue.Count > 0)
+            {
+                step = _combo.queue.Dequeue();
+            }
+
+            if (step == null || step.category != ChoiceCategory.OnSelectCard)
+            {
+                ison = false;
+            }
+
+            if (ison)
+            {
+                obj = step.objlist.Dequeue();
+                ida = obj.stepcard.id;
+                loca = obj.stepcard.loc;
+                seqa = obj.stepcard.seq;
+                ispuba = obj.stepcard.ispub;
+            }
+
+
             Console.WriteLine("\"cancelable\":\"" + cancelable + "\",\"min\":" + min + ",\"max\":" + max + ",");
             Console.WriteLine("\"list\":[");
 
@@ -769,8 +797,8 @@ namespace WindBot.Game
 
             IList<ClientCard> cards = new List<ClientCard>();
             int count = packet.ReadByte();
-            Int64 minid = 100000000;
-            int minindex = 0;
+            //Int64 minid = 100000000;
+            //int minindex = 0;
             //ClientCard minc = null;
             //int myindex = 0;
             //byte[] myres = new byte[count + 1];
@@ -801,15 +829,21 @@ namespace WindBot.Game
                 card.Show();
                 Console.WriteLine("},");
 
-                if (id > 1000 && id < minid)
+                //
+                if (ison)
                 {
-                    //minc = card;
-                    minid = id;
-                    minindex = i;
-                    //除非出现card==null,不然i就是正确的
+                    if ( id == ida && (loca == (int)loc || loca == 0))
+                    {
+                        if (seqa == seq || seqa == 0 || loca != 4 && loca != 8)
+                        { 
+                            if (index1<0)
+                            index1 = i;
+                        }
+                    }
                 }
+                //
             }
-            
+
 
             Console.WriteLine("null\n]");
             Console.WriteLine("},"); //choices,
@@ -817,7 +851,7 @@ namespace WindBot.Game
             if(min==1)
             {
                 myres[0] = 1;
-                myres[1] = (byte)minindex;
+                myres[1] = (byte)index1;
                 BinaryWriter myreply = GamePacketFactory.Create(CtosMessage.Response);
                 myreply.Write(myres);
                 Connection.Send(myreply);
@@ -1264,7 +1298,7 @@ namespace WindBot.Game
                 step = _combo.queue.Dequeue();
             }
 
-                if(step==null || step.category!=ChoiceCategory.OnSelectIdlecmd)
+                if(step==null || step.category!=ChoiceCategory.OnSelectIdleCmd)
                 {
                     ison = false;
                 }
@@ -1328,11 +1362,11 @@ namespace WindBot.Game
                     //
                     if(ison)
                     {
-                        if(k==action && id==ida && loca==(int)loc)
+                        if(k==action && id==ida && (loca==(int)loc||loca==0))
                         {
-                            if(seqa==seq||seqa==0||loca ==4||loca==8)
+                            if (seqa == seq || seqa == 0 || loca != 4 && loca != 8 )
                             {
-                                mpa =new MainPhaseAction((MainPhaseAction.MainAction)action, i);
+                                mpa = new MainPhaseAction((MainPhaseAction.MainAction)action, i);
                             }
                         }
                     }
@@ -1370,7 +1404,7 @@ namespace WindBot.Game
                 {
                     if ((int)MainPhaseAction.MainAction.Activate == action && id == ida && loca == (int)loc)
                     {
-                        if (seqa == seq || seqa == 0 || loca != 4 && loca != 8)
+                        if (seqa == seq || seqa == 0 || loca != 4 && loca != 8&&(desc==obj.stepcard.desc|| obj.stepcard.desc==0))
                         {
                             mpa = new MainPhaseAction((MainPhaseAction.MainAction)action, i);
                         }

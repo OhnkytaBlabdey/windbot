@@ -8,8 +8,8 @@ namespace WindBot.Game
 {
     public enum ChoiceCategory
     {
-        OnSelectcard = 1,
-        OnSelectIdlecmd = 2,
+        OnSelectCard = 1,
+        OnSelectIdleCmd = 2,
         OnSelectChain = 3
     }
 
@@ -31,6 +31,8 @@ namespace WindBot.Game
         public int ispub;
         // is public or not
         public int player;
+        public int desc;
+        //activate description
     }
 
     class StepObject
@@ -49,9 +51,16 @@ namespace WindBot.Game
                     id = id_a,
                     loc = loc_a,
                     seq = seq_a,
-                    ispub = ispub_a
+                    ispub = ispub_a,
+                    desc=0
                 };
             }
+        }
+
+        public StepObject(ObjectType objectType, int val, int id_a, int loc_a, int seq_a, int ispub_a, int desc)
+            :this(objectType,val,id_a,loc_a,seq_a,ispub_a)
+        {
+            stepcard.desc = desc;
         }
     }
 
