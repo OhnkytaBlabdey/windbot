@@ -986,8 +986,8 @@ namespace WindBot.Game
             else if(!flag)
             {
                 ison = false;
-                _combo.queue.Clear();
-                Console.WriteLine("\n,error,\n");
+                //_combo.queue.Clear();
+                //Console.WriteLine("\n,error,\n");
             }
 
             // add note
@@ -1377,8 +1377,8 @@ namespace WindBot.Game
             {
                 ison = false;
                 _combo.queue.Clear();
-                _duel.Show();
-                Console.WriteLine("\n,error,\n");
+                //_duel.Show();
+                //Console.WriteLine("\n,error,\n");
             }
             //wait
             if (!forced && count > 1)
@@ -1686,8 +1686,8 @@ namespace WindBot.Game
             {
                 ison = false;
                 _combo.queue.Clear();
-                _duel.Show();
-                Console.WriteLine("\n,error,\n");
+                //_duel.Show();
+                //Console.WriteLine("\n,error,\n");
             }
             Connection.Send(CtosMessage.Response, _ai.OnSelectIdleCmd(main).ToValue());
             Console.WriteLine("},");//select idle end
