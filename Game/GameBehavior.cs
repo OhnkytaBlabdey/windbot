@@ -1518,7 +1518,14 @@ namespace WindBot.Game
             packet.ReadByte(); // min
             int field = ~packet.ReadInt32();
 
+            byte[] shi = BitConverter.GetBytes(field);
+            int m = 4;
+
             Console.WriteLine("\"field\":" + field);
+            for(int i=0;i<m;i++)
+            {
+                Console.Write(",\"" + i + "\":" + shi[i]);
+            }
 
             byte[] resp = new byte[3];
 
