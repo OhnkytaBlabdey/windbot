@@ -976,7 +976,7 @@ namespace WindBot.Game
                 BinaryWriter myreply = GamePacketFactory.Create(CtosMessage.Response);
                 myreply.Write(myres);
                 Connection.Send(myreply);
-                Console.WriteLine("null");
+                Console.WriteLine("\"default\":null");
                 return;
             }
             else if(!flag)
@@ -1358,14 +1358,14 @@ namespace WindBot.Game
             if(ison &&count>0&&obj.value==0)
             {
                 Connection.Send(CtosMessage.Response, -1);
-                Console.WriteLine("null},");
+                Console.WriteLine("\"default\":null},");
                 return;
             }
 
             if(ison && index1 > -1&&flagc)
             { 
                 Connection.Send(CtosMessage.Response, index1);
-                Console.WriteLine("null},");
+                Console.WriteLine("\"default\":null},");
                 return;
             }
             ison = true;
@@ -1668,7 +1668,7 @@ namespace WindBot.Game
             //go on combo
             if(ison&&flag)
             {
-                Console.WriteLine("null},");
+                Console.WriteLine("\"default\":null},");
                 Connection.Send(CtosMessage.Response, mpa.ToValue());
                 return;
             }
