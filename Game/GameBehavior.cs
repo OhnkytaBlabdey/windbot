@@ -1860,7 +1860,7 @@ namespace WindBot.Game
             Console.WriteLine("},");
 
             ison = true;
-            if(resp[0] == _duel.GetLocalPlayer(1))
+            if(resp[0] == _duel.GetLocalPlayer(1)&&step.category==ChoiceCategory.OnSelectPlace)
             {
                 ReEnq(step);
             }
