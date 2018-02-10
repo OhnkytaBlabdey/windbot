@@ -1359,7 +1359,7 @@ namespace WindBot.Game
                 return;
             }
             ison = true;
-            if(!flagc)
+            if(!flagc&&count>0)
             {
                 ison = false;
                 _combo.queue.Clear();
@@ -1733,6 +1733,7 @@ namespace WindBot.Game
                 seqa = obj.stepcard.seq;
                 ispuba = obj.stepcard.ispub;
             }
+            
 
             int filter;
             if ((field & 0x7f) != 0)
@@ -1803,6 +1804,8 @@ namespace WindBot.Game
 
             Console.Write("}");//selected end
             Console.WriteLine("},");
+
+            ison = true;
 
             BinaryWriter reply = GamePacketFactory.Create(CtosMessage.Response);
             reply.Write(resp);
