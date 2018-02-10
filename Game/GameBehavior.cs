@@ -1308,7 +1308,7 @@ namespace WindBot.Game
                 ison = false;
                 //if (step!=null && step.category != ChoiceCategory.OnSelectPlace)
                 //{
-                    if (step != null)
+                    //if (step != null)
                         ReEnq(step);
                 //}
                 //else if(step!=null)
