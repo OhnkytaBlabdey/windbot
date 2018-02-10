@@ -1185,7 +1185,7 @@ namespace WindBot.Game
 
         private void OnSelectChain(BinaryReader packet)
         {
-            packet.ReadByte(); // player
+            int player = packet.ReadByte(); // player
             int count = packet.ReadByte();
             packet.ReadByte(); // specount
             bool forced = packet.ReadByte() != 0;
@@ -1201,7 +1201,7 @@ namespace WindBot.Game
             ComboStep step = null;
             StepObject obj = null;
             int ida = 0, loca = 0, seqa = 0, ispuba = 0;
-            if (_combo.queue.Count > 0)
+            if (_combo.queue.Count > 0 && count > 0)
             {
                 step = _combo.queue.Dequeue();
             }
@@ -1209,6 +1209,7 @@ namespace WindBot.Game
             if (step == null || step.category != ChoiceCategory.OnSelectChain)
             {
                 ison = false;
+                if(step!=null)
                 ReEnq(step);
             }
 
@@ -1223,6 +1224,7 @@ namespace WindBot.Game
 
 
             Console.WriteLine("\"choices\":{\"category\":\"OnSelectChain\",");
+            Console.WriteLine("\"player\":" + player + ",");
             Console.WriteLine("\"list\":[");
 
             for (int i = 0; i < count; ++i)
@@ -1248,7 +1250,7 @@ namespace WindBot.Game
                 {
                     if (id == ida && (loca == (int)loc || loca == 0))
                     {
-                        if (seqa == seq || seqa == 0 || loca != 4 && loca != 8)
+                        if ((seqa == seq || seqa == 0 )|| (loca != 4 && loca != 8))
                         {
                             if (index1 < 0)
                                 index1 = i;
