@@ -67,6 +67,7 @@
     <Compile Include="Game\AI\DeckAttribute.cs" />
     <Compile Include="Game\AI\DecksManager.cs" />
     <Compile Include="Game\AI\Decks\BlackwingExecutor.cs" />
+    <Compile Include="Game\AI\Decks\GardenBurnExecutor.cs" />
     <Compile Include="Game\AI\Decks\MyExecutorA.cs" />
     <Compile Include="Game\AI\Decks\MyExecutorB.cs" />
     <Compile Include="Game\AI\Decks\CyberDragonExecutor.cs" />
@@ -124,6 +125,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="Decks\AI_GardenBurn.ydk" />
     <None Include="sqlite3.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

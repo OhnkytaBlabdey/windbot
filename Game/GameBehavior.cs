@@ -140,7 +140,34 @@ namespace WindBot.Game
         {
             //if every key card has got enough count, then say that card materials are okay. 
             //if opponent's lp is in a appropriate range and so on, then say that ... is okay. 
-            ison = true;
+            if (ison)
+                return;
+            bool cards = CardCondition();
+            bool con = _duel.LifePoints[1] <= 8000;
+            if (cards && con)
+                ison = true;
+        }
+
+        private bool CardCondition()
+        {
+            int ct = _duel.Fields[0].Hand.GetCardCount(9929398) + _duel.Fields[0].Hand.GetCardCount(71645242);
+            if (ct < 2)
+                return false;
+            ct = _duel.Fields[0].GetMonsterCount();
+            if (ct > 0)
+                return false;
+            ct = (_duel.Fields[0].Graveyard.GetCardCount(10875327) + _duel.Fields[0].Banished.GetCardCount(10875327)) *
+                (_duel.Fields[0].Graveyard.GetCardCount(72291078) + _duel.Fields[0].Banished.GetCardCount(72291078)) *
+                (_duel.Fields[0].Graveyard.GetCardCount(5043010) + _duel.Fields[0].Banished.GetCardCount(5043010) + 2) *
+                (_duel.Fields[0].Graveyard.GetCardCount(61665245) + _duel.Fields[0].Banished.GetCardCount(61665245)) *
+                (_duel.Fields[0].Graveyard.GetCardCount(50588353) + _duel.Fields[0].Banished.GetCardCount(50588353)) *
+                (_duel.Fields[0].Graveyard.GetCardCount(22862454) + _duel.Fields[0].Banished.GetCardCount(22862454)) *
+                (_duel.Fields[0].Graveyard.GetCardCount(99111753) + _duel.Fields[0].Banished.GetCardCount(99111753)) *
+                (_duel.Fields[0].Graveyard.GetCardCount(2220237) + _duel.Fields[0].Banished.GetCardCount(2220237));
+            if (ct % 3 == 0)
+                return false;
+
+            return true;
         }
 
         public int GetLocalPlayer(int player)
@@ -860,7 +887,7 @@ namespace WindBot.Game
                 ison = false;
                 ReEnq(step);
             }
-
+            bool flag = false;
             if (ison)
             {
                 obj = step.objlist.Dequeue();
@@ -918,7 +945,10 @@ namespace WindBot.Game
                         if (seqa == seq || seqa == 0 || loca != 4 && loca != 8)
                         { 
                             if (index1<0)
+                            { 
                             index1 = i;
+                            flag = true;
+                            }
                         }
                     }
                 }
@@ -929,7 +959,7 @@ namespace WindBot.Game
             Console.WriteLine("null\n]");
             Console.WriteLine("},"); //choices,
 
-            if(ison&&min==1)
+            if(ison&&min==1&&flag)
             {
                 myres[0] = 1;
                 myres[1] = (byte)index1;
@@ -938,6 +968,11 @@ namespace WindBot.Game
                 Connection.Send(myreply);
                 Console.WriteLine("null");
                 return;
+            }
+            else if(!flag)
+            {
+                ison = false;
+                _combo.queue.Clear();
             }
 
             // add note
@@ -1249,7 +1284,7 @@ namespace WindBot.Game
                 if(step!=null)
                 ReEnq(step);
             }
-
+            bool flagc = false;
             if (ison)
             {
                 obj = step.objlist.Dequeue();
@@ -1290,7 +1325,10 @@ namespace WindBot.Game
                         if ((seqa == seq || seqa == 0 )|| (loca != 4 && loca != 8))
                         {
                             if (index1 < 0)
+                            {
                                 index1 = i;
+                                flagc = true;
+                            }
                         }
                     }
                 }
@@ -1309,13 +1347,18 @@ namespace WindBot.Game
                 return;
             }
 
-            if(ison && index1 > -1)
+            if(ison && index1 > -1&&flagc)
             { 
                 Connection.Send(CtosMessage.Response, index1);
                 Console.WriteLine("null},");
                 return;
             }
             ison = true;
+            if(!flagc)
+            {
+                ison = false;
+                _combo.queue.Clear();
+            }
             //wait
             if (!forced && count > 1)
             {
@@ -1420,7 +1463,7 @@ namespace WindBot.Game
                 ison = false;
                 ReEnq(step);
             }
-
+            bool flag = false;
             if (ison)
             {
                 obj = step.objlist.Dequeue();
@@ -1441,12 +1484,17 @@ namespace WindBot.Game
                     if (seqa == seq || seqa == 0 || loca != 4 && loca != 8)
                     {
                         Connection.Send(CtosMessage.Response, obj.value);
+                        flag = true;
                         return;
                     }
                 }
             }
             //
-
+            if(!flag)
+            {
+                ison = false;
+                _combo.queue.Clear();
+            }
             if (card == null)
             {
                 Connection.Send(CtosMessage.Response, 0);
@@ -1479,7 +1527,7 @@ namespace WindBot.Game
                     ison = false;
                     ReEnq(step);
                 }
-            
+            bool flag = false;
             if(ison)
             {
                 obj = step.objlist.Dequeue();
@@ -1544,6 +1592,7 @@ namespace WindBot.Game
                             if (seqa == seq || seqa == 0 || loca != 4 && loca != 8 )
                             {
                                 mpa = new MainPhaseAction((MainPhaseAction.MainAction)action, i);
+                                flag = true;
                             }
                         }
                     }
@@ -1584,6 +1633,7 @@ namespace WindBot.Game
                         if (seqa == seq || seqa == 0 || loca != 4 && loca != 8&&(desc==obj.stepcard.desc|| obj.stepcard.desc==0))
                         {
                             mpa = new MainPhaseAction((MainPhaseAction.MainAction)action, i);
+                            flag = true;
                         }
                     }
                 }
@@ -1601,7 +1651,7 @@ namespace WindBot.Game
             //choices
 
             //go on combo
-            if(ison)
+            if(ison&&flag)
             {
                 Console.WriteLine("null},");
                 Connection.Send(CtosMessage.Response, mpa.ToValue());
@@ -1613,6 +1663,11 @@ namespace WindBot.Game
             //一定是有多种选择，或者是只有一种选择(废话嘛
             //AddNote();
             ison = true;
+            if(!flag)
+            {
+                ison = false;
+                _combo.queue.Clear();
+            }
             Connection.Send(CtosMessage.Response, _ai.OnSelectIdleCmd(main).ToValue());
             Console.WriteLine("},");//select idle end
         }
@@ -1732,7 +1787,7 @@ namespace WindBot.Game
 
             Console.WriteLine("},"); //choices end
 
-            if(ison)
+            if(ison&&resp[0]==_duel.GetLocalPlayer(0))
             {
                 resp[2] = (byte)obj.value;
             }
@@ -1901,7 +1956,7 @@ namespace WindBot.Game
                 ison = false;
                 ReEnq(step);
             }
-
+            //bool flag = false;
             if (ison)
             {
                 obj = step.objlist.Dequeue();
