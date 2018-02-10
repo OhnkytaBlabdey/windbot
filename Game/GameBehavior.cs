@@ -60,7 +60,7 @@ namespace WindBot.Game
             
             _combo.queue.Enqueue(new ComboStep(ChoiceCategory.OnSelectIdleCmd, new StepObject(ObjectType.card, (int)MainPhaseAction.MainAction.SpSummon, 9929398, (int)CardLocation.Hand, 0, 0)));//lv5
             _combo.queue.Enqueue(new ComboStep(ChoiceCategory.OnSelectPlace, new StepObject(ObjectType.number, 3, 0, 0, 0, 0)));//lv5
-            _combo.queue.Enqueue(new ComboStep(ChoiceCategory.OnSelectEffectYesNo, new StepObject(ObjectType.bin, 1, 0, 0, 0, 0)));//activate trigger effect
+            _combo.queue.Enqueue(new ComboStep(ChoiceCategory.OnSelectChain, new StepObject(ObjectType.card, 1, 50588353, (int)CardLocation.MonsterZone, 3, 1)));//chain trigger effect
             _combo.queue.Enqueue(new ComboStep(ChoiceCategory.OnSelectPlace, new StepObject(ObjectType.number, 4, 0, 0, 0, 0)));//token1
             _combo.queue.Enqueue(new ComboStep(ChoiceCategory.OnSelectPlace, new StepObject(ObjectType.number, 2, 0, 0, 0, 0)));//token2
             _combo.queue.Enqueue(new ComboStep(ChoiceCategory.OnSelectIdleCmd, new StepObject(ObjectType.card, (int)MainPhaseAction.MainAction.Activate, 71645242, (int)CardLocation.Hand, 0, 0, 0)));//field
