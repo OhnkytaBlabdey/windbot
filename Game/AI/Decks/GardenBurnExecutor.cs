@@ -31,7 +31,7 @@ namespace WindBot.Game.AI.Decks
         }
         public override int OnRockPaperScissors()
         {
-            return 4;
+            return 1;
         }
 
     }

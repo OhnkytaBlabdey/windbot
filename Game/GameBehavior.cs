@@ -142,10 +142,16 @@ namespace WindBot.Game
             //if opponent's lp is in a appropriate range and so on, then say that ... is okay. 
             if (ison)
                 return;
+
             bool cards = CardCondition();
             bool con = _duel.LifePoints[1] <= 8000;
             if (cards && con)
                 ison = true;
+            if(ison)
+            {
+                _combo.queue.Clear();
+                LoadCombo();
+            }
         }
 
         private bool CardCondition()
@@ -156,15 +162,14 @@ namespace WindBot.Game
             ct = _duel.Fields[0].GetMonsterCount();
             if (ct > 0)
                 return false;
-            ct = (_duel.Fields[0].Graveyard.GetCardCount(10875327) + _duel.Fields[0].Banished.GetCardCount(10875327)) *
-                (_duel.Fields[0].Graveyard.GetCardCount(72291078) + _duel.Fields[0].Banished.GetCardCount(72291078)) *
-                (_duel.Fields[0].Graveyard.GetCardCount(5043010) + _duel.Fields[0].Banished.GetCardCount(5043010) + 2) *
-                (_duel.Fields[0].Graveyard.GetCardCount(61665245) + _duel.Fields[0].Banished.GetCardCount(61665245)) *
-                (_duel.Fields[0].Graveyard.GetCardCount(50588353) + _duel.Fields[0].Banished.GetCardCount(50588353)) *
-                (_duel.Fields[0].Graveyard.GetCardCount(22862454) + _duel.Fields[0].Banished.GetCardCount(22862454)) *
-                (_duel.Fields[0].Graveyard.GetCardCount(99111753) + _duel.Fields[0].Banished.GetCardCount(99111753)) *
-                (_duel.Fields[0].Graveyard.GetCardCount(2220237) + _duel.Fields[0].Banished.GetCardCount(2220237));
-            if (ct % 3 == 0)
+            if ((_duel.Fields[0].Graveyard.GetCardCount(10875327) + _duel.Fields[0].Banished.GetCardCount(10875327) + _duel.Fields[0].MonsterZone.GetCardCount(10875327) + _duel.Fields[0].SpellZone.GetCardCount(10875327)) == 3 ||
+                (_duel.Fields[0].Graveyard.GetCardCount(72291078) + _duel.Fields[0].Banished.GetCardCount(72291078) + _duel.Fields[0].MonsterZone.GetCardCount(72291078) + _duel.Fields[0].SpellZone.GetCardCount(72291078)) == 3 ||
+                (_duel.Fields[0].Graveyard.GetCardCount(5043010) + _duel.Fields[0].Banished.GetCardCount(5043010) + _duel.Fields[0].MonsterZone.GetCardCount(5043010) + _duel.Fields[0].SpellZone.GetCardCount(5043010) + 2) == 3 ||
+                (_duel.Fields[0].Graveyard.GetCardCount(61665245) + _duel.Fields[0].Banished.GetCardCount(61665245) + _duel.Fields[0].MonsterZone.GetCardCount(61665245) + _duel.Fields[0].SpellZone.GetCardCount(61665245)) == 3 ||
+                (_duel.Fields[0].Graveyard.GetCardCount(50588353) + _duel.Fields[0].Banished.GetCardCount(50588353) + _duel.Fields[0].MonsterZone.GetCardCount(50588353) + _duel.Fields[0].SpellZone.GetCardCount(50588353)) == 3 ||
+                (_duel.Fields[0].Graveyard.GetCardCount(22862454) + _duel.Fields[0].Banished.GetCardCount(22862454) + _duel.Fields[0].MonsterZone.GetCardCount(22862454) + _duel.Fields[0].SpellZone.GetCardCount(22862454)) == 3 ||
+                (_duel.Fields[0].Graveyard.GetCardCount(99111753) + _duel.Fields[0].Banished.GetCardCount(99111753) + _duel.Fields[0].MonsterZone.GetCardCount(99111753) + _duel.Fields[0].SpellZone.GetCardCount(99111753)) == 3 ||
+                (_duel.Fields[0].Graveyard.GetCardCount(2220237) + _duel.Fields[0].Banished.GetCardCount(2220237) + _duel.Fields[0].MonsterZone.GetCardCount(2220237) + _duel.Fields[0].SpellZone.GetCardCount(2220237)) == 3)
                 return false;
 
             return true;
