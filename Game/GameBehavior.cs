@@ -1822,6 +1822,10 @@ namespace WindBot.Game
             Console.WriteLine("},");
 
             ison = true;
+            if(resp[0] == _duel.GetLocalPlayer(1))
+            {
+                ReEnq(step);
+            }
 
             BinaryWriter reply = GamePacketFactory.Create(CtosMessage.Response);
             reply.Write(resp);
