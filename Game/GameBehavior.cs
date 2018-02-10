@@ -79,6 +79,20 @@ namespace WindBot.Game
             _combo.queue.Enqueue(new ComboStep(ChoiceCategory.OnSelectPlace, new StepObject(ObjectType.number, 0, 0, 0, 0, 0)));//token3
             _combo.queue.Enqueue(new ComboStep(ChoiceCategory.OnSelectPlace, new StepObject(ObjectType.number, 2, 0, 0, 0, 0)));//oppo3
             _combo.queue.Enqueue(new ComboStep(ChoiceCategory.OnSelectPlace, new StepObject(ObjectType.number, 3, 0, 0, 0, 0)));//oppo4
+            _combo.queue.Enqueue(new ComboStep(ChoiceCategory.OnSelectIdleCmd, new StepObject(ObjectType.card, (int)MainPhaseAction.MainAction.Activate, 61665245, (int)CardLocation.MonsterZone, 6, 0, 0)));//act link3
+            _combo.queue.Enqueue(new ComboStep(ChoiceCategory.OnSelectCard, new StepObject(ObjectType.card, 0, 9929399, (int)CardLocation.MonsterZone, 4, 1)));//select 
+            _combo.queue.Enqueue(new ComboStep(ChoiceCategory.OnSelectCard, new StepObject(ObjectType.card, 0, 10875327, (int)CardLocation.Deck, 0, 0)));//select 
+
+            _combo.queue.Enqueue(new ComboStep(ChoiceCategory.OnSelectPlace, new StepObject(ObjectType.number, 2, 0, 0, 0, 0)));//place lv10
+            _combo.queue.Enqueue(new ComboStep(ChoiceCategory.OnSelectPlace, new StepObject(ObjectType.number, 4, 0, 0, 0, 0)));//oppo5
+
+            _combo.queue.Enqueue(new ComboStep(ChoiceCategory.OnSelectIdleCmd, new StepObject(ObjectType.card, (int)MainPhaseAction.MainAction.SpSummon, 22862454, (int)CardLocation.Extra, 0, 0, 0)));//spsm link2
+            _combo.queue.Enqueue(new ComboStep(ChoiceCategory.OnSelectCard, new StepObject(ObjectType.card, 0, 72291079, (int)CardLocation.MonsterZone, 0, 0)));//select token3
+            _combo.queue.Enqueue(new ComboStep(ChoiceCategory.OnSelectCard, new StepObject(ObjectType.card, 0, 10875327, (int)CardLocation.MonsterZone, 2, 0)));//select lv10
+            _combo.queue.Enqueue(new ComboStep(ChoiceCategory.OnSelectPlace, new StepObject(ObjectType.number, 2, 0, 0, 0, 0)));//place link2
+
+
+
 
 
 
