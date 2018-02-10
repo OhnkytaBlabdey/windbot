@@ -64,7 +64,7 @@ namespace WindBot.Game
             _combo.queue.Enqueue(new ComboStep(ChoiceCategory.OnSelectPlace, new StepObject(ObjectType.number, 4, 0, 0, 0, 0)));//token1
             _combo.queue.Enqueue(new ComboStep(ChoiceCategory.OnSelectPlace, new StepObject(ObjectType.number, 2, 0, 0, 0, 0)));//token2
             _combo.queue.Enqueue(new ComboStep(ChoiceCategory.OnSelectIdleCmd, new StepObject(ObjectType.card, (int)MainPhaseAction.MainAction.Activate, 71645242, (int)CardLocation.Hand, 0, 0, 0)));//field
-            _combo.queue.Enqueue(new ComboStep(ChoiceCategory.OnSelectIdleCmd, new StepObject(ObjectType.card, (int)MainPhaseAction.MainAction.SpSummon, 5043010, (int)CardLocation.Extra, 0, 0, 0)));//link2
+            _combo.queue.Enqueue(new ComboStep(ChoiceCategory.OnSelectIdleCmd, new StepObject(ObjectType.card, (int)MainPhaseAction.MainAction.SpSummon, 50588353, (int)CardLocation.Extra, 0, 0, 0)));//link2
             _combo.queue.Enqueue(new ComboStep(ChoiceCategory.OnSelectCard, new StepObject(ObjectType.card, 0, 9929398, (int)CardLocation.MonsterZone, 3, 1)));//select lv5 tuner as link material
             _combo.queue.Enqueue(new ComboStep(ChoiceCategory.OnSelectPlace, new StepObject(ObjectType.number, 6, 0, 0, 0, 0)));//link2
             _combo.queue.Enqueue(new ComboStep(ChoiceCategory.OnSelectPlace, new StepObject(ObjectType.number, 2, 0, 0, 0, 0)));//tuner
