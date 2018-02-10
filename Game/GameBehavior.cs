@@ -66,7 +66,10 @@ namespace WindBot.Game
             //_combo.queue.Enqueue(new ComboStep(ChoiceCategory.OnSelectCard, new StepObject(ObjectType.card, 0, 70903634, (int)CardLocation.Grave, 0, 0)));
             //选择墓地中的不在意序列号的尸块部件
             _combo.queue.Enqueue(new ComboStep(ChoiceCategory.OnSelectIdleCmd, new StepObject(ObjectType.card, (int)MainPhaseAction.MainAction.SpSummon, 9929398, (int)CardLocation.Hand, 0, 0)));
-            _combo.queue.Enqueue(new ComboStep(ChoiceCategory.OnSelectYesNo, new StepObject(ObjectType.bin, 1, 0, 0, 0, 0)));
+            _combo.queue.Enqueue(new ComboStep(ChoiceCategory.OnSelectPlace, new StepObject(ObjectType.number, 3, 0, 0, 0, 0)));
+            _combo.queue.Enqueue(new ComboStep(ChoiceCategory.OnSelectEffectYesNo, new StepObject(ObjectType.bin, 1, 0, 0, 0, 0)));
+            _combo.queue.Enqueue(new ComboStep(ChoiceCategory.OnSelectPlace, new StepObject(ObjectType.number, 2, 0, 0, 0, 0)));
+            _combo.queue.Enqueue(new ComboStep(ChoiceCategory.OnSelectPlace, new StepObject(ObjectType.number, 4, 0, 0, 0, 0)));
             _combo.queue.Enqueue(new ComboStep(ChoiceCategory.OnSelectIdleCmd, new StepObject(ObjectType.card, (int)MainPhaseAction.MainAction.Activate, 71645242, (int)CardLocation.Hand, 0, 0, 0)));
         }
 
@@ -1176,7 +1179,7 @@ namespace WindBot.Game
                 step = _combo.queue.Dequeue();
             }
 
-            if (step == null || step.category != ChoiceCategory.OnSelectCard)
+            if (step == null || step.category != ChoiceCategory.OnSelectChain)
             {
                 ison = false;
             }
@@ -1329,7 +1332,45 @@ namespace WindBot.Game
             packet.ReadByte();
             int desc = packet.ReadInt32();
 
+            ComboStep step = null;
+            StepObject obj = null;
+            int ida = 0, loca = 0, seqa = 0, ispuba = 0;
+            if (_combo.queue.Count > 0)
+            {
+                step = _combo.queue.Dequeue();
+            }
+
+            if (step == null || step.category != ChoiceCategory.OnSelectEffectYesNo)
+            {
+                ison = false;
+            }
+
+            if (ison)
+            {
+                obj = step.objlist.Dequeue();
+                ida = obj.stepcard.id;
+                loca = obj.stepcard.loc;
+                seqa = obj.stepcard.seq;
+                ispuba = obj.stepcard.ispub;
+            }
+
+
             ClientCard card = _duel.GetCard(player, loc, seq);
+
+            //
+            if (ison)
+            {
+                if (cardId == ida && (loca == (int)loc || loca == 0))
+                {
+                    if (seqa == seq || seqa == 0 || loca != 4 && loca != 8)
+                    {
+                        Connection.Send(CtosMessage.Response, obj.value);
+                        return;
+                    }
+                }
+            }
+            //
+
             if (card == null)
             {
                 Connection.Send(CtosMessage.Response, 0);
@@ -1525,11 +1566,33 @@ namespace WindBot.Game
             for(int i=0;i<m;i++)
             {
                 Console.Write(",\"" + i + "\":" + shi[i]);
-            }
+            }//no use, because it may have lost accuracy
 
             byte[] resp = new byte[3];
 
             bool pendulumZone = false;
+
+            ComboStep step = null;
+            StepObject obj = null;
+            int ida = 0, loca = 0, seqa = 0, ispuba = 0;
+            if (_combo.queue.Count > 0)
+            {
+                step = _combo.queue.Dequeue();
+            }
+
+            if (step == null || step.category != ChoiceCategory.OnSelectPlace)
+            {
+                ison = false;
+            }
+
+            if (ison)
+            {
+                obj = step.objlist.Dequeue();
+                ida = obj.stepcard.id;
+                loca = obj.stepcard.loc;
+                seqa = obj.stepcard.seq;
+                ispuba = obj.stepcard.ispub;
+            }
 
             int filter;
             if ((field & 0x7f) != 0)
@@ -1588,6 +1651,11 @@ namespace WindBot.Game
             }
 
             Console.WriteLine("},"); //choices end
+
+            if(ison)
+            {
+                resp[2] = (byte)obj.value;
+            }
 
             Console.WriteLine("\"selected\":{\"category\":\"OnSelectPlace\",");//selected
             Console.WriteLine("\"filter\":" + filter + ",");//filter
