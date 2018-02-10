@@ -60,14 +60,17 @@ namespace WindBot.Game
             
             _combo.queue.Enqueue(new ComboStep(ChoiceCategory.OnSelectIdleCmd, new StepObject(ObjectType.card, (int)MainPhaseAction.MainAction.SpSummon, 9929398, (int)CardLocation.Hand, 0, 0)));//lv5
             _combo.queue.Enqueue(new ComboStep(ChoiceCategory.OnSelectPlace, new StepObject(ObjectType.number, 3, 0, 0, 0, 0)));//lv5
-            _combo.queue.Enqueue(new ComboStep(ChoiceCategory.OnSelectChain, new StepObject(ObjectType.card, 1, 50588353, (int)CardLocation.MonsterZone, 3, 1)));//chain trigger effect
+            _combo.queue.Enqueue(new ComboStep(ChoiceCategory.OnSelectEffectYesNo, new StepObject(ObjectType.bin, 1, 0, 0, 0, 0)));//trigger effect lv5
+            
             _combo.queue.Enqueue(new ComboStep(ChoiceCategory.OnSelectPlace, new StepObject(ObjectType.number, 4, 0, 0, 0, 0)));//token1
             _combo.queue.Enqueue(new ComboStep(ChoiceCategory.OnSelectPlace, new StepObject(ObjectType.number, 2, 0, 0, 0, 0)));//token2
             _combo.queue.Enqueue(new ComboStep(ChoiceCategory.OnSelectIdleCmd, new StepObject(ObjectType.card, (int)MainPhaseAction.MainAction.Activate, 71645242, (int)CardLocation.Hand, 0, 0, 0)));//field
             _combo.queue.Enqueue(new ComboStep(ChoiceCategory.OnSelectIdleCmd, new StepObject(ObjectType.card, (int)MainPhaseAction.MainAction.SpSummon, 50588353, (int)CardLocation.Extra, 0, 0, 0)));//link2
+            
             _combo.queue.Enqueue(new ComboStep(ChoiceCategory.OnSelectCard, new StepObject(ObjectType.card, 0, 9929398, (int)CardLocation.MonsterZone, 3, 1)));//select lv5 tuner as link material
             _combo.queue.Enqueue(new ComboStep(ChoiceCategory.OnSelectCard, new StepObject(ObjectType.card, 0, 9929399, (int)CardLocation.MonsterZone, 2, 1)));//select token1 as link material
             _combo.queue.Enqueue(new ComboStep(ChoiceCategory.OnSelectPlace, new StepObject(ObjectType.number, 6, 0, 0, 0, 0)));//link2
+            _combo.queue.Enqueue(new ComboStep(ChoiceCategory.OnSelectChain, new StepObject(ObjectType.card, 1, 50588353, (int)CardLocation.MonsterZone, 6, 1)));//chain link2
             _combo.queue.Enqueue(new ComboStep(ChoiceCategory.OnSelectPlace, new StepObject(ObjectType.number, 2, 0, 0, 0, 0)));//tuner
             _combo.queue.Enqueue(new ComboStep(ChoiceCategory.OnSelectPlace, new StepObject(ObjectType.number, 0, 0, 0, 0, 0)));//oppo1
             _combo.queue.Enqueue(new ComboStep(ChoiceCategory.OnSelectPlace, new StepObject(ObjectType.number, 1, 0, 0, 0, 0)));//oppo2
