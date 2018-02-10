@@ -66,10 +66,22 @@ namespace WindBot.Game
             _combo.queue.Enqueue(new ComboStep(ChoiceCategory.OnSelectIdleCmd, new StepObject(ObjectType.card, (int)MainPhaseAction.MainAction.Activate, 71645242, (int)CardLocation.Hand, 0, 0, 0)));//field
             _combo.queue.Enqueue(new ComboStep(ChoiceCategory.OnSelectIdleCmd, new StepObject(ObjectType.card, (int)MainPhaseAction.MainAction.SpSummon, 50588353, (int)CardLocation.Extra, 0, 0, 0)));//link2
             _combo.queue.Enqueue(new ComboStep(ChoiceCategory.OnSelectCard, new StepObject(ObjectType.card, 0, 9929398, (int)CardLocation.MonsterZone, 3, 1)));//select lv5 tuner as link material
+            _combo.queue.Enqueue(new ComboStep(ChoiceCategory.OnSelectCard, new StepObject(ObjectType.card, 0, 9929399, (int)CardLocation.MonsterZone, 2, 1)));//select token1 as link material
             _combo.queue.Enqueue(new ComboStep(ChoiceCategory.OnSelectPlace, new StepObject(ObjectType.number, 6, 0, 0, 0, 0)));//link2
             _combo.queue.Enqueue(new ComboStep(ChoiceCategory.OnSelectPlace, new StepObject(ObjectType.number, 2, 0, 0, 0, 0)));//tuner
             _combo.queue.Enqueue(new ComboStep(ChoiceCategory.OnSelectPlace, new StepObject(ObjectType.number, 0, 0, 0, 0, 0)));//oppo1
             _combo.queue.Enqueue(new ComboStep(ChoiceCategory.OnSelectPlace, new StepObject(ObjectType.number, 1, 0, 0, 0, 0)));//oppo2
+            _combo.queue.Enqueue(new ComboStep(ChoiceCategory.OnSelectIdleCmd, new StepObject(ObjectType.card, (int)MainPhaseAction.MainAction.SpSummon, 61665245, (int)CardLocation.Extra, 0, 0, 0)));//link3
+            _combo.queue.Enqueue(new ComboStep(ChoiceCategory.OnSelectCard, new StepObject(ObjectType.card, 0, 50588353, (int)CardLocation.MonsterZone, 6, 1)));//select link2 as link material
+            _combo.queue.Enqueue(new ComboStep(ChoiceCategory.OnSelectCard, new StepObject(ObjectType.card, 0, 72291078, (int)CardLocation.MonsterZone, 2, 1)));//select tuner2 tuner as link material
+            _combo.queue.Enqueue(new ComboStep(ChoiceCategory.OnSelectPlace, new StepObject(ObjectType.number, 6, 0, 0, 0, 0)));//link3
+            _combo.queue.Enqueue(new ComboStep(ChoiceCategory.OnSelectChain, new StepObject(ObjectType.card, 1, 72291078, (int)CardLocation.Grave, 0, 1)));
+            _combo.queue.Enqueue(new ComboStep(ChoiceCategory.OnSelectPlace, new StepObject(ObjectType.number, 0, 0, 0, 0, 0)));//token3
+            _combo.queue.Enqueue(new ComboStep(ChoiceCategory.OnSelectPlace, new StepObject(ObjectType.number, 2, 0, 0, 0, 0)));//oppo3
+            _combo.queue.Enqueue(new ComboStep(ChoiceCategory.OnSelectPlace, new StepObject(ObjectType.number, 3, 0, 0, 0, 0)));//oppo4
+
+
+
         }
 
         private void InitCombo()
