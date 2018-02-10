@@ -71,6 +71,7 @@ namespace WindBot.Game
             _combo.queue.Enqueue(new ComboStep(ChoiceCategory.OnSelectCard, new StepObject(ObjectType.card, 0, 9929399, (int)CardLocation.MonsterZone, 2, 1)));//select token1 as link material
             _combo.queue.Enqueue(new ComboStep(ChoiceCategory.OnSelectPlace, new StepObject(ObjectType.number, 6, 0, 0, 0, 0)));//link2
             _combo.queue.Enqueue(new ComboStep(ChoiceCategory.OnSelectChain, new StepObject(ObjectType.card, 1, 50588353, (int)CardLocation.MonsterZone, 6, 1)));//chain link2
+            _combo.queue.Enqueue(new ComboStep(ChoiceCategory.OnSelectCard, new StepObject(ObjectType.card, 0, 72291078, (int)CardLocation.Deck, 0, 0)));//select tuner
             _combo.queue.Enqueue(new ComboStep(ChoiceCategory.OnSelectPlace, new StepObject(ObjectType.number, 2, 0, 0, 0, 0)));//tuner
             _combo.queue.Enqueue(new ComboStep(ChoiceCategory.OnSelectPlace, new StepObject(ObjectType.number, 0, 0, 0, 0, 0)));//oppo1
             _combo.queue.Enqueue(new ComboStep(ChoiceCategory.OnSelectPlace, new StepObject(ObjectType.number, 1, 0, 0, 0, 0)));//oppo2
