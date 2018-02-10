@@ -91,7 +91,8 @@ namespace WindBot.Game
             _combo.queue.Enqueue(new ComboStep(ChoiceCategory.OnSelectCard, new StepObject(ObjectType.card, 0, 10875327, (int)CardLocation.MonsterZone, 2, 0)));//select lv10
             _combo.queue.Enqueue(new ComboStep(ChoiceCategory.OnSelectPlace, new StepObject(ObjectType.number, 2, 0, 0, 0, 0)));//place link2
 
-
+            _combo.queue.Enqueue(new ComboStep(ChoiceCategory.OnSelectChain, new StepObject(ObjectType.card, 1, 71645242, 0, 0, 1))); //chain field first
+            _combo.queue.Enqueue(new ComboStep(ChoiceCategory.OnSelectPlace, new StepObject(ObjectType.number, 0, 0, 0, 0, 0)));//oppo1
 
 
 
@@ -1226,7 +1227,7 @@ namespace WindBot.Game
 
             for (int i = 0; i < count; ++i)
             {
-                int maybeflag = packet.ReadByte(); // flag
+                int flag = packet.ReadByte(); // flag
                 int id = packet.ReadInt32(); // card id
                 int con = GetLocalPlayer(packet.ReadByte());
                 int loc = packet.ReadByte();
@@ -1235,7 +1236,7 @@ namespace WindBot.Game
 
                 int desc = packet.ReadInt32();
 
-                Console.WriteLine("{\"flag\":" + maybeflag + ",\"id\":" + id + ",\"controller\":" + con + ",\"loc\":\"" + (CardLocation)loc + "\",\"seq\":" + seq + ",\"sseq\":" + sseq + ",\"desc\":" + desc );
+                Console.WriteLine("{\"flag\":" + flag + ",\"id\":" + id + ",\"controller\":" + con + ",\"loc\":\"" + (CardLocation)loc + "\",\"seq\":" + seq + ",\"sseq\":" + sseq + ",\"desc\":" + desc );
                 Console.Write(",\"card\":");
                 _duel.GetCard(con, loc, seq, sseq).Show();
                 Console.WriteLine("},");
