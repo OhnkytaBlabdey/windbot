@@ -1582,7 +1582,7 @@ namespace WindBot.Game
 
             Console.WriteLine("},"); //choices end
 
-            Console.WriteLine("{\"selected\":{\"category\":\"OnSelectPlace\",");//selected
+            Console.WriteLine("\"selected\":{\"category\":\"OnSelectPlace\",");//selected
             Console.WriteLine("\"filter\":" + filter + ",");//filter
             Console.WriteLine("\"list\":[" + resp[0] + "," + resp[1] + "," + resp[2] + "]");//list
 
