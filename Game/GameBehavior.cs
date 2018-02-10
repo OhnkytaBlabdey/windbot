@@ -94,6 +94,23 @@ namespace WindBot.Game
             _combo.queue.Enqueue(new ComboStep(ChoiceCategory.OnSelectChain, new StepObject(ObjectType.card, 1, 71645242, 0, 0, 1))); //chain field first
             _combo.queue.Enqueue(new ComboStep(ChoiceCategory.OnSelectPlace, new StepObject(ObjectType.number, 0, 0, 0, 0, 0)));//oppo1
 
+            ////
+            _combo.queue.Enqueue(new ComboStep(ChoiceCategory.OnSelectIdleCmd, new StepObject(ObjectType.card, (int)MainPhaseAction.MainAction.SpSummon, 5043010, (int)CardLocation.Extra, 0, 0, 0)));//spsm link4
+            _combo.queue.Enqueue(new ComboStep(ChoiceCategory.OnSelectCard, new StepObject(ObjectType.card, 0, 61665245, (int)CardLocation.MonsterZone, 6, 0)));//select link3
+            _combo.queue.Enqueue(new ComboStep(ChoiceCategory.OnSelectCard, new StepObject(ObjectType.card, 0, 9929399, (int)CardLocation.MonsterZone, 4, 0)));//select token2
+
+            _combo.queue.Enqueue(new ComboStep(ChoiceCategory.OnSelectYesNo, new StepObject(ObjectType.bin, 0, 0, 0, 0, 0)));//not select more material
+
+            _combo.queue.Enqueue(new ComboStep(ChoiceCategory.OnSelectPlace, new StepObject(ObjectType.number, 3, 0, 0, 0, 0)));//place link4: 3
+
+            _combo.queue.Enqueue(new ComboStep(ChoiceCategory.OnSelectChain, new StepObject(ObjectType.card, 0, 0, 0, 0, 0))); //no chain
+
+            _combo.queue.Enqueue(new ComboStep(ChoiceCategory.OnSelectPlace, new StepObject(ObjectType.number, 1, 0, 0, 0, 0)));//oppo2
+
+
+
+
+
 
 
 
@@ -1265,6 +1282,12 @@ namespace WindBot.Game
             Console.WriteLine("},"); //choices,
 
 
+            if(ison &&count>0&&obj.value==0)
+            {
+                Connection.Send(CtosMessage.Response, -1);
+                return;
+            }
+
             if(ison && index1 > -1)
             { 
                 Connection.Send(CtosMessage.Response, index1);
@@ -1841,7 +1864,7 @@ namespace WindBot.Game
 
         private void OnSelectYesNo(BinaryReader packet)
         {
-            packet.ReadByte(); // player
+            /* int player = */ packet.ReadByte(); // player
             int desc = packet.ReadInt32();
             ComboStep step = null;
             StepObject obj = null;
