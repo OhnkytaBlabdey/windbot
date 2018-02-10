@@ -156,20 +156,21 @@ namespace WindBot.Game
 
         private bool CardCondition()
         {
-            int ct = _duel.Fields[0].Hand.GetCardCount(9929398) + _duel.Fields[0].Hand.GetCardCount(71645242);
+            int pl = 0;
+            int ct = _duel.Fields[pl].Hand.GetCardCount(9929398) + _duel.Fields[pl].Hand.GetCardCount(71645242);
             if (ct < 2)
                 return false;
-            ct = _duel.Fields[0].GetMonsterCount();
+            ct = _duel.Fields[pl].GetMonsterCount();
             if (ct > 0)
                 return false;
-            if ((_duel.Fields[0].Graveyard.GetCardCount(10875327) + _duel.Fields[0].Banished.GetCardCount(10875327) + _duel.Fields[0].MonsterZone.GetCardCount(10875327) + _duel.Fields[0].SpellZone.GetCardCount(10875327)) == 3 ||
-                (_duel.Fields[0].Graveyard.GetCardCount(72291078) + _duel.Fields[0].Banished.GetCardCount(72291078) + _duel.Fields[0].MonsterZone.GetCardCount(72291078) + _duel.Fields[0].SpellZone.GetCardCount(72291078)) == 3 ||
-                (_duel.Fields[0].Graveyard.GetCardCount(5043010) + _duel.Fields[0].Banished.GetCardCount(5043010) + _duel.Fields[0].MonsterZone.GetCardCount(5043010) + _duel.Fields[0].SpellZone.GetCardCount(5043010) + 2) == 3 ||
-                (_duel.Fields[0].Graveyard.GetCardCount(61665245) + _duel.Fields[0].Banished.GetCardCount(61665245) + _duel.Fields[0].MonsterZone.GetCardCount(61665245) + _duel.Fields[0].SpellZone.GetCardCount(61665245)) == 3 ||
-                (_duel.Fields[0].Graveyard.GetCardCount(50588353) + _duel.Fields[0].Banished.GetCardCount(50588353) + _duel.Fields[0].MonsterZone.GetCardCount(50588353) + _duel.Fields[0].SpellZone.GetCardCount(50588353)) == 3 ||
-                (_duel.Fields[0].Graveyard.GetCardCount(22862454) + _duel.Fields[0].Banished.GetCardCount(22862454) + _duel.Fields[0].MonsterZone.GetCardCount(22862454) + _duel.Fields[0].SpellZone.GetCardCount(22862454)) == 3 ||
-                (_duel.Fields[0].Graveyard.GetCardCount(99111753) + _duel.Fields[0].Banished.GetCardCount(99111753) + _duel.Fields[0].MonsterZone.GetCardCount(99111753) + _duel.Fields[0].SpellZone.GetCardCount(99111753)) == 3 ||
-                (_duel.Fields[0].Graveyard.GetCardCount(2220237) + _duel.Fields[0].Banished.GetCardCount(2220237) + _duel.Fields[0].MonsterZone.GetCardCount(2220237) + _duel.Fields[0].SpellZone.GetCardCount(2220237)) == 3)
+            if ((_duel.Fields[pl].Graveyard.GetCardCount(10875327) + _duel.Fields[pl].Banished.GetCardCount(10875327) + _duel.Fields[pl].MonsterZone.GetCardCount(10875327) + _duel.Fields[pl].SpellZone.GetCardCount(10875327)) == 3 ||
+                (_duel.Fields[pl].Graveyard.GetCardCount(72291078) + _duel.Fields[pl].Banished.GetCardCount(72291078) + _duel.Fields[pl].MonsterZone.GetCardCount(72291078) + _duel.Fields[pl].SpellZone.GetCardCount(72291078)) == 3 ||
+                (_duel.Fields[pl].Graveyard.GetCardCount(5043010) + _duel.Fields[pl].Banished.GetCardCount(5043010) + _duel.Fields[pl].MonsterZone.GetCardCount(5043010) + _duel.Fields[pl].SpellZone.GetCardCount(5043010) + 2) == 3 ||
+                (_duel.Fields[pl].Graveyard.GetCardCount(61665245) + _duel.Fields[pl].Banished.GetCardCount(61665245) + _duel.Fields[pl].MonsterZone.GetCardCount(61665245) + _duel.Fields[pl].SpellZone.GetCardCount(61665245)) == 3 ||
+                (_duel.Fields[pl].Graveyard.GetCardCount(50588353) + _duel.Fields[pl].Banished.GetCardCount(50588353) + _duel.Fields[pl].MonsterZone.GetCardCount(50588353) + _duel.Fields[pl].SpellZone.GetCardCount(50588353)) == 3 ||
+                (_duel.Fields[pl].Graveyard.GetCardCount(22862454) + _duel.Fields[pl].Banished.GetCardCount(22862454) + _duel.Fields[pl].MonsterZone.GetCardCount(22862454) + _duel.Fields[pl].SpellZone.GetCardCount(22862454)) == 3 ||
+                (_duel.Fields[pl].Graveyard.GetCardCount(99111753) + _duel.Fields[pl].Banished.GetCardCount(99111753) + _duel.Fields[pl].MonsterZone.GetCardCount(99111753) + _duel.Fields[pl].SpellZone.GetCardCount(99111753)) == 3 ||
+                (_duel.Fields[pl].Graveyard.GetCardCount(2220237) + _duel.Fields[pl].Banished.GetCardCount(2220237) + _duel.Fields[pl].MonsterZone.GetCardCount(2220237) + _duel.Fields[pl].SpellZone.GetCardCount(2220237)) == 3)
                 return false;
 
             return true;
@@ -920,6 +921,7 @@ namespace WindBot.Game
             {
                 int id = packet.ReadInt32();
                 int player = GetLocalPlayer(packet.ReadByte());
+                //local player
                 CardLocation loc = (CardLocation)packet.ReadByte();
                 int nloc = (int)loc;
                 int seq = packet.ReadByte();
@@ -959,7 +961,10 @@ namespace WindBot.Game
                 }
                 //
             }
-
+            if(count<1)
+            {
+                flag = true;
+            }
 
             Console.WriteLine("null\n]");
             Console.WriteLine("},"); //choices,
@@ -1340,6 +1345,10 @@ namespace WindBot.Game
                 //
 
             }
+            if(count<1)
+            {
+                flagc = true;
+            }
 
             Console.WriteLine("null\n]");
             Console.WriteLine("},"); //choices,
@@ -1468,7 +1477,7 @@ namespace WindBot.Game
                 ison = false;
                 ReEnq(step);
             }
-            bool flag = false;
+            
             if (ison)
             {
                 obj = step.objlist.Dequeue();
@@ -1489,17 +1498,13 @@ namespace WindBot.Game
                     if (seqa == seq || seqa == 0 || loca != 4 && loca != 8)
                     {
                         Connection.Send(CtosMessage.Response, obj.value);
-                        flag = true;
+                        
                         return;
                     }
                 }
             }
             //
-            if(!flag)
-            {
-                ison = false;
-                _combo.queue.Clear();
-            }
+            
             if (card == null)
             {
                 Connection.Send(CtosMessage.Response, 0);
@@ -1603,6 +1608,7 @@ namespace WindBot.Game
                     }
                     //
                 }
+                //
                 Console.WriteLine("null]");//cardlist end
                 Console.WriteLine("},");//cmd end
             }
@@ -1644,6 +1650,7 @@ namespace WindBot.Game
                 }
                 //
             }//不明觉厉，是发动吧
+            // 
             Console.WriteLine("null]");//cardlist end
             Console.WriteLine("},");//cmd end
 
