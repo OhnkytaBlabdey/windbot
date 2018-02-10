@@ -183,6 +183,8 @@ namespace WindBot.Game
                 (_duel.Fields[pl].Graveyard.GetCardCount(99111753) + _duel.Fields[pl].Banished.GetCardCount(99111753) + _duel.Fields[pl].MonsterZone.GetCardCount(99111753) + _duel.Fields[pl].SpellZone.GetCardCount(99111753)) == 3 ||
                 (_duel.Fields[pl].Graveyard.GetCardCount(2220237) + _duel.Fields[pl].Banished.GetCardCount(2220237) + _duel.Fields[pl].MonsterZone.GetCardCount(2220237) + _duel.Fields[pl].SpellZone.GetCardCount(2220237)) == 3)
                 return false;
+            if (_duel.Fields[1 - pl].GetMonsterCount() > 0)
+                return false;
 
             return true;
         }
@@ -1308,7 +1310,7 @@ namespace WindBot.Game
                 ison = false;
                 //if (step!=null && step.category != ChoiceCategory.OnSelectPlace)
                 //{
-                    //if (step != null)
+                    if (step != null)
                         ReEnq(step);
                 //}
                 //else if(step!=null)
