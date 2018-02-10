@@ -68,8 +68,8 @@ namespace WindBot.Game
             _combo.queue.Enqueue(new ComboStep(ChoiceCategory.OnSelectIdleCmd, new StepObject(ObjectType.card, (int)MainPhaseAction.MainAction.SpSummon, 9929398, (int)CardLocation.Hand, 0, 0)));
             _combo.queue.Enqueue(new ComboStep(ChoiceCategory.OnSelectPlace, new StepObject(ObjectType.number, 3, 0, 0, 0, 0)));
             _combo.queue.Enqueue(new ComboStep(ChoiceCategory.OnSelectEffectYesNo, new StepObject(ObjectType.bin, 1, 0, 0, 0, 0)));
-            _combo.queue.Enqueue(new ComboStep(ChoiceCategory.OnSelectPlace, new StepObject(ObjectType.number, 2, 0, 0, 0, 0)));
             _combo.queue.Enqueue(new ComboStep(ChoiceCategory.OnSelectPlace, new StepObject(ObjectType.number, 4, 0, 0, 0, 0)));
+            _combo.queue.Enqueue(new ComboStep(ChoiceCategory.OnSelectPlace, new StepObject(ObjectType.number, 2, 0, 0, 0, 0)));
             _combo.queue.Enqueue(new ComboStep(ChoiceCategory.OnSelectIdleCmd, new StepObject(ObjectType.card, (int)MainPhaseAction.MainAction.Activate, 71645242, (int)CardLocation.Hand, 0, 0, 0)));
         }
 
@@ -1555,13 +1555,15 @@ namespace WindBot.Game
             //这是啥操作？
 
             Console.WriteLine("{\"choices\":{\"category\":\"OnSelectPlace\",");//choices
-            packet.ReadByte(); // player
-            packet.ReadByte(); // min
+            int player = packet.ReadByte(); // player
+            int min = packet.ReadByte(); // min
             int field = ~packet.ReadInt32();
 
             byte[] shi = BitConverter.GetBytes(field);
             int m = 4;
 
+            Console.WriteLine("\"player\":" + player + ",");
+            Console.WriteLine("\"min\":" + min + ",");
             Console.WriteLine("\"field\":" + field);
             for(int i=0;i<m;i++)
             {
@@ -1636,13 +1638,13 @@ namespace WindBot.Game
 
             if (!pendulumZone)
             {
-                if ((filter & 0x40) != 0) resp[2] = 6; //extra
-                else if ((filter & 0x20) != 0) resp[2] = 5; //removed/banished
-                else if ((filter & 0x4) != 0) resp[2] = 2; //monster
-                else if ((filter & 0x2) != 0) resp[2] = 1; //hand
-                else if ((filter & 0x8) != 0) resp[2] = 3; //spell/trap
-                else if ((filter & 0x1) != 0) resp[2] = 0; //deck
-                else if ((filter & 0x10) != 0) resp[2] = 4; //grave
+                if ((filter & 0x40) != 0) resp[2] = 6; //6
+                else if ((filter & 0x20) != 0) resp[2] = 5; //5
+                else if ((filter & 0x4) != 0) resp[2] = 2; //2
+                else if ((filter & 0x2) != 0) resp[2] = 1; //1
+                else if ((filter & 0x8) != 0) resp[2] = 3; //3
+                else if ((filter & 0x1) != 0) resp[2] = 0; //0
+                else if ((filter & 0x10) != 0) resp[2] = 4; //4
             }
             else
             {
