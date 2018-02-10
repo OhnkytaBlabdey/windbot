@@ -1291,6 +1291,8 @@ namespace WindBot.Game
 
             Console.Write("{");
 
+            //begin:
+
             int index1 = -1;
             ComboStep step = null;
             StepObject obj = null;
@@ -1313,6 +1315,7 @@ namespace WindBot.Game
                 {
                     ison = true;
                     _combo.queue.Dequeue();
+                    step = null;
                     goto begin;
                     //step = _combo.queue.Dequeue();
                 }
@@ -1378,7 +1381,7 @@ namespace WindBot.Game
             Console.WriteLine("},"); //choices,
 
 
-            if(ison &&count>0&&obj.value==0)
+            if(ison &&count>0&& obj!=null && obj.value==0)
             {
                 Connection.Send(CtosMessage.Response, -1);
                 Console.WriteLine("\"default\":null},");
@@ -1547,6 +1550,8 @@ namespace WindBot.Game
         {
             packet.ReadByte(); // player
             Console.Write("{");//select idle
+
+            //begin:
             int action=-1;
             //int index=-1;
             MainPhaseAction mpa = null;
@@ -1568,6 +1573,7 @@ namespace WindBot.Game
                 {
                     ison = true;
                     _combo.queue.Dequeue();
+                    step = null;
                     goto begin;
                     //step = _combo.queue.Dequeue();
                 }
