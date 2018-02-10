@@ -1512,9 +1512,13 @@ namespace WindBot.Game
         private void OnSelectPlace(BinaryReader packet)
         {
             //这是啥操作？
+
+            Console.WriteLine("{\"choices\":{\"category\":\"OnSelectPlace\",");//choices
             packet.ReadByte(); // player
             packet.ReadByte(); // min
             int field = ~packet.ReadInt32();
+
+            Console.WriteLine("\"field\":" + field);
 
             byte[] resp = new byte[3];
 
@@ -1575,6 +1579,15 @@ namespace WindBot.Game
                 if ((filter & 0x1) != 0) resp[2] = 6;
                 if ((filter & 0x2) != 0) resp[2] = 7;
             }
+
+            Console.WriteLine("},"); //choices end
+
+            Console.WriteLine("{\"selected\":{\"category\":\"OnSelectPlace\",");//selected
+            Console.WriteLine("\"filter\":" + filter + ",");//filter
+            Console.WriteLine("\"list\":[" + resp[0] + "," + resp[1] + "," + resp[2] + "]");//list
+
+            Console.Write("}");//selected end
+            Console.WriteLine("},");
 
             BinaryWriter reply = GamePacketFactory.Create(CtosMessage.Response);
             reply.Write(resp);
