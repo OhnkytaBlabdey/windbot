@@ -898,7 +898,7 @@ namespace WindBot.Game
                 BinaryWriter myreply = GamePacketFactory.Create(CtosMessage.Response);
                 myreply.Write(myres);
                 Connection.Send(myreply);
-                Console.WriteLine("null},");
+                Console.WriteLine("null");
                 return;
             }
 
