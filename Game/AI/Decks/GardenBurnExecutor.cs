@@ -27,11 +27,11 @@ namespace WindBot.Game.AI.Decks
         }
         public override bool OnSelectHand()
         {
-            return true;
+            return false;
         }
         public override int OnRockPaperScissors()
         {
-            return 2;
+            return 4;
         }
 
     }
