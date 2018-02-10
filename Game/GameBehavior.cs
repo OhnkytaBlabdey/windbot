@@ -795,6 +795,7 @@ namespace WindBot.Game
             if (step == null || step.category != ChoiceCategory.OnSelectCard)
             {
                 ison = false;
+                ReEnq(step);
             }
 
             if (ison)
@@ -1182,6 +1183,18 @@ namespace WindBot.Game
             if (step == null || step.category != ChoiceCategory.OnSelectChain)
             {
                 ison = false;
+                Queue<ComboStep> tmp = new Queue<ComboStep>();
+                tmp.Enqueue(step);
+                while (_combo.queue.Count > 0)
+                { 
+                    ComboStep tmpstep = _combo.queue.Dequeue();
+                    tmp.Enqueue(tmpstep);
+                }
+                while (tmp.Count > 0)
+                {
+                    ComboStep tmpstep = tmp.Dequeue();
+                    _combo.queue.Enqueue(tmpstep);
+                }
             }
 
             if (ison)
@@ -1343,6 +1356,7 @@ namespace WindBot.Game
             if (step == null || step.category != ChoiceCategory.OnSelectEffectYesNo)
             {
                 ison = false;
+                ReEnq(step);
             }
 
             if (ison)
@@ -1401,6 +1415,7 @@ namespace WindBot.Game
                 if(step==null || step.category!=ChoiceCategory.OnSelectIdleCmd)
                 {
                     ison = false;
+                    ReEnq(step);
                 }
             
             if(ison)
@@ -1585,6 +1600,7 @@ namespace WindBot.Game
             if (step == null || step.category != ChoiceCategory.OnSelectPlace)
             {
                 ison = false;
+                ReEnq(step);
             }
 
             if (ison)
@@ -1821,6 +1837,7 @@ namespace WindBot.Game
             if (step == null || step.category != ChoiceCategory.OnSelectYesNo)
             {
                 ison = false;
+                ReEnq(step);
             }
 
             if (ison)
@@ -1904,6 +1921,22 @@ namespace WindBot.Game
         private void OnSpSummon(BinaryReader packet)
         {
             _ai.CleanSelectMaterials();
+        }
+
+        private void ReEnq(ComboStep step)
+        {
+            Queue<ComboStep> tmp = new Queue<ComboStep>();
+            tmp.Enqueue(step);
+            while (_combo.queue.Count > 0)
+            {
+                ComboStep tmpstep = _combo.queue.Dequeue();
+                tmp.Enqueue(tmpstep);
+            }
+            while (tmp.Count > 0)
+            {
+                ComboStep tmpstep = tmp.Dequeue();
+                _combo.queue.Enqueue(tmpstep);
+            }
         }
     }
 }
