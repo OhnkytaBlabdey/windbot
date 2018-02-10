@@ -106,10 +106,12 @@ namespace WindBot.Game
             _combo.queue.Enqueue(new ComboStep(ChoiceCategory.OnSelectChain, new StepObject(ObjectType.card, 0, 0, 0, 0, 0))); //no chain
 
             _combo.queue.Enqueue(new ComboStep(ChoiceCategory.OnSelectPlace, new StepObject(ObjectType.number, 1, 0, 0, 0, 0)));//oppo2
-            _combo.queue.Enqueue(new ComboStep(ChoiceCategory.OnSelectIdleCmd, new StepObject(ObjectType.card, (int)MainPhaseAction.MainAction.Activate, 5043010, (int)CardLocation.MonsterZone, 3, 0, 0)));//activate link4
+            _combo.queue.Enqueue(new ComboStep(ChoiceCategory.OnSelectChain, new StepObject(ObjectType.card, 0, 0, 0, 0, 0))); //no chain
+
+            _combo.queue.Enqueue(new ComboStep(ChoiceCategory.OnSelectIdleCmd, new StepObject(ObjectType.card, (int)MainPhaseAction.MainAction.Activate, 5043010, (int)CardLocation.MonsterZone, 3,1,0)));//activate link4
             _combo.queue.Enqueue(new ComboStep(ChoiceCategory.OnSelectCard, new StepObject(ObjectType.card, 0, 10875327, (int)CardLocation.Grave, 0, 0)));//select lv10 and return it to hand
 
-            _combo.queue.Enqueue(new ComboStep(ChoiceCategory.OnSelectIdleCmd, new StepObject(ObjectType.card, (int)MainPhaseAction.MainAction.SpSummon, 2220237, (int)CardLocation.Extra, 0, 0, 0)));//spsm 
+            _combo.queue.Enqueue(new ComboStep(ChoiceCategory.OnSelectIdleCmd, new StepObject(ObjectType.card, (int)MainPhaseAction.MainAction.SpSummon, 2220237, (int)CardLocation.Extra, 0, 0)));//spsm 
             _combo.queue.Enqueue(new ComboStep(ChoiceCategory.OnSelectCard, new StepObject(ObjectType.card, 0, 22862454, (int)CardLocation.MonsterZone, 2, 0)));//select link material
 
             _combo.queue.Enqueue(new ComboStep(ChoiceCategory.OnSelectPlace, new StepObject(ObjectType.number, 2, 0, 0, 0, 0)));//place link2:2
@@ -1303,12 +1305,14 @@ namespace WindBot.Game
             if(ison &&count>0&&obj.value==0)
             {
                 Connection.Send(CtosMessage.Response, -1);
+                Console.WriteLine("null},");
                 return;
             }
 
             if(ison && index1 > -1)
             { 
                 Connection.Send(CtosMessage.Response, index1);
+                Console.WriteLine("null},");
                 return;
             }
             ison = true;
