@@ -1304,9 +1304,11 @@ namespace WindBot.Game
             {
                 step = _combo.queue.Dequeue();
             }
-
+            bool flagc = false;
             if (step == null || step.category != ChoiceCategory.OnSelectChain)
             {
+                if (step!=null)
+                    flagc=true;
                 ison = false;
                 //if (step!=null && step.category != ChoiceCategory.OnSelectPlace)
                 //{
@@ -1323,7 +1325,7 @@ namespace WindBot.Game
                 //}
                 
             }
-            bool flagc = false;
+            
             if (ison)
             {
                 obj = step.objlist.Dequeue();
@@ -1378,7 +1380,7 @@ namespace WindBot.Game
             {
                 flagc = true;
             }
-
+            //if(step.category!=)
             Console.WriteLine("null\n]");
             Console.WriteLine("},"); //choices,
 
@@ -1397,7 +1399,7 @@ namespace WindBot.Game
                 return;
             }
             ison = true;
-            if(!flagc&&count>0)
+            if(!flagc && count>0)
             {
                 ison = false;
                 _combo.queue.Clear();
@@ -1862,7 +1864,7 @@ namespace WindBot.Game
             Console.WriteLine("},");
 
             ison = true;
-            if(resp[0] == _duel.GetLocalPlayer(1)&&step.category==ChoiceCategory.OnSelectPlace)
+            if(resp[0] == _duel.GetLocalPlayer(1)&& step!=null && step.category==ChoiceCategory.OnSelectPlace)
             {
                 ReEnq(step);
             }
