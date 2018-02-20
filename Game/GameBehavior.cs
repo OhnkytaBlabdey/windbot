@@ -17,6 +17,8 @@ namespace WindBot.Game
         public YGOClient Connection { get; private set; }
         public Deck Deck { get; private set; }
 
+        private ExBehavior _ex;
+
         private GameAI _ai;
 
         private IDictionary<StocMessage, Action<BinaryReader>> _packets;

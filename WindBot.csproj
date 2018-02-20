@@ -106,9 +106,11 @@
     <Compile Include="Game\ClientField.cs" />
     <Compile Include="Game\Deck.cs" />
     <Compile Include="Game\Duel.cs" />
+    <Compile Include="Game\ExBehavior.cs" />
     <Compile Include="Game\GameAI.cs" />
     <Compile Include="Game\GameBehavior.cs" />
     <Compile Include="Game\GameClient.cs" />
+    <Compile Include="Game\GameCombo.cs" />
     <Compile Include="Game\GamePacketFactory.cs" />
     <Compile Include="Game\MainPhase.cs" />
     <Compile Include="Game\MainPhaseAction.cs" />
