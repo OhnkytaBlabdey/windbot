@@ -8,6 +8,7 @@ using YGOSharp.Network.Enums;
 using YGOSharp.Network.Utils;
 using YGOSharp.OCGWrapper;
 using YGOSharp.OCGWrapper.Enums;
+using WindBot.Game;
 
 namespace WindBot.Game
 {
@@ -28,8 +29,12 @@ namespace WindBot.Game
             int max = packet.ReadByte();
 
             //IList<ClientCard> cards = new List<ClientCard>();
+            List<CardMsg> selected = new List<CardMsg>();
+
 
             int count = packet.ReadByte();
+            CardMsg[] cards = new CardMsg[count];
+            //int[][] cards = new int[count][];
             for (int i = 0; i < count; ++i)
             {
                 int id = packet.ReadInt32();
@@ -37,6 +42,10 @@ namespace WindBot.Game
                 CardLocation loc = (CardLocation)packet.ReadByte();
                 int seq = packet.ReadByte();
                 packet.ReadByte(); // pos
+                cards[i] = new CardMsg(player, id, (int)loc, seq);
+
+
+
                 //ClientCard card;
                 //if (((int)loc & (int)CardLocation.Overlay) != 0)
                     //card = new ClientCard(id, CardLocation.Overlay);
@@ -49,9 +58,12 @@ namespace WindBot.Game
             }
 
             //IList<ClientCard> selected = new List<ClientCard>();
+            
 
-            //if (selected.Count == 0 && cancelable)
-            if (cancelable)
+
+
+            if (selected.Count == 0 && cancelable)
+            //if (cancelable)
             {
                 behavior.Connection.Send(CtosMessage.Response, -1);
                 return;

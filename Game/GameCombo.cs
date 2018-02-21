@@ -6,6 +6,20 @@ using WindBot.Game;
 
 namespace WindBot.Game
 {
+    class CardMsg
+    {
+        public int player;
+        public int code;
+        public int loc;
+        public int seq;
+        public CardMsg(int con,int id,int l,int s)
+        {
+            player = con;
+            code = id;
+            loc = l;
+            seq = s;
+        }
+    }
     class CardInfo
     {
         int id;
