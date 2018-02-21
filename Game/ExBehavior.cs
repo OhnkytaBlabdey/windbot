@@ -15,14 +15,21 @@ namespace WindBot.Game
     class ExBehavior
     {
         Queue<GameCombo> combos;
+        GameCombo curcombo;
+        ComboStep curstep;
 
         public ExBehavior ()
         {
 
         }
 
-        public void SelectCard(GameBehavior behavior,BinaryReader packet)
+        public bool SelectCard(GameBehavior behavior,BinaryReader packet)
         {
+            if(curstep==null)
+            {
+                return false;
+            }
+
             packet.ReadByte(); // player
             bool cancelable = packet.ReadByte() != 0;
             int min = packet.ReadByte();
@@ -62,11 +69,11 @@ namespace WindBot.Game
 
 
 
-            if (selected.Count == 0 && cancelable)
+            if (selected.Count == 0 )
             //if (cancelable)
             {
-                behavior.Connection.Send(CtosMessage.Response, -1);
-                return;
+                //behavior.Connection.Send(CtosMessage.Response, -1);
+                return false;
             }
 
             byte[] result = new byte[selected.Count + 1];
@@ -77,7 +84,7 @@ namespace WindBot.Game
                 for (int j = 0; j < count; ++j)
                 {
                     if (cards[j] == null) continue;
-                    if (cards[j].Equals(selected[i]))
+                    if (cards[j].SameTo(selected[i]))
                     {
                         id = j;
                         break;
@@ -89,6 +96,7 @@ namespace WindBot.Game
             BinaryWriter reply = GamePacketFactory.Create(CtosMessage.Response);
             reply.Write(result);
             behavior.Connection.Send(reply);
+            return true;
         }
     }
 }

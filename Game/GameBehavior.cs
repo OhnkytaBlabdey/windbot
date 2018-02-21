@@ -751,7 +751,8 @@ namespace WindBot.Game
         {
             if (_ex != null)
             {
-                _ex.SelectCard(this,packet);
+                if (_ex.SelectCard(this, packet))
+                    return;
             }
             InternalOnSelectCard(packet, _ai.OnSelectCard);
         }
