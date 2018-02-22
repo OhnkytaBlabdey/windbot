@@ -45,11 +45,11 @@ namespace WindBot.Game
 
     class CardInfo
     {
-        int id;
-        byte controller = 0;
-        byte loc = 0;
-        byte seq = 0;
-        int desc = 0;
+        public int id;
+        public byte controller = 0;
+        public byte loc = 0;
+        public byte seq = 0;
+        public int desc = 0;
 
         public CardInfo(int id2, byte player, int desc2)
         {
@@ -95,17 +95,75 @@ namespace WindBot.Game
     class ComboStep
     {
         MsgCategory category;
-        public Queue<StepVal> vals;
+        private Queue<StepVal> vals;
+        private StepVal curval;
+
         public Func<Duel, bool> checkcon = delegate (Duel duel)
           {
               return true;
           };
+
+        public ComboStep(MsgCategory category2,StepVal val)
+        {
+            category = category2;
+            curval = val;
+            vals = new Queue<StepVal>();
+            vals.Enqueue(val);
+        }
+
+        public StepVal GetCurVal()
+        {
+            if(curval!=null)
+            return curval;
+            //if cur val is null
+            return new StepVal(0, 2, 0, 0);
+        }
+
+        public void UpdateVals()
+        {
+            if (vals.Count == 0)
+                return;
+            curval = vals.Dequeue();
+        }
+
+        public int GetValCount()
+        {
+            if(vals!=null)
+            return vals.Count;
+            return -1;
+        }
+
     }
 
     class GameCombo
     {
-        Queue<ComboStep> steps;
+        private Queue<ComboStep> steps;
+        private ComboStep curstep;
         bool isable;
+
+        public void LoadCombo(string deck)
+        {
+            switch(deck)
+            {
+                case "GB":
+                    steps.Enqueue(new ComboStep(MsgCategory.SelectCard, new StepVal(9929398, 0, 0, 0)));
+                    steps.Enqueue(new ComboStep(MsgCategory.SelectCard, new StepVal(9929399, 0, 0, 0)));
+                    break;
+            }
+
+        }
+
+        public ComboStep GetCurStep()
+        {
+            return curstep;
+        }
+
+        public void UpdateStep()
+        {
+            if (steps.Count == 0)
+                return;
+            curstep = steps.Dequeue();
+        }
 
     }
 

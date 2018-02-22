@@ -15,19 +15,20 @@ namespace WindBot.Game
     class ExBehavior
     {
         private Queue<GameCombo> combos;
-        private GameCombo curcombo = null;
+        private GameCombo curcombo;
         private ComboStep curstep;
 
-        public ExBehavior ()
-        {
-
-        }
 
         public ExBehavior(string deck)
         {
             if(deck=="GB")
             {
-
+                //load garden burn deck
+                combos = new Queue<GameCombo>();
+                curcombo = new GameCombo();
+                curcombo.LoadCombo("GB");
+                combos.Enqueue(curcombo);
+                curstep = curcombo.GetCurStep();
             }
         }
 
@@ -37,6 +38,12 @@ namespace WindBot.Game
             {
                 return;
             }
+            //StepVal val = curstep.vals.Dequeue(); //if no val, it will crush.
+            
+            
+            int stepcount = curstep.GetValCount();
+            //StepVal val = curstep.GetCurVal();
+
 
             packet.ReadByte(); // player
             bool cancelable = packet.ReadByte() != 0;
@@ -50,6 +57,7 @@ namespace WindBot.Game
             int count = packet.ReadByte();
             CardMsg[] cards = new CardMsg[count];
             //int[][] cards = new int[count][];
+
             for (int i = 0; i < count; ++i)
             {
                 int id = packet.ReadInt32();
@@ -58,9 +66,6 @@ namespace WindBot.Game
                 int seq = packet.ReadByte();
                 packet.ReadByte(); // 
                 cards[i] = new CardMsg(player, id, (int)loc, seq);
-
-
-
                 //ClientCard card;
                 //if (((int)loc & (int)CardLocation.Overlay) != 0)
                     //card = new ClientCard(id, CardLocation.Overlay);
@@ -71,16 +76,29 @@ namespace WindBot.Game
                     //card.SetId(id);
                 //cards.Add(card);
             }
-
             //IList<ClientCard> selected = new List<ClientCard>();
             
+            //
+            for(; stepcount>0;stepcount--)
+            {
+                curstep.UpdateVals();
+                StepVal val = curstep.GetCurVal();
+                foreach(CardMsg msg in cards)
+                {
+                    if(val.filter(duel,msg,val.card))
+                    {
+                        selected.Add(msg);
+                        break;
+                    }
+                }
+            }
+            //
 
 
-
-            if (selected.Count == 0 )
+            if (selected.Count == 0 && cancelable)
             //if (cancelable)
             {
-                //behavior.Connection.Send(CtosMessage.Response, -1);
+                Connection.Send(CtosMessage.Response, -1);
                 return;
             }
 
@@ -111,5 +129,6 @@ namespace WindBot.Game
         {
             return val.filter(duel, msg, val.card);
         }
+
     }
 }
