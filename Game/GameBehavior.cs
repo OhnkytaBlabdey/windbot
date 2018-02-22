@@ -25,7 +25,7 @@ namespace WindBot.Game
         private IDictionary<GameMessage, Action<BinaryReader>> _messages;
 
         private Room _room;
-        public Duel _duel;
+        private Duel _duel;
         private int _hand;
         private int _select_hint;
 
@@ -48,7 +48,7 @@ namespace WindBot.Game
 
             if(_ai.Executor.Deck == "GB")
             {
-                _ex = new ExBehavior();
+                _ex = new ExBehavior("GB");
             }
             else
             {
@@ -751,8 +751,8 @@ namespace WindBot.Game
         {
             if (_ex != null)
             {
-                if (_ex.SelectCard(this, packet))
-                    return;
+                _ex.SelectCard(_duel,Connection, packet);
+                return;
             }
             InternalOnSelectCard(packet, _ai.OnSelectCard);
         }

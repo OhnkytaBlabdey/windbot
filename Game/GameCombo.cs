@@ -46,23 +46,67 @@ namespace WindBot.Game
     class CardInfo
     {
         int id;
-        byte controller;
-        byte desc;
-        delegate bool filter(Duel duel, int con, int code, int loc, int seq);
+        byte controller = 0;
+        byte loc = 0;
+        byte seq = 0;
+        int desc = 0;
 
-            public bool DefaultFilter (Duel duel, int con, int code, int loc, int seq)
+        public CardInfo(int id2, byte player, int desc2)
+        {
+            id = id2;
+            controller = player;
+            desc = desc2;
+        }
+
+        public CardInfo(int id2, byte player, byte loc2,byte seq2)
+        {
+            id = id2;
+            controller = player;
+            loc = loc2;
+            seq = seq2;
+        }
+    }
+
+    class StepVal
+    {
+        public CardInfo card = null;
+        public int num = 0;
+        public bool bin = true;
+        public Func<Duel,CardMsg,CardInfo,bool> filter= delegate (Duel duel, CardMsg msg, CardInfo card)
             {
                 return true;
-            }
+            };
+
+        public StepVal(int num2 ,bool bin2,int id,byte con, byte loc, byte seq)
+        {
+            num = num2;
+            bin = bin2;
+            card = new CardInfo(id,con,loc,seq);
+        }
+
+        public StepVal(int id,byte con,byte loc,byte seq)
+        {
+            //num = 0;
+            //bin = true;
+            card = new CardInfo(id, con, loc, seq);
+        }
     }
+
     class ComboStep
     {
         MsgCategory category;
-        Queue<Dictionary<InfoType, Object>> vals;
+        public Queue<StepVal> vals;
+        public Func<Duel, bool> checkcon = delegate (Duel duel)
+          {
+              return true;
+          };
     }
+
     class GameCombo
     {
         Queue<ComboStep> steps;
+        bool isable;
 
     }
+
 }

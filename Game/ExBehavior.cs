@@ -14,20 +14,28 @@ namespace WindBot.Game
 {
     class ExBehavior
     {
-        Queue<GameCombo> combos;
-        GameCombo curcombo;
-        ComboStep curstep;
+        private Queue<GameCombo> combos;
+        private GameCombo curcombo = null;
+        private ComboStep curstep;
 
         public ExBehavior ()
         {
 
         }
 
-        public bool SelectCard(GameBehavior behavior,BinaryReader packet)
+        public ExBehavior(string deck)
+        {
+            if(deck=="GB")
+            {
+
+            }
+        }
+
+        public void SelectCard(Duel duel, YGOClient Connection, BinaryReader packet)
         {
             if(curstep==null)
             {
-                return false;
+                return;
             }
 
             packet.ReadByte(); // player
@@ -45,10 +53,10 @@ namespace WindBot.Game
             for (int i = 0; i < count; ++i)
             {
                 int id = packet.ReadInt32();
-                int player = behavior.GetLocalPlayer(packet.ReadByte());
+                int player = duel.IsFirst ? (packet.ReadByte()) : 1 - (packet.ReadByte()); //get local player
                 CardLocation loc = (CardLocation)packet.ReadByte();
                 int seq = packet.ReadByte();
-                packet.ReadByte(); // pos
+                packet.ReadByte(); // 
                 cards[i] = new CardMsg(player, id, (int)loc, seq);
 
 
@@ -73,7 +81,7 @@ namespace WindBot.Game
             //if (cancelable)
             {
                 //behavior.Connection.Send(CtosMessage.Response, -1);
-                return false;
+                return;
             }
 
             byte[] result = new byte[selected.Count + 1];
@@ -95,8 +103,13 @@ namespace WindBot.Game
 
             BinaryWriter reply = GamePacketFactory.Create(CtosMessage.Response);
             reply.Write(result);
-            behavior.Connection.Send(reply);
-            return true;
+            Connection.Send(reply);
+            return;
+        }
+
+        private bool CehckFilter(Duel duel, CardMsg msg, StepVal val)
+        {
+            return val.filter(duel, msg, val.card);
         }
     }
 }
