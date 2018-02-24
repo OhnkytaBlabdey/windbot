@@ -48,7 +48,7 @@ namespace WindBot.Game
 
             if(_ai.Executor.Deck == "GB")
             {
-                _ex = new ExBehavior("GB");
+                _ex = new GardenBurn();
             }
             else
             {

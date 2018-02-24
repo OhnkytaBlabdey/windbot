@@ -2,7 +2,6 @@
 using System.IO;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using YGOSharp.Network;
 using YGOSharp.Network.Enums;
 using YGOSharp.Network.Utils;
@@ -14,23 +13,10 @@ namespace WindBot.Game
 {
     class ExBehavior
     {
-        private Queue<GameCombo> combos;
+        private List<GameCombo> combos;
         private GameCombo curcombo;
         private ComboStep curstep;
 
-
-        public ExBehavior(string deck)
-        {
-            if(deck=="GB")
-            {
-                //load garden burn deck
-                combos = new Queue<GameCombo>();
-                curcombo = new GameCombo();
-                curcombo.LoadCombo("GB");
-                combos.Enqueue(curcombo);
-                curstep = curcombo.GetCurStep();
-            }
-        }
 
         public void SelectCard(Duel duel, YGOClient Connection, BinaryReader packet)
         {
@@ -38,11 +24,9 @@ namespace WindBot.Game
             {
                 return;
             }
-            //StepVal val = curstep.vals.Dequeue(); //if no val, it will crush.
-            
-            
+
             int stepcount = curstep.GetValCount();
-            //StepVal val = curstep.GetCurVal();
+
 
 
             packet.ReadByte(); // player
@@ -66,32 +50,10 @@ namespace WindBot.Game
                 int seq = packet.ReadByte();
                 packet.ReadByte(); // 
                 cards[i] = new CardMsg(player, id, (int)loc, seq);
-                //ClientCard card;
-                //if (((int)loc & (int)CardLocation.Overlay) != 0)
-                    //card = new ClientCard(id, CardLocation.Overlay);
-                //else
-                    //card = behavior._duel.GetCard(player, loc, seq);
-                //if (card == null) continue;
-                //if (card.Id == 0)
-                    //card.SetId(id);
-                //cards.Add(card);
+
             }
-            //IList<ClientCard> selected = new List<ClientCard>();
-            
-            //
-            for(; stepcount>0;stepcount--)
-            {
-                curstep.UpdateVals();
-                StepVal val = curstep.GetCurVal();
-                foreach(CardMsg msg in cards)
-                {
-                    if(val.filter(duel,msg,val.card))
-                    {
-                        selected.Add(msg);
-                        break;
-                    }
-                }
-            }
+
+
             //
 
 

@@ -105,6 +105,7 @@
     <Compile Include="Game\BattlePhaseAction.cs" />
     <Compile Include="Game\ClientCard.cs" />
     <Compile Include="Game\ClientField.cs" />
+    <Compile Include="Game\ComboStep.cs" />
     <Compile Include="Game\Deck.cs" />
     <Compile Include="Game\Duel.cs" />
     <Compile Include="Game\ExBehavior.cs" />
@@ -113,6 +114,7 @@
     <Compile Include="Game\GameClient.cs" />
     <Compile Include="Game\GameCombo.cs" />
     <Compile Include="Game\GamePacketFactory.cs" />
+    <Compile Include="Game\GardenBurn.cs" />
     <Compile Include="Game\MainPhase.cs" />
     <Compile Include="Game\MainPhaseAction.cs" />
     <Compile Include="Game\Room.cs" />
