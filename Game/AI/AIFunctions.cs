@@ -132,6 +132,25 @@ namespace WindBot.Game.AI
             return IsAllEnemyBetterThanValue(bestBotPower, onlyATK);
         }
 
+        public ClientCard GetBestBotMonster(bool onlyATK = false)
+        {
+            int bestPower = -1;
+            ClientCard bestMonster = null;
+            for (int i = 0; i < 7; ++i)
+            {
+                ClientCard card = Bot.MonsterZone[i];
+                if (card == null || card.Data == null) continue;
+                if (onlyATK && card.IsDefense()) continue;
+                int newPower = card.GetDefensePower();
+                if (newPower > bestPower)
+                {
+                    bestPower = newPower;
+                    bestMonster = card;
+                }
+            }
+            return bestMonster;
+        }
+
         public ClientCard GetOneEnemyBetterThanValue(int value, bool onlyATK = false)
         {
             ClientCard bestCard = null;
@@ -247,7 +266,8 @@ namespace WindBot.Game.AI
 
             foreach (ClientCard ecard in spells)
             {
-                if (ecard.IsFaceup() && ecard.HasType(CardType.Continuous))
+                if (ecard.IsFaceup() && ecard.HasType(CardType.Continuous)||
+                    ecard.IsFaceup() && ecard.HasType(CardType.Field))
                     return ecard;
             }
 
@@ -294,6 +314,44 @@ namespace WindBot.Game.AI
         public bool IsChainTargetOnly(ClientCard card)
         {
             return Duel.ChainTargets.Count == 1 && card.Equals(Duel.ChainTargets[0]);
+        }
+
+        public bool ChainContainsCard(int id)
+        {
+            foreach (ClientCard card in Duel.CurrentChain)
+            {
+                if (card.Id == id)
+                    return true;
+            }
+            return false;
+        }
+
+        public int ChainCountPlayer(int player)
+        {
+            int count = 0;
+            foreach (ClientCard card in Duel.CurrentChain)
+            {
+                if (card.Controller == player)
+                    count++;
+            }
+            return count;
+        }
+
+        public bool HasChainedTrap(int player)
+        {
+            foreach (ClientCard card in Duel.CurrentChain)
+            {
+                if (card.Controller == player && card.HasType(CardType.Trap))
+                    return true;
+            }
+            return false;
+        }
+
+        public ClientCard GetLastChainCard()
+        {
+            if (Duel.CurrentChain.Count > 0)
+                return Duel.CurrentChain[Duel.CurrentChain.Count - 1];
+            return null;
         }
 
         /// <summary>
