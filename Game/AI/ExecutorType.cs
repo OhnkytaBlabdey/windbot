@@ -1,4 +1,4 @@
-﻿namespace WindBot.Game.AI
+namespace WindBot.Game.AI
 {
     public enum ExecutorType
     {
@@ -8,6 +8,8 @@
         MonsterSet,
         SpellSet,
         Activate,
-        SummonOrSet
+        SummonOrSet,
+		ToBP,
+		ToEP
     }
 }
