@@ -6,8 +6,8 @@ using WindBot.Game.AI;
 
 namespace WindBot.Game.AI.Decks
 {
-    [Deck("ZaborgFun", "AI_ZaborgFun")]
-    class ZaborgFunExecutor :DefaultExecutor
+    [Deck("Fun", "AI_Fun")]
+    class FunExecutor :DefaultExecutor
     {
         public class ComboManage
         {
@@ -42,7 +42,7 @@ namespace WindBot.Game.AI.Decks
             public const int SkullInvitation = 98139712;
         }
 
-        public ZaborgFunExecutor(GameAI ai, Duel duel)
+        public FunExecutor(GameAI ai, Duel duel)
             : base(ai, duel)
         {
             // Set traps
