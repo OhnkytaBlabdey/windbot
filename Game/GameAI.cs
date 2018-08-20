@@ -59,7 +59,8 @@ namespace WindBot.Game
         public void OnChat(string message,int player)
         {
             string[] arr = { "好了好了，我知道了。" };
-            _dialogs.SendChatReply(arr,null);
+            
+            _dialogs.SendChatReply(arr,"");
         }
 
         /// <summary>
