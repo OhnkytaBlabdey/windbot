@@ -59,8 +59,11 @@ namespace WindBot.Game
         public void OnChat(string message,int player)
         {
             string[] arr = { "好了好了，我知道了。" };
-            
-            _dialogs.SendChatReply(arr,"");
+            if (Duel.GetLocalPlayer(player) > 0)
+                // only reply to other players. 
+            {
+                _dialogs.SendChatReply(arr, "");
+            }
         }
 
         /// <summary>
