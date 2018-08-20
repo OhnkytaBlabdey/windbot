@@ -47,11 +47,16 @@ namespace WindBot.Game
 
             _select_hint = 0;
         }
-
+        /// <summary>
+        /// player serial in server is the same as local if bot goes first.
+        /// </summary>
+        /// <param name="player"></param>
+        /// <returns></returns>
         public int GetLocalPlayer(int player)
         {
             return _duel.IsFirst ? player : 1 - player;
         }
+        
 
         public void OnPacket(BinaryReader packet)
         {
@@ -242,6 +247,10 @@ namespace WindBot.Game
                 Connection.Send(CtosMessage.TimeConfirm);
         }
 
+        /// <summary>
+        /// save replay file
+        /// </summary>
+        /// <param name="packet"></param>
         private void OnReplay(BinaryReader packet)
         {
             /*byte[] replay =*/ packet.ReadToEnd();
