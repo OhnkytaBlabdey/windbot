@@ -53,6 +53,16 @@ namespace WindBot.Game
         }
 
         /// <summary>
+        /// AI chatting
+        /// 
+        /// </summary>
+        public void OnChat(string message,int player)
+        {
+            string[] arr = { "好了好了，我知道了。" };
+            _dialogs.SendChatReply(arr,null);
+        }
+
+        /// <summary>
         /// Called when the AI do the rock-paper-scissors.
         /// </summary>
         /// <returns>1 for Scissors, 2 for Rock, 3 for Paper.</returns>
