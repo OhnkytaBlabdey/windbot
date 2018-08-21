@@ -16,7 +16,7 @@ namespace WindBot.Game.AI.Decks
                 ;
             }
         }
-        private const bool FUDUJI = true;
+        private bool FUDUJI = true;
         public class CardId
         {
             public const int LavaGolem = 102380;
