@@ -103,6 +103,15 @@ namespace WindBot.Game.AI
             // Some AI need do something on draw
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        public virtual string OnChat(string message, int player)
+        {
+            // AI replies to other players.
+            return null;
+        }
+
         public virtual IList<ClientCard> OnSelectCard(IList<ClientCard> cards, int min, int max, int hint, bool cancelable)
         {
             // For overriding

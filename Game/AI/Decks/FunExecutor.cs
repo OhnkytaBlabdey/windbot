@@ -16,6 +16,7 @@ namespace WindBot.Game.AI.Decks
                 ;
             }
         }
+        private const bool FUDUJI = true;
         public class CardId
         {
             public const int LavaGolem = 102380;
@@ -82,6 +83,13 @@ namespace WindBot.Game.AI.Decks
             AddExecutor(ExecutorType.Activate, CardId.ChainBurst);
             AddExecutor(ExecutorType.Activate, CardId.SkullInvitation);
             AddExecutor(ExecutorType.Activate, CardId.ChainEnergy);
+        }
+
+        public override string OnChat(string message, int player)
+        {
+            if (FUDUJI) return message;
+            //goes by default.
+            return null;
         }
 
         public override bool OnSelectHand()
