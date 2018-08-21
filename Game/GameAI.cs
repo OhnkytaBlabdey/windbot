@@ -65,7 +65,14 @@ namespace WindBot.Game
                 string[] res = { Executor.OnChat(message, player) };
 
                 if (res != null && res.Count() > 0 && res[0] != null)
-                    _dialogs.SendChatReply(res,"");
+                {
+                    string[] tmp = new string[1];
+                    foreach(string s in res)
+                    {
+                        tmp[0] = s;
+                        _dialogs.SendChatReply(tmp, "");
+                    }
+                }
                 else
                     //goes by default.
                     _dialogs.SendChatReply(arr, "");

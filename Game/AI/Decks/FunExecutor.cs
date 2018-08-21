@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.IO;
+using System.Text;
 using WindBot;
 using WindBot.Game;
 using WindBot.Game.AI;
@@ -19,21 +20,28 @@ namespace WindBot.Game.AI.Decks
                 ;
             }
         }
+
         public class ChatManage
         {
             private bool FUDUJI = true;
-            private List<string> sentences = new List<string>(10);
+            private List<string> sentences = new List<string>();
             private string buf;
-            private int maxlength = 6;
-            private string logfile="logfile.txt";
+            private int maxlength;
+            private string logfile="./logfile.txt";
+            private List<string> cmdkeys = new List<string>();
 
             private void Save()
             {
-                StreamWriter sw = new StreamWriter(logfile);
+                //StreamWriter sw = new StreamWriter(logfile);
+                FileStream fs = new FileStream(logfile, FileMode.Append);
                 foreach (string sen in sentences)
                 {
-                    sw.WriteLine(sen);
+                    //sw.Write(sen+' ');
+                    byte[] data = Encoding.Default.GetBytes(sen + ' ');
+                    fs.Write(data, 0, data.Length);
                 }
+                //sw.Flush();
+                fs.Close();
             }
             public void Receive(string message)
             {
@@ -56,7 +64,9 @@ namespace WindBot.Game.AI.Decks
             }
             public ChatManage()
             {
-                maxlength = 100;
+                maxlength = 10;
+                cmdkeys.Add("repeat");
+                cmdkeys.Add("login");
             }
         }
         
