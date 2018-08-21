@@ -42,6 +42,19 @@ namespace WindBot.Game.AI
         }
 
         /// <summary>
+        /// Get the total ATK Monster of the player.
+        /// </summary>
+        public int GetTotalAttackingMonsterAttack(int player)
+        {
+            int atk = 0;
+            foreach (ClientCard m in Duel.Fields[player].GetMonsters())
+            {
+                if (m.IsAttack())
+                    atk += m.Attack;
+            }
+            return atk;
+        }
+        /// <summary>
         /// Get the best ATK or DEF power of the field.
         /// </summary>
         /// <param name="field">Bot or Enemy.</param>
@@ -350,7 +363,7 @@ namespace WindBot.Game.AI
 
         public bool IsChainTargetOnly(ClientCard card)
         {
-            return Duel.ChainTargets.Count == 1 && card.Equals(Duel.ChainTargets[0]);
+            return Duel.ChainTargetOnly.Count == 1 && card.Equals(Duel.ChainTargetOnly[0]);
         }
 
         public bool ChainContainsCard(int id)
