@@ -57,8 +57,9 @@ namespace WindBot.Game.AI.Decks
                 sentences.Add(message);
 
                 //interactions
-                if (cmdkeys.Contains(message))
+                foreach(string key in cmdkeys)
                 {
+                    if(message.Contains(key))
                     Response(message);
                 }
             }
@@ -67,13 +68,19 @@ namespace WindBot.Game.AI.Decks
             {
                 //if (FUDUJI) return message;
                 if (FUDUJI) {
-                    string[] res = { buf };
-                    return res;
+                    //string[] res = { buf };
+                    //return res;
+                    reply.Add("您输入了【"+buf+"】。");
                 }
 
                 //
-                if(reply.Count() > 0)
-                    return reply;
+                if (reply.Count() > 0)
+                {
+                    string[] res = reply.ToArray();
+                    //reply.CopyTo(res);
+                    reply.Clear();
+                    return res;
+                }
 
                 //default.
                 return null;
@@ -81,33 +88,37 @@ namespace WindBot.Game.AI.Decks
 
             public void Response(string message)
             {
+                //change state
                 if (message.Contains("repeat:"))
                 {
                     //
                     switch (message)
                     {
                         case "repeat:on":
-                            ;
+                            FUDUJI=true;
                             break;
                         case "repeat:off":
-                            ;
+                            FUDUJI=false;
                             break;
                         default:
-                            ;
+                            reply.Add("输入不合格式，请重新输入。");
                             break;
                     }
                     ;
                 }
                 else if(message.Contains("login"))
                 {
-                    //
+                    //user login
+                    //2 state
                     ;
                 }
                 else if (message.Contains("exit"))
                 {
-                    //
+                    //exit
+                    //call state
                     ;
                 }
+                //change state
                 else
                 {
                     //
