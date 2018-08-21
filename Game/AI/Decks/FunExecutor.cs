@@ -1,6 +1,7 @@
 ﻿using YGOSharp.OCGWrapper.Enums;
 using System.Collections.Generic;
 using System.Linq;
+using System.IO;
 using WindBot;
 using WindBot.Game;
 using WindBot.Game.AI;
@@ -21,16 +22,27 @@ namespace WindBot.Game.AI.Decks
         public class ChatManage
         {
             private bool FUDUJI = true;
-            private List<string> sentences;
+            private List<string> sentences = new List<string>(10);
             private string buf;
-            private int maxlength;
+            private int maxlength = 6;
+            private string logfile="logfile.txt";
 
+            private void Save()
+            {
+                StreamWriter sw = new StreamWriter(logfile);
+                foreach (string sen in sentences)
+                {
+                    sw.WriteLine(sen);
+                }
+            }
             public void Receive(string message)
             {
                 buf=message;
-                if (sentences.Count() > maxlength)
+                if (sentences.Count() >= maxlength)
                 {
-                    sentences.RemoveAt(0);
+                    Save();
+                    sentences.Clear();
+                    //sentences.Add(message);
                 }
                 sentences.Add(message);
             }

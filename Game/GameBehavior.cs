@@ -284,6 +284,7 @@ namespace WindBot.Game
         private void OnChat(BinaryReader packet)
         {
             int player = packet.ReadInt16();
+            //猜拳之前是??
             string message = packet.ReadUnicode(256);
             string myName = (player != 0) ? _room.Names[1] : _room.Names[0];
             string otherName = (player == 0) ? _room.Names[1] : _room.Names[0];
