@@ -29,6 +29,7 @@ namespace WindBot.Game.AI.Decks
             private int maxlength;
             private string logfile="./logfile.txt";
             private List<string> cmdkeys = new List<string>();
+            private List<string> reply = new List<string>();
 
             private void Save()
             {
@@ -43,6 +44,7 @@ namespace WindBot.Game.AI.Decks
                 //sw.Flush();
                 fs.Close();
             }
+
             public void Receive(string message)
             {
                 buf=message;
@@ -53,20 +55,72 @@ namespace WindBot.Game.AI.Decks
                     //sentences.Add(message);
                 }
                 sentences.Add(message);
+
+                //interactions
+                if (cmdkeys.Contains(message))
+                {
+                    Response(message);
+                }
             }
-            public string GetResult()
+
+            public IList<string> GetResult()
             {
                 //if (FUDUJI) return message;
-                if (FUDUJI) return buf;
+                if (FUDUJI) {
+                    string[] res = { buf };
+                    return res;
+                }
+
+                //
+                if(reply.Count() > 0)
+                    return reply;
 
                 //default.
                 return null;
             }
+
+            public void Response(string message)
+            {
+                if (message.Contains("repeat:"))
+                {
+                    //
+                    switch (message)
+                    {
+                        case "repeat:on":
+                            ;
+                            break;
+                        case "repeat:off":
+                            ;
+                            break;
+                        default:
+                            ;
+                            break;
+                    }
+                    ;
+                }
+                else if(message.Contains("login"))
+                {
+                    //
+                    ;
+                }
+                else if (message.Contains("exit"))
+                {
+                    //
+                    ;
+                }
+                else
+                {
+                    //
+                    ;
+                }
+            }
+
             public ChatManage()
             {
                 maxlength = 10;
-                cmdkeys.Add("repeat");
+                cmdkeys.Add("repeat:");
                 cmdkeys.Add("login");
+                cmdkeys.Add("exit");
             }
         }
         
@@ -123,12 +177,12 @@ namespace WindBot.Game.AI.Decks
 
         }
 
-        public override string OnChat(string message, int player)
+        public override IList<string> OnChat(string message, int player)
         {
             //TODO:resume message
             chat.Receive(message);
             //TODO:get result
-            string res = chat.GetResult();
+            IList<string> res = chat.GetResult();
             
             if (res != null) return res;
             //goes by default.

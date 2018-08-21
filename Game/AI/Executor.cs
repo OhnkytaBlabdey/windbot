@@ -106,7 +106,7 @@ namespace WindBot.Game.AI
         /// <summary>
         /// 
         /// </summary>
-        public virtual string OnChat(string message, int player)
+        public virtual IList<string> OnChat(string message, int player)
         {
             // AI replies to other players.
             return null;

@@ -62,7 +62,7 @@ namespace WindBot.Game
             if (Duel.GetLocalPlayer(player) > 0)
                 // only reply to other players. 
             {
-                string[] res = { Executor.OnChat(message, player) };
+                IList<string> res = Executor.OnChat(message, player) ;
 
                 if (res != null && res.Count() > 0 && res[0] != null)
                 {
