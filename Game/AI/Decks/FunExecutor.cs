@@ -57,11 +57,7 @@ namespace WindBot.Game.AI.Decks
                 sentences.Add(message);
 
                 //interactions
-                foreach(string key in cmdkeys)
-                {
-                    if(message.Contains(key))
-                    Response(message);
-                }
+                Response(message);
             }
 
             public IList<string> GetResult()
