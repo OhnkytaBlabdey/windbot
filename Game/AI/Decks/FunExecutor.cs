@@ -21,29 +21,39 @@ namespace WindBot.Game.AI.Decks
             }
         }
 
+
+        
         public class ChatManage
         {
-            /// <summary>
-            /// manage state
-            /// </summary>
-            public class State
+
+            public enum State
             {
+                Menu,
+                Setting,
+                Login,
+                Exit,
+                RepeatMode,
+                Back,
+                Restart,
+                Pause,
+                InGame,
+                Save,
+                Download
+            }
 
-
-                public /*virtual*/ void Receive(string message)
-                {
-                    ;
-                }
-
-                public /*virtual*/ void Apply()
-                {
-                    ;
-                }
-
-                public State()
-                {
-                    ;
-                }
+            public enum Resp
+            {
+                BackToSetting,
+                EnterSetting,
+                RepeatOn,
+                RepeatOff,
+                EnterLogin,
+                Exit,
+                Restart,
+                Pause,
+                Continue, // to InGame
+                Save,
+                Download
             }
 
 
@@ -54,7 +64,7 @@ namespace WindBot.Game.AI.Decks
             private string logfile="./logfile.txt";
             private List<string> cmdkeys = new List<string>();
             private List<string> reply = new List<string>();
-            private State state;
+            private StateMan stateman;
 
             private void Save()
             {
