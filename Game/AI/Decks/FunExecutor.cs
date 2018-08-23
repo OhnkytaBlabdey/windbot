@@ -43,6 +43,8 @@ namespace WindBot.Game.AI.Decks
 
             public enum Resp
             {
+                No,
+                EnterMenu,
                 BackToSetting,
                 EnterSetting,
                 RepeatOn,
@@ -64,7 +66,8 @@ namespace WindBot.Game.AI.Decks
             private string logfile="./logfile.txt";
             private List<string> cmdkeys = new List<string>();
             private List<string> reply = new List<string>();
-            private StateMan stateman;
+            //private StateMan stateman;
+            private State state;
 
             private void Save()
             {
@@ -117,48 +120,102 @@ namespace WindBot.Game.AI.Decks
                 return null;
             }
 
+            private void Talk(string s)
+            {
+                reply.Add(s);
+            }
+
             public void Response(string message)
             {
+                Resp resp = Resp.No;
+                switch (state)
+                {
+                    case State.RepeatMode:
+                            //
+                            switch (message)
+                            {
+                                case "repeat:on":
+                                    //FUDUJI = true;
+                                    state = State.Setting;
+                                    resp = Resp.RepeatOn;
+                                    break;
+                                case "repeat:off":
+                                    //FUDUJI = false;
+                                    state = State.Setting;
+                                    resp = Resp.RepeatOff;
+                                    break;
+                                default:
+                                    Talk("输入不合格式，请重新输入。");
+                                    resp = Resp.EnterSetting;
+                                    break;
+                            }
+                        break;
+                    case State.Menu:
+                        switch(message)
+                        {
+                            case "login":
+                                state = State.Login;
+                                resp = Resp.EnterLogin;
+                            //user login
+                            //2 state
+                            break;
+                            case "setting":
+                                state = State.Setting;
+                                resp = Resp.EnterSetting;
+                                break;
+                            case "exit":
+                                state = State.Exit;
+                                resp = Resp.Exit;
+                                break;
+                            default:
+                                Talk("输入不合格式，请重新输入。");
+                                resp = Resp.EnterMenu;
+                                break;
+                        }
+                        break;
+                    case State.Login:
+                        switch (message)
+                        {
+                            default:
+                                Talk("输入不合格式，请重新输入。");
+                                resp = Resp.EnterMenu;
+                                break;
+                        }
+                        break;
+                    //???
+                    default:
+                        switch (message)
+                        {
+                            default:
+                                reply.Add("输入不合格式，请重新输入。");
+                                resp = Resp.No;
+                                break;
+                        }
+                        break;
+                }
                 //change state
-                if (message.Contains("repeat:"))
+
+                switch (resp)
                 {
-                    //
-                    switch (message)
-                    {
-                        case "repeat:on":
-                            FUDUJI=true;
-                            break;
-                        case "repeat:off":
-                            FUDUJI=false;
-                            break;
-                        default:
-                            reply.Add("输入不合格式，请重新输入。");
-                            break;
-                    }
-                    ;
+                    case Resp.EnterSetting:
+
+                        break;
+                    case Resp.EnterLogin:
+                        break;
+                    case Resp.Exit:
+                        reply.Add("结束。");
+                        state = State.Exit;
+                        break;
+                    case Resp.No:
+                    default:
+                        break;
                 }
-                else if(message.Contains("login"))
-                {
-                    //user login
-                    //2 state
-                    ;
-                }
-                else if (message.Contains("exit"))
-                {
-                    //exit
-                    //call state
-                    ;
-                }
-                //change state
-                else
-                {
-                    //
-                    ;
-                }
+                //apply response
             }
 
             public ChatManage()
             {
+                state = State.Menu;
                 maxlength = 10;
                 cmdkeys.Add("repeat:");
                 cmdkeys.Add("login");
