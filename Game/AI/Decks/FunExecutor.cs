@@ -73,6 +73,9 @@ namespace WindBot.Game.AI.Decks
             private string pw;
             private string logfile="./logfile.txt";
             private List<string> reply = new List<string>();
+            private List<string>[] story = new List<string>[5];
+            private int chapter;
+            private int line;
             //private StateMan stateman;
             private State state;
 
@@ -296,6 +299,11 @@ namespace WindBot.Game.AI.Decks
                 state = State.Menu;
                 
                 maxlength = 10;
+
+                // initialize story
+
+                //connect chapters
+
             }
 
             ~ChatManage()
