@@ -23,6 +23,30 @@ namespace WindBot.Game.AI.Decks
 
         public class ChatManage
         {
+            /// <summary>
+            /// manage state
+            /// </summary>
+            public class State
+            {
+
+
+                public /*virtual*/ void Receive(string message)
+                {
+                    ;
+                }
+
+                public /*virtual*/ void Apply()
+                {
+                    ;
+                }
+
+                public State()
+                {
+                    ;
+                }
+            }
+
+
             private bool FUDUJI = true;
             private List<string> sentences = new List<string>();
             private string buf;
@@ -30,6 +54,7 @@ namespace WindBot.Game.AI.Decks
             private string logfile="./logfile.txt";
             private List<string> cmdkeys = new List<string>();
             private List<string> reply = new List<string>();
+            private State state;
 
             private void Save()
             {
@@ -128,6 +153,11 @@ namespace WindBot.Game.AI.Decks
                 cmdkeys.Add("repeat:");
                 cmdkeys.Add("login");
                 cmdkeys.Add("exit");
+            }
+
+            ~ChatManage()
+            {
+                Save();
             }
         }
         
