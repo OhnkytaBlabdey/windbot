@@ -31,6 +31,9 @@ namespace WindBot.Game.AI.Decks
                 Menu,
                 Setting,
                 Login,
+                NameLogin,
+                PasswordLogin,
+                Logined,
                 Exit,
                 RepeatMode,
                 Back,
@@ -51,6 +54,8 @@ namespace WindBot.Game.AI.Decks
                 RepeatOn,
                 RepeatOff,
                 EnterLogin,
+                GetName,
+                GetPw,
                 Exit,
                 Restart,
                 Pause,
@@ -64,8 +69,9 @@ namespace WindBot.Game.AI.Decks
             private List<string> sentences = new List<string>();
             private string buf;
             private int maxlength;
+            private string user;
+            private string pw;
             private string logfile="./logfile.txt";
-            private List<string> cmdkeys = new List<string>();
             private List<string> reply = new List<string>();
             //private StateMan stateman;
             private State state;
@@ -190,6 +196,13 @@ namespace WindBot.Game.AI.Decks
                         }
                         break;
                     case State.Login:
+                        resp = Resp.EnterLogin;
+                        break;
+                    case State.NameLogin:
+                        resp = Resp.GetName;
+                        break;
+                    case State.PasswordLogin:
+                        resp = Resp.GetPw;
                         break;
                     //???
                     default:
@@ -206,9 +219,30 @@ namespace WindBot.Game.AI.Decks
 
                 switch (resp)
                 {
+                    case Resp.GetName:
+                        state = State.PasswordLogin;
+                        string t=message.Substring(0,message.Length>12? 12: message.Length).ToLower();
+                        foreach(char c in t)
+                        {
+                            if (c >= 'a'&& c <= 'z')
+                            {
+                                user = user + c;
+                            }
+                        }
+                        logfile = "./[log][user]" + user + ".txt";
+                        Talk("Input your Password");
+                        break;
+                    case Resp.GetPw:
+                        state = State.Logined;
+                        Talk("1. Restart");
+                        Talk("2. Continue");
+                        pw = message;
+                        break;
                     case Resp.EnterLogin:
-                        state = State.Login;
+                        state = State.NameLogin;
                         Talk("\tLogin");
+                        Talk("Input your Name");
+                        Talk("(English letter and no longer than 12)");
                         break;
                     case Resp.BackToMenu:
                     case Resp.EnterMenu:
@@ -228,6 +262,7 @@ namespace WindBot.Game.AI.Decks
                         Talk("RepeatModeOff");
                         Talk("\tSetting:");
                         Talk("1. RepeatMode : " + (FUDUJI ? "On" : "Off") + " (repeat)");
+                        Talk("BackToMenu(back)");
                         break;
                     case Resp.RepeatOn:
                         state = State.Setting;
@@ -235,11 +270,13 @@ namespace WindBot.Game.AI.Decks
                         Talk("RepeatModeOn");
                         Talk("\tSetting:");
                         Talk("1. RepeatMode : " + (FUDUJI ? "On" : "Off") + " (repeat)");
+                        Talk("BackToMenu(back)");
                         break;
                     case Resp.EnterSetting:
                         state = State.Setting;
                         Talk("\tSetting:");
                         Talk("1. RepeatMode : " + (FUDUJI ? "On" : "Off") + " (repeat)");
+                        Talk("BackToMenu(back)");
                         break;
                     case Resp.SetRepeat:
                         state = State.RepeatMode;
@@ -259,9 +296,6 @@ namespace WindBot.Game.AI.Decks
                 state = State.Menu;
                 
                 maxlength = 10;
-                cmdkeys.Add("repeat:");
-                cmdkeys.Add("login");
-                cmdkeys.Add("exit");
             }
 
             ~ChatManage()
