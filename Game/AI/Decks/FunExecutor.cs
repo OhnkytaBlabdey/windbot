@@ -45,8 +45,9 @@ namespace WindBot.Game.AI.Decks
             {
                 No,
                 EnterMenu,
-                BackToSetting,
+                BackToMenu,
                 EnterSetting,
+                SetRepeat,
                 RepeatOn,
                 RepeatOff,
                 EnterLogin,
@@ -130,23 +131,38 @@ namespace WindBot.Game.AI.Decks
                 Resp resp = Resp.No;
                 switch (state)
                 {
+                    case State.Setting:
+                        switch (message)
+                        {
+                            case "back":
+                                resp = Resp.BackToMenu;
+                                break;
+                            case "repeat":
+                                resp = Resp.SetRepeat;
+                                break;
+                            default:
+                                reply.Add("输入不合格式，请重新输入。");
+                                resp = Resp.No;
+                                break;
+                        }
+                        break;
                     case State.RepeatMode:
                             //
                             switch (message)
                             {
                                 case "repeat:on":
                                     //FUDUJI = true;
-                                    state = State.Setting;
+                                    //state = State.Setting;
                                     resp = Resp.RepeatOn;
                                     break;
                                 case "repeat:off":
                                     //FUDUJI = false;
-                                    state = State.Setting;
+                                    //state = State.Setting;
                                     resp = Resp.RepeatOff;
                                     break;
                                 default:
                                     Talk("输入不合格式，请重新输入。");
-                                    resp = Resp.EnterSetting;
+                                    resp = Resp.SetRepeat;
                                     break;
                             }
                         break;
@@ -154,17 +170,17 @@ namespace WindBot.Game.AI.Decks
                         switch(message)
                         {
                             case "login":
-                                state = State.Login;
+                                //state = State.Login;
                                 resp = Resp.EnterLogin;
                             //user login
                             //2 state
                             break;
                             case "setting":
-                                state = State.Setting;
+                                //state = State.Setting;
                                 resp = Resp.EnterSetting;
                                 break;
                             case "exit":
-                                state = State.Exit;
+                                //state = State.Exit;
                                 resp = Resp.Exit;
                                 break;
                             default:
@@ -174,13 +190,6 @@ namespace WindBot.Game.AI.Decks
                         }
                         break;
                     case State.Login:
-                        switch (message)
-                        {
-                            default:
-                                Talk("输入不合格式，请重新输入。");
-                                resp = Resp.EnterMenu;
-                                break;
-                        }
                         break;
                     //???
                     default:
@@ -197,15 +206,47 @@ namespace WindBot.Game.AI.Decks
 
                 switch (resp)
                 {
-                    case Resp.EnterSetting:
-
-                        break;
                     case Resp.EnterLogin:
+                        state = State.Login;
+                        Talk("\tLogin");
+                        break;
+                    case Resp.BackToMenu:
+                    case Resp.EnterMenu:
+                        state = State.Menu;
+                        Talk("\tMenu");
+                        Talk("1. Options (setting)");
+                        Talk("2. Login (login)");
+                        Talk("3. Exit (exit)");
                         break;
                     case Resp.Exit:
-                        reply.Add("结束。");
                         state = State.Exit;
+                        reply.Add("结束。");
                         break;
+                    case Resp.RepeatOff:
+                        state = State.Setting;
+                        FUDUJI = false;
+                        Talk("RepeatModeOff");
+                        Talk("\tSetting:");
+                        Talk("1. RepeatMode : " + (FUDUJI ? "On" : "Off") + " (repeat)");
+                        break;
+                    case Resp.RepeatOn:
+                        state = State.Setting;
+                        FUDUJI = true;
+                        Talk("RepeatModeOn");
+                        Talk("\tSetting:");
+                        Talk("1. RepeatMode : " + (FUDUJI ? "On" : "Off") + " (repeat)");
+                        break;
+                    case Resp.EnterSetting:
+                        state = State.Setting;
+                        Talk("\tSetting:");
+                        Talk("1. RepeatMode : " + (FUDUJI ? "On" : "Off") + " (repeat)");
+                        break;
+                    case Resp.SetRepeat:
+                        state = State.RepeatMode;
+                        Talk("1. RepeatMode : " + (FUDUJI ? "On" : "Off") + " (repeat)");
+                        Talk("(repeat:on/off)");
+                        break;
+
                     case Resp.No:
                     default:
                         break;
@@ -216,6 +257,7 @@ namespace WindBot.Game.AI.Decks
             public ChatManage()
             {
                 state = State.Menu;
+                
                 maxlength = 10;
                 cmdkeys.Add("repeat:");
                 cmdkeys.Add("login");

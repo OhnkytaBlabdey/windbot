@@ -42,6 +42,9 @@ namespace WindBot.Game
         public void OnJoinGame()
         {
             _dialogs.SendWelcome();
+            //string[] fmt = { "{0}\n{1}\n{2}\n{3}\n" };
+            //string[] arr = {"\tMenu","1. Options (setting)","2. Login (login)","3. Exit (exit)"};
+            //_dialogs.SendChatReply(fmt,arr);
         }
 
         /// <summary>
