@@ -108,11 +108,14 @@ namespace WindBot.Game
             _messages.Add(GameMessage.PosChange, OnPosChange);
             _messages.Add(GameMessage.Chaining, OnChaining);
             _messages.Add(GameMessage.ChainEnd, OnChainEnd);
+
             _messages.Add(GameMessage.SortCard, OnCardSorting);
             _messages.Add(GameMessage.SortChain, OnChainSorting);
+
             _messages.Add(GameMessage.UpdateCard, OnUpdateCard);
             _messages.Add(GameMessage.UpdateData, OnUpdateData);
             _messages.Add(GameMessage.BecomeTarget, OnBecomeTarget);
+
             _messages.Add(GameMessage.SelectBattleCmd, OnSelectBattleCmd);
             _messages.Add(GameMessage.SelectCard, OnSelectCard);
             _messages.Add(GameMessage.SelectUnselect, OnSelectUnselectCard);
@@ -132,6 +135,7 @@ namespace WindBot.Game
             _messages.Add(GameMessage.AnnounceNumber, OnAnnounceNumber);
             _messages.Add(GameMessage.AnnounceRace, OnAnnounceRace);
             _messages.Add(GameMessage.AnnounceCardFilter, OnAnnounceCard);
+
             _messages.Add(GameMessage.RockPaperScissors, OnRockPaperScissors);
             _messages.Add(GameMessage.Equip, OnEquip);
             _messages.Add(GameMessage.Unequip, OnUnEquip);
