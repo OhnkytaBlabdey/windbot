@@ -114,7 +114,7 @@ namespace WindBot.Game
             _messages.Add(GameMessage.BecomeTarget, OnBecomeTarget);
 
             //以下
-            //2
+            //2 TODO
             _messages.Add(GameMessage.SortCard, OnCardSorting);
             _messages.Add(GameMessage.SortChain, OnChainSorting);
 
@@ -129,7 +129,7 @@ namespace WindBot.Game
             _messages.Add(GameMessage.SelectOption, OnSelectOption);
             _messages.Add(GameMessage.SelectPlace, OnSelectPlace);
             _messages.Add(GameMessage.SelectPosition, OnSelectPosition);
-            //2
+            //2 TODO
             _messages.Add(GameMessage.SelectSum, OnSelectSum);
             _messages.Add(GameMessage.SelectTribute, OnSelectTribute);
 
