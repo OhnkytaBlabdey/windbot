@@ -109,12 +109,14 @@ namespace WindBot.Game
             _messages.Add(GameMessage.Chaining, OnChaining);
             _messages.Add(GameMessage.ChainEnd, OnChainEnd);
 
-            _messages.Add(GameMessage.SortCard, OnCardSorting);
-            _messages.Add(GameMessage.SortChain, OnChainSorting);
-
             _messages.Add(GameMessage.UpdateCard, OnUpdateCard);
             _messages.Add(GameMessage.UpdateData, OnUpdateData);
             _messages.Add(GameMessage.BecomeTarget, OnBecomeTarget);
+
+            //以下
+            //2
+            _messages.Add(GameMessage.SortCard, OnCardSorting);
+            _messages.Add(GameMessage.SortChain, OnChainSorting);
 
             _messages.Add(GameMessage.SelectBattleCmd, OnSelectBattleCmd);
             _messages.Add(GameMessage.SelectCard, OnSelectCard);
@@ -127,15 +129,18 @@ namespace WindBot.Game
             _messages.Add(GameMessage.SelectOption, OnSelectOption);
             _messages.Add(GameMessage.SelectPlace, OnSelectPlace);
             _messages.Add(GameMessage.SelectPosition, OnSelectPosition);
+            //2
             _messages.Add(GameMessage.SelectSum, OnSelectSum);
             _messages.Add(GameMessage.SelectTribute, OnSelectTribute);
+
             _messages.Add(GameMessage.SelectYesNo, OnSelectYesNo);
             _messages.Add(GameMessage.AnnounceAttrib, OnAnnounceAttrib);
             _messages.Add(GameMessage.AnnounceCard, OnAnnounceCard);
             _messages.Add(GameMessage.AnnounceNumber, OnAnnounceNumber);
             _messages.Add(GameMessage.AnnounceRace, OnAnnounceRace);
+            //1 not implemented
             _messages.Add(GameMessage.AnnounceCardFilter, OnAnnounceCard);
-
+            //以上
             _messages.Add(GameMessage.RockPaperScissors, OnRockPaperScissors);
             _messages.Add(GameMessage.Equip, OnEquip);
             _messages.Add(GameMessage.Unequip, OnUnEquip);
