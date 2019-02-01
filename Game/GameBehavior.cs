@@ -1404,10 +1404,12 @@ namespace WindBot.Game
             packet.ReadByte(); // player
             int desc = packet.ReadInt32();
             int reply;
-            if (desc == 30)
-                reply = _ai.OnSelectBattleReplay() ? 1 : 0;
-            else
-                reply = _ai.OnSelectYesNo(desc) ? 1 : 0;
+            //if (desc == 30)
+            //    reply = _ai.OnSelectBattleReplay() ? 1 : 0;
+            //else
+            //    reply = _ai.OnSelectYesNo(desc) ? 1 : 0;
+            Console.WriteLine("YesNo?(0/1)");
+            reply = int.Parse(Console.ReadLine());
             Connection.Send(CtosMessage.Response, reply);
         }
 
