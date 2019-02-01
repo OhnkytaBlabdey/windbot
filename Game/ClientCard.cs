@@ -8,6 +8,8 @@ namespace WindBot.Game
 {
     public class ClientCard
     {
+        static int Count = 0;
+        public int GameId { get; private set; }
         public int Id { get; private set; }
         public NamedCard Data { get; private set; }
         public string Name { get; private set; }
@@ -69,6 +71,7 @@ namespace WindBot.Game
             ActionIndex = new int[16];
             ActionActivateIndex = new Dictionary<int, int>();
             Location = loc;
+            GameId = ++Count;
         }
 
         public void SetId(int id)
