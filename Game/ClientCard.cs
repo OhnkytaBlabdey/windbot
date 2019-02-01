@@ -74,6 +74,15 @@ namespace WindBot.Game
             GameId = ++Count;
         }
 
+        public static bool operator < (ClientCard a,ClientCard b)
+        {
+            return a.GameId < b.GameId;
+        }
+        public static bool operator > (ClientCard a,ClientCard b)
+        {
+            return a.GameId > b.GameId;
+        }
+
         public void SetId(int id)
         {
             if (Id == id) return;
