@@ -120,6 +120,7 @@
     <Compile Include="Game\ClientField.cs" />
     <Compile Include="Game\Deck.cs" />
     <Compile Include="Game\Duel.cs" />
+    <Compile Include="Game\ExternalsUtil.cs" />
     <Compile Include="Game\GameAI.cs" />
     <Compile Include="Game\GameBehavior.cs" />
     <Compile Include="Game\GameClient.cs" />
