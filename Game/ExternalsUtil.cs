@@ -13,5 +13,11 @@ namespace WindBot.Game
 
             return res;
         }
+        static public int Choose(int signature,int count)
+        {
+            int res = 0;
+
+            return res;
+        }
     }
 }
