@@ -7,13 +7,13 @@ using WindBot.Game.AI;
 
 namespace WindBot.Game.AI.Decks
 {
-    [Deck("FirstHand", "first_hand")]
-    class FirstHand : Executor
+    [Deck("FirstHand", "AI_FirstHand","Normal")]
+    class FirstHand : DefaultExecutor
     {
-        FirstHand(GameAI ai, Duel duel)
+        public FirstHand(GameAI ai, Duel duel)
             : base(ai, duel)
         {
-
+            GameBehavior.iscon = true;
         }
         public override int OnRockPaperScissors()
         {

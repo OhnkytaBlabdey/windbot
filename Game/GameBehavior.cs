@@ -16,6 +16,7 @@ namespace WindBot.Game
         public GameClient Game { get; private set; }
         public YGOClient Connection { get; private set; }
         public Deck Deck { get; private set; }
+        static public bool iscon=false;
 
         private GameAI _ai;
 
@@ -165,11 +166,14 @@ namespace WindBot.Game
             deck.Write(Deck.Cards.Count + Deck.ExtraCards.Count);
             deck.Write(Deck.SideCards.Count);
             foreach (NamedCard card in Deck.Cards)
-                deck.Write(card.Id);
+                if (card!=null)
+                { deck.Write(card.Id); }
             foreach (NamedCard card in Deck.ExtraCards)
-                deck.Write(card.Id);
+                if (card != null)
+                { deck.Write(card.Id); }
             foreach (NamedCard card in Deck.SideCards)
-                deck.Write(card.Id);
+                if (card != null)
+                { deck.Write(card.Id); }
             Connection.Send(deck);
             _ai.OnJoinGame();
         }
@@ -1403,14 +1407,17 @@ namespace WindBot.Game
         {
             packet.ReadByte(); // player
             int desc = packet.ReadInt32();
+            int reply;
+            if (iscon)
+            { 
             bool res = ExternalsUtil.Choose(2) == 1;
-            int reply = res?1:0;
-            //if (desc == 30)
-            //    reply = _ai.OnSelectBattleReplay() ? 1 : 0;
-            //else
-            //    reply = _ai.OnSelectYesNo(desc) ? 1 : 0;
-            //Console.WriteLine("YesNo?(0/1)");
-            //reply = int.Parse(Console.ReadLine());
+            reply = res?1:0;
+            }else {
+                if (desc == 30)
+                    reply = _ai.OnSelectBattleReplay() ? 1 : 0;
+                else
+                    reply = _ai.OnSelectYesNo(desc) ? 1 : 0;
+            }
             Connection.Send(CtosMessage.Response, reply);
         }
 

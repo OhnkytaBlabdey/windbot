@@ -6,10 +6,10 @@ using WindBot.Game;
 using WindBot.Game.AI;
 namespace WindBot.Game.AI.Decks
 {
-    [Deck("SecondHand", "second_hand")]
-    class SecondHand : Executor
+    [Deck("SecondHand", "AI_SecondHand")]
+    class SecondHand : DefaultExecutor
     {
-        SecondHand(GameAI ai, Duel duel)
+        public SecondHand(GameAI ai, Duel duel)
             : base(ai, duel)
         {
 
