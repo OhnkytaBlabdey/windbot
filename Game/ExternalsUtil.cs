@@ -9,6 +9,7 @@ namespace WindBot.Game
     {
         static public int Choose(int count)
         {
+            if (count == 1) return 1;
             Console.WriteLine(count);
             int res = int.Parse(Console.ReadLine());
             Logger.WriteLine("resp " + res);

@@ -1200,7 +1200,7 @@ namespace WindBot.Game
                         res = ((resp - B[i - 1] - 1) << 16) + i;
                         break;
                     }
-                    else if (resp <= B[i] && i > 0)
+                    else if (resp <= B[i] && i == 0)
                     {
                         res = (resp - 1) << 16;
                         break;
