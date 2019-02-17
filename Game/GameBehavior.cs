@@ -1153,7 +1153,7 @@ namespace WindBot.Game
                 for (int k = 0; k < 5; k++)
                 {
                     count = packet.ReadByte();
-                    Logger.WriteLine("k " + k + "count " + count);
+
                     A[k] += count;
                     for (int i = 0; i < count; ++i)
                     {
@@ -1165,7 +1165,7 @@ namespace WindBot.Game
                     }
                 }
                 count = packet.ReadByte();
-                Logger.WriteLine("k " + 5 + "count " + count);
+                
                 A[5] += count;
                 for (int i = 0; i < count; ++i)
                 {
@@ -1191,9 +1191,14 @@ namespace WindBot.Game
                 int resp = ExternalsUtil.Choose(B[7]);
                 for(int i = 0; i <= 7; i++)
                 {
+                    Logger.WriteLine("A[ " + i + "]= " + A[i]);
+                    Logger.WriteLine("B[ " + i + "]= " + B[i]);
+                }
+                for(int i = 0; i <= 7; i++)
+                {
                     if (resp <= B[i] && i > 0)
                     {
-                        res = (resp - B[i - 1]) << 16 + i;
+                        res = ((resp - B[i - 1]) << 16) + i;
                     }
                     else if (resp <= B[i] && i > 0)
                     {
