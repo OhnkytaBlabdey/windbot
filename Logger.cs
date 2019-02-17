@@ -6,7 +6,7 @@ namespace WindBot
     {
         public static void WriteLine(string message)
         {
-            Console.WriteLine("[" + DateTime.Now.ToString("yy-MM-dd HH:mm:ss") + "] " + message);
+            Console.Error.WriteLine("[" + DateTime.Now.ToString("yy-MM-dd HH:mm:ss") + "] " + message);
         }
         public static void DebugWriteLine(string message)
         {

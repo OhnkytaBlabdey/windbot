@@ -9,11 +9,8 @@ namespace WindBot.Game
     {
         static public int Choose(int count)
         {
-            int res = 0;
-
             Console.WriteLine(count);
-            int choice = int.Parse(Console.ReadLine());
-            res = choice;
+            int res = int.Parse(Console.ReadLine());
             return res;
         }
         static public int Choose(int signature,int count)

@@ -1142,13 +1142,106 @@ namespace WindBot.Game
 
         private void OnSelectIdleCmd(BinaryReader packet)
         {
-            packet.ReadByte(); // player
-
-            _duel.MainPhase = new MainPhase();
-            MainPhase main = _duel.MainPhase;
-            int count;
-            for (int k = 0; k < 5; k++)
+            if (iscon)
             {
+                int res = -1;
+                packet.ReadByte(); // player
+                Logger.WriteLine("OnSelectIdleCmd");
+                int count;
+                int[] A = new int[8];
+                int[] B = new int[8];
+                for (int k = 0; k < 5; k++)
+                {
+                    count = packet.ReadByte();
+                    Logger.WriteLine("k " + k + "count " + count);
+                    A[k] += count;
+                    for (int i = 0; i < count; ++i)
+                    {
+                        packet.ReadInt32(); // card id
+                        packet.ReadByte(); //controler
+                        packet.ReadByte(); //location
+                        packet.ReadByte(); //sequence
+                        //card.ActionIndex[k] = i;
+                    }
+                }
+                count = packet.ReadByte();
+                Logger.WriteLine("k " + 5 + "count " + count);
+                A[5] += count;
+                for (int i = 0; i < count; ++i)
+                {
+                    packet.ReadInt32(); // card id
+                    packet.ReadByte(); //controler
+                    packet.ReadByte(); //location
+                    packet.ReadByte(); //sequence
+                    packet.ReadInt32(); //desc
+
+                    //card.ActionIndex[5] = i;
+                    //if (card.ActionActivateIndex.ContainsKey(desc))
+                    //    card.ActionActivateIndex.Remove(desc);
+                    //card.ActionActivateIndex.Add(desc, i);
+                    //main.ActivableCards.Add(card);
+                    //main.ActivableDescs.Add(desc);
+                }
+
+                A[6] = packet.ReadByte() == 1 ? 1 : 0; //CanBattlePhase
+                A[7] = packet.ReadByte() == 1 ? 1 : 0; //CanEndPhase
+                packet.ReadByte(); // CanShuffle
+                B[0] = A[0];
+                for (int i = 1; i <= 7; i++) B[i] = A[i] + B[i - 1];
+                int resp = ExternalsUtil.Choose(B[7]);
+                for(int i = 0; i <= 7; i++)
+                {
+                    if (resp <= B[i] && i > 0)
+                    {
+                        res = (resp - B[i - 1]) << 16 + i;
+                    }
+                    else if (resp <= B[i] && i > 0)
+                    {
+                        res = resp << 16;
+                    }
+                }
+                Connection.Send(CtosMessage.Response, res);
+                return;
+            }
+            else
+            {
+                packet.ReadByte(); // player
+
+                _duel.MainPhase = new MainPhase();
+                MainPhase main = _duel.MainPhase;
+                int count;
+                for (int k = 0; k < 5; k++)
+                {
+                    count = packet.ReadByte();
+                    for (int i = 0; i < count; ++i)
+                    {
+                        packet.ReadInt32(); // card id
+                        int con = GetLocalPlayer(packet.ReadByte());
+                        CardLocation loc = (CardLocation)packet.ReadByte();
+                        int seq = packet.ReadByte();
+                        ClientCard card = _duel.GetCard(con, loc, seq);
+                        if (card == null) continue;
+                        card.ActionIndex[k] = i;
+                        switch (k)
+                        {
+                            case 0:
+                                main.SummonableCards.Add(card);
+                                break;
+                            case 1:
+                                main.SpecialSummonableCards.Add(card);
+                                break;
+                            case 2:
+                                main.ReposableCards.Add(card);
+                                break;
+                            case 3:
+                                main.MonsterSetableCards.Add(card);
+                                break;
+                            case 4:
+                                main.SpellSetableCards.Add(card);
+                                break;
+                        }
+                    }
+                }
                 count = packet.ReadByte();
                 for (int i = 0; i < count; ++i)
                 {
@@ -1156,53 +1249,24 @@ namespace WindBot.Game
                     int con = GetLocalPlayer(packet.ReadByte());
                     CardLocation loc = (CardLocation)packet.ReadByte();
                     int seq = packet.ReadByte();
+                    int desc = packet.ReadInt32();
+
                     ClientCard card = _duel.GetCard(con, loc, seq);
                     if (card == null) continue;
-                    card.ActionIndex[k] = i;
-                    switch (k)
-                    {
-                        case 0:
-                            main.SummonableCards.Add(card);
-                            break;
-                        case 1:
-                            main.SpecialSummonableCards.Add(card);
-                            break;
-                        case 2:
-                            main.ReposableCards.Add(card);
-                            break;
-                        case 3:
-                            main.MonsterSetableCards.Add(card);
-                            break;
-                        case 4:
-                            main.SpellSetableCards.Add(card);
-                            break;
-                    }
+                    card.ActionIndex[5] = i;
+                    if (card.ActionActivateIndex.ContainsKey(desc))
+                        card.ActionActivateIndex.Remove(desc);
+                    card.ActionActivateIndex.Add(desc, i);
+                    main.ActivableCards.Add(card);
+                    main.ActivableDescs.Add(desc);
                 }
+
+                main.CanBattlePhase = packet.ReadByte() != 0;
+                main.CanEndPhase = packet.ReadByte() != 0;
+                packet.ReadByte(); // CanShuffle
+
+                Connection.Send(CtosMessage.Response, _ai.OnSelectIdleCmd(main).ToValue());
             }
-            count = packet.ReadByte();
-            for (int i = 0; i < count; ++i)
-            {
-                packet.ReadInt32(); // card id
-                int con = GetLocalPlayer(packet.ReadByte());
-                CardLocation loc = (CardLocation)packet.ReadByte();
-                int seq = packet.ReadByte();
-                int desc = packet.ReadInt32();
-
-                ClientCard card = _duel.GetCard(con, loc, seq);
-                if (card == null) continue;
-                card.ActionIndex[5] = i;
-                if (card.ActionActivateIndex.ContainsKey(desc))
-                    card.ActionActivateIndex.Remove(desc);
-                card.ActionActivateIndex.Add(desc, i);
-                main.ActivableCards.Add(card);
-                main.ActivableDescs.Add(desc);
-            }
-
-            main.CanBattlePhase = packet.ReadByte() != 0;
-            main.CanEndPhase = packet.ReadByte() != 0;
-            packet.ReadByte(); // CanShuffle
-
-            Connection.Send(CtosMessage.Response, _ai.OnSelectIdleCmd(main).ToValue());
         }
 
         private void OnSelectOption(BinaryReader packet)
