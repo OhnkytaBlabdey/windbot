@@ -132,7 +132,7 @@ namespace WindBot.Game
             _messages.Add(GameMessage.SelectPosition, OnSelectPosition);
             //2 TODO
             _messages.Add(GameMessage.SelectSum, OnSelectSum);
-            _messages.Add(GameMessage.SelectTribute, OnSelectTribute);
+            _messages.Add(GameMessage.SelectTribute, OnSelectTribute);//easier
 
             _messages.Add(GameMessage.SelectYesNo, OnSelectYesNo);
             _messages.Add(GameMessage.AnnounceAttrib, OnAnnounceAttrib);
@@ -379,6 +379,7 @@ namespace WindBot.Game
 
             string otherName = _room.Position == 0 ? _room.Names[1] : _room.Names[0];
             string textResult = (result == 2 ? "Draw" : result == 0 ? "Win" : "Lose");
+            Console.WriteLine(result == 2 ? "draw" : result == 0 ? "win" : "lose");
             Logger.DebugWriteLine("Duel finished against " + otherName + ", result: " + textResult);
         }
 
@@ -964,7 +965,7 @@ namespace WindBot.Game
 
         private void InternalOnSelectCard(BinaryReader packet, Func<IList<ClientCard>, int, int, int, bool, IList<ClientCard>> func)
         {
-            if (iscon && !iscon)
+            if (iscon && !iscon) //not completed
             {
                 packet.ReadByte(); // player
                 bool cancelable = packet.ReadByte() != 0;
