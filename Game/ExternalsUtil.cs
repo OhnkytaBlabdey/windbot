@@ -11,6 +11,7 @@ namespace WindBot.Game
         {
             Console.WriteLine(count);
             int res = int.Parse(Console.ReadLine());
+            Logger.WriteLine("resp " + res);
             return res;
         }
         static public int Choose(int signature,int count)

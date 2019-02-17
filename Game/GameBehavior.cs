@@ -1188,23 +1188,25 @@ namespace WindBot.Game
                 packet.ReadByte(); // CanShuffle
                 B[0] = A[0];
                 for (int i = 1; i <= 7; i++) B[i] = A[i] + B[i - 1];
+                
+                for(int i = 0; i <= 7; i++) Logger.WriteLine("A[ " + i + " ]= " + A[i]);
+                for(int i = 0; i <= 7; i++) Logger.WriteLine("B[ " + i + " ]= " + B[i]);
                 int resp = ExternalsUtil.Choose(B[7]);
-                for(int i = 0; i <= 7; i++)
-                {
-                    Logger.WriteLine("A[ " + i + "]= " + A[i]);
-                    Logger.WriteLine("B[ " + i + "]= " + B[i]);
-                }
-                for(int i = 0; i <= 7; i++)
+                // int index, action;
+                for (int i = 0; i <= 7; i++)
                 {
                     if (resp <= B[i] && i > 0)
                     {
-                        res = ((resp - B[i - 1]) << 16) + i;
+                        res = ((resp - B[i - 1] - 1) << 16) + i;
+                        break;
                     }
                     else if (resp <= B[i] && i > 0)
                     {
-                        res = resp << 16;
+                        res = (resp - 1) << 16;
+                        break;
                     }
                 }
+                Logger.WriteLine("res " + res);
                 Connection.Send(CtosMessage.Response, res);
                 return;
             }
