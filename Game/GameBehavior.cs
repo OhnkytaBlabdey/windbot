@@ -371,7 +371,7 @@ namespace WindBot.Game
 
             Logger.DebugWriteLine("Duel started: " + _room.Names[0] + " versus " + _room.Names[1]);
             _ai.OnStart();
-            ExternalsUtil.init();
+            if(iscon) ExternalsUtil.init();
         }
 
         private void OnWin(BinaryReader packet)
@@ -383,7 +383,7 @@ namespace WindBot.Game
             //Console.WriteLine("0");
             //Console.Out.Flush();
             Logger.WriteLine(result == 2 ? "draw" : result == 0 ? "win" : "lose");
-            ExternalsUtil.Choose(0);
+            if (iscon) ExternalsUtil.Choose(0);
             
             Logger.DebugWriteLine("Duel finished against " + otherName + ", result: " + textResult);
         }
