@@ -13,6 +13,7 @@ namespace WindBot.Game
             process.StartInfo.FileName = "ans.exe";
             process.StartInfo.UseShellExecute = false;
             process.StartInfo.RedirectStandardOutput = true;
+            process.StartInfo.RedirectStandardError = true;
             process.StartInfo.RedirectStandardInput = true;
 
             process.Start();
@@ -20,6 +21,11 @@ namespace WindBot.Game
 
         static public void release()
         {
+            if (!process.StandardError.EndOfStream)
+            {
+                string msg = process.StandardError.ReadToEnd();
+                Logger.WriteLine(msg);
+            }
             process.Close();
         }
         static public int Choose(int count)
@@ -33,7 +39,16 @@ namespace WindBot.Game
             if (count == 1) return 1;
             //Console.WriteLine(count);
             //Console.Out.Flush();
-            process.StandardInput.WriteLine(count);
+            try
+            {
+                process.StandardInput.WriteLine(count);
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLine(ex.StackTrace);
+                throw (ex);
+            }
+            
             string str;
             int ct = 0;
             while (process.StandardOutput.EndOfStream)

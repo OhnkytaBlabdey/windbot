@@ -382,8 +382,9 @@ namespace WindBot.Game
             string textResult = (result == 2 ? "Draw" : result == 0 ? "Win" : "Lose");
             //Console.WriteLine("0");
             //Console.Out.Flush();
-            ExternalsUtil.Choose(0);
             Logger.WriteLine(result == 2 ? "draw" : result == 0 ? "win" : "lose");
+            ExternalsUtil.Choose(0);
+            
             Logger.DebugWriteLine("Duel finished against " + otherName + ", result: " + textResult);
         }
 
