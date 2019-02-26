@@ -16,8 +16,11 @@ namespace WindBot.Game
 
             public Choser(int nn) {
                 ct = 0; exit = false;n = nn;
+                chosen = new List<int>(n);
             }
-            public Choser() { n = 0; ct = 0; exit = false; }
+            public Choser():this(0)
+            {
+            }
             public void SetN(int n1) { n = n1; ct = 0; }
             
             private void Dump()
@@ -29,11 +32,11 @@ namespace WindBot.Game
 
             public byte[] GetResult()
             {
-                List<byte> res = new List<byte>();
+                List<byte> res = new List<byte>(n);
                 res.Add((byte)chosen.Count);
-                foreach(int i in chosen)
+                foreach (int i in chosen)
                 {
-                    res.Add((byte)i);
+                    res.Add((byte)(i - 1));
                 }
                 return res.ToArray();
             }
@@ -83,6 +86,7 @@ namespace WindBot.Game
         static Choser choser;
         static public void Init()
         {
+            choser = new Choser();
             process = new Process();
             process.StartInfo.FileName = "ans.exe";
             process.StartInfo.UseShellExecute = false;
@@ -101,6 +105,7 @@ namespace WindBot.Game
                 Logger.WriteLine(msg);
             }
             process.Close();
+            choser.Reset();
         }
         static private int C(int n,int m)
         {
@@ -117,6 +122,7 @@ namespace WindBot.Game
             int count = 0;
             for (int i = m; i <= M; i++) count += C(n, i);
             int index = Choose(count);
+            choser.Reset();
             choser.SetN(n);
             choser.Select(m, M, index);
             return choser.GetResult();

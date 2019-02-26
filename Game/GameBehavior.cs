@@ -883,8 +883,8 @@ namespace WindBot.Game
                     //battle.AttackableCards.Add(card);
                 }
 
-                A[2] = packet.ReadByte() == 1 ? 1 : 0; //CanMainPhaseTwo
-                A[3] = packet.ReadByte() == 1 ? 1 : 0; //CanEndPhase
+                A[2] = packet.ReadByte() == 1 ? 1 : 0; //CanMainPhaseTwo        2
+                A[3] = packet.ReadByte() == 1 ? 1 : 0; //CanEndPhase            3
                 int res = -1;
 
                 B[0] = A[0];
@@ -972,6 +972,7 @@ namespace WindBot.Game
         {
             if (iscon) //not completed
             {
+                Logger.WriteLine("InternalOnSelectCard");
                 packet.ReadByte(); // player
                 bool cancelable = packet.ReadByte() != 0;
                 int min = packet.ReadByte();
@@ -985,12 +986,8 @@ namespace WindBot.Game
                     packet.ReadByte(); //location
                     packet.ReadByte(); //sequence
                     packet.ReadByte(); // position
-
-                    //cards.Add(card);
                 }
-
                 _select_hint = 0;
-
                 // do not need cancel
                 //if (selected.Count == 0 && cancelable)
                 //{
@@ -1000,7 +997,6 @@ namespace WindBot.Game
 
                 // TODO:
                 byte[] result = ExternalsUtil.SelectCard(count, min, max);
-
                 BinaryWriter reply = GamePacketFactory.Create(CtosMessage.Response);
                 reply.Write(result);
                 Connection.Send(reply);
