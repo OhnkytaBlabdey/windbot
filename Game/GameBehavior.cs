@@ -371,7 +371,7 @@ namespace WindBot.Game
 
             Logger.DebugWriteLine("Duel started: " + _room.Names[0] + " versus " + _room.Names[1]);
             _ai.OnStart();
-            if(iscon) ExternalsUtil.init();
+            if(iscon) ExternalsUtil.Init();
         }
 
         private void OnWin(BinaryReader packet)
@@ -970,14 +970,13 @@ namespace WindBot.Game
 
         private void InternalOnSelectCard(BinaryReader packet, Func<IList<ClientCard>, int, int, int, bool, IList<ClientCard>> func)
         {
-            if (iscon && !iscon) //not completed
+            if (iscon) //not completed
             {
                 packet.ReadByte(); // player
                 bool cancelable = packet.ReadByte() != 0;
                 int min = packet.ReadByte();
                 int max = packet.ReadByte();
 
-                IList<ClientCard> cards = new List<ClientCard>();
                 int count = packet.ReadByte();
                 for (int i = 0; i < count; ++i)
                 {
@@ -990,7 +989,6 @@ namespace WindBot.Game
                     //cards.Add(card);
                 }
 
-                IList<ClientCard> selected = func(cards, min, max, _select_hint, cancelable);
                 _select_hint = 0;
 
                 // do not need cancel
@@ -1001,22 +999,7 @@ namespace WindBot.Game
                 //}
 
                 // TODO:
-                byte[] result = new byte[selected.Count + 1];
-                result[0] = (byte)selected.Count;
-                for (int i = 0; i < selected.Count; ++i)
-                {
-                    int id = 0;
-                    for (int j = 0; j < count; ++j)
-                    {
-                        if (cards[j] == null) continue;
-                        if (cards[j].Equals(selected[i]))
-                        {
-                            id = j;
-                            break;
-                        }
-                    }
-                    result[i + 1] = (byte)id;
-                }
+                byte[] result = ExternalsUtil.SelectCard(count, min, max);
 
                 BinaryWriter reply = GamePacketFactory.Create(CtosMessage.Response);
                 reply.Write(result);

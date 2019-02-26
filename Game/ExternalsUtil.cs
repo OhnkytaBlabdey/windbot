@@ -20,14 +20,14 @@ namespace WindBot.Game
             public Choser() { n = 0; ct = 0; exit = false; }
             public void SetN(int n1) { n = n1; ct = 0; }
             
-            void Dump()
+            private void Dump()
             {
                 Logger.WriteLine(chosen.ToString());
                 //printf("[ %2d ]\t", ct);
                 //for (vector<int>::iterator it = chosen.begin(); it != chosen.end(); ++it) printf("%2d ", *it); putchar('\n');
             }
 
-            byte[] GetResult()
+            public byte[] GetResult()
             {
                 List<byte> res = new List<byte>();
                 res.Add((byte)chosen.Count);
@@ -80,7 +80,8 @@ namespace WindBot.Game
             }
         }
         static Process process;
-        static public void init()
+        static Choser choser;
+        static public void Init()
         {
             process = new Process();
             process.StartInfo.FileName = "ans.exe";
@@ -92,7 +93,7 @@ namespace WindBot.Game
             process.Start();
         }
 
-        static public void release()
+        static public void Release()
         {
             if (!process.StandardError.EndOfStream)
             {
@@ -101,12 +102,31 @@ namespace WindBot.Game
             }
             process.Close();
         }
+        static private int C(int n,int m)
+        {
+            int resu = 1, resd = 1;
+            for(int i = 1; i <= m; ++i)
+            {
+                resu *= n + 1 - i;
+                resd *= i;
+            }
+            return resu / resd;
+        }
+        static public byte[] SelectCard(int n,int m,int M)
+        {
+            int count = 0;
+            for (int i = m; i <= M; i++) count += C(n, i);
+            int index = Choose(count);
+            choser.SetN(n);
+            choser.Select(m, M, index);
+            return choser.GetResult();
+        }
         static public int Choose(int count)
         {
             if (count == 0)
             {
                 process.StandardInput.WriteLine(0);
-                release();
+                Release();
                 return 0;
             }
             if (count == 1) return 1;
