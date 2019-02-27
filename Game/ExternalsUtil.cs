@@ -135,7 +135,7 @@ namespace WindBot.Game
             int count = 0;
             for (int i = m; i <= M; i++) count += C(n, i);
             int index = Choose(count);
-            //choser.Reset();
+            choser.Reset();
             choser.SetN(n);
             choser.Select(m, M, index);
             byte[] res=choser.GetResult();
