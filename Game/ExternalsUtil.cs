@@ -8,7 +8,7 @@ namespace WindBot.Game
     {
         class Choser
         {
-            private List<int> chosen;
+            private List<byte> chosen;
             private int n;
             private int ct;
             private int m_index;
@@ -16,29 +16,33 @@ namespace WindBot.Game
 
             public Choser(int nn) {
                 ct = 0; exit = false;n = nn;
-                chosen = new List<int>(n);
+                chosen = new List<byte>(n);
             }
-            public Choser():this(0)
-            {
-            }
+            public Choser():this(0){}
             public void SetN(int n1) { n = n1; ct = 0; }
             
             private void Dump()
             {
-                Logger.WriteLine(chosen.ToString());
+                for(int i = 0; i < chosen.Count; ++i)
+                {
+                    Logger.WriteLine(i + " : " + chosen[i]);
+                }
+                //Logger.WriteLine(chosen.ToString());
                 //printf("[ %2d ]\t", ct);
                 //for (vector<int>::iterator it = chosen.begin(); it != chosen.end(); ++it) printf("%2d ", *it); putchar('\n');
             }
 
             public byte[] GetResult()
             {
-                List<byte> res = new List<byte>(n);
-                res.Add((byte)chosen.Count);
-                foreach (int i in chosen)
+                byte[] res = new byte[chosen.Count + 1];
+                res[0] = (byte)chosen.Count;
+                Logger.WriteLine("get res count :" + chosen.Count);
+                for (int i = 0; i < chosen.Count; ++i)
                 {
-                    res.Add((byte)(i - 1));
+                    res[i + 1] = --chosen[i];
+                    Logger.WriteLine(i + " : " + res[i + 1]);
                 }
-                return res.ToArray();
+                return (byte[])res.Clone();
             }
             public void Reset()
             {
@@ -51,7 +55,7 @@ namespace WindBot.Game
                 exit = false;
                 ct = 0;
             }
-            private void Sel(int x, int m, int M, bool isindex = false)
+            private void Sel(byte x, int m, int M, bool isindex = false)
             {
                 if (exit || chosen.Count > M || (n + 1 - x + chosen.Count) < m) return;
                 if (x == n + 1)
@@ -69,11 +73,15 @@ namespace WindBot.Game
                     return;
                 }
                 //not select x
-                Sel(x + 1, m, M, isindex);
+                x++;
+                Sel(x, m, M, isindex);
+                x--;
                 chosen.Add(x);
                 //select x
-                Sel(x + 1, m, M, isindex);
+                x++;
+                Sel(x, m, M, isindex);
                 // restore
+                x--;
                 chosen.Remove(x);
             }
             public void Select(int m, int M)
@@ -122,10 +130,11 @@ namespace WindBot.Game
             int count = 0;
             for (int i = m; i <= M; i++) count += C(n, i);
             int index = Choose(count);
-            choser.Reset();
+            //choser.Reset();
             choser.SetN(n);
             choser.Select(m, M, index);
-            return choser.GetResult();
+            byte[] res=choser.GetResult();
+            return res;
         }
         static public int Choose(int count)
         {

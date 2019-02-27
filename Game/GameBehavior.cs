@@ -997,6 +997,10 @@ namespace WindBot.Game
 
                 // TODO:
                 byte[] result = ExternalsUtil.SelectCard(count, min, max);
+                for (int i = 0; i < result.Length; ++i)
+                {
+                    Logger.WriteLine("res: " + i + " : " + result[i]);
+                }
                 BinaryWriter reply = GamePacketFactory.Create(CtosMessage.Response);
                 reply.Write(result);
                 Connection.Send(reply);
