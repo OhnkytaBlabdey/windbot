@@ -34,15 +34,18 @@ namespace WindBot.Game
 
             public byte[] GetResult()
             {
+                Logger.WriteLine("dump again.");
+                Dump();
                 byte[] res = new byte[chosen.Count + 1];
                 res[0] = (byte)chosen.Count;
                 Logger.WriteLine("get res count :" + chosen.Count);
-                for (int i = 0; i < chosen.Count; ++i)
+                int ct = 0;
+                foreach(byte i in chosen)
                 {
-                    res[i + 1] = --chosen[i];
-                    Logger.WriteLine(i + " : " + res[i + 1]);
+                    res[++ct] = (byte)(i - 1);
+                    Logger.WriteLine("add " + ct + " : " + i);
                 }
-                return (byte[])res.Clone();
+                return res;
             }
             public void Reset()
             {
@@ -75,11 +78,13 @@ namespace WindBot.Game
                 //not select x
                 x++;
                 Sel(x, m, M, isindex);
+                if (exit) return;
                 x--;
                 chosen.Add(x);
                 //select x
                 x++;
                 Sel(x, m, M, isindex);
+                if (exit) return;
                 // restore
                 x--;
                 chosen.Remove(x);
