@@ -1249,6 +1249,7 @@ namespace WindBot.Game
                 packet.ReadByte(); // player
                 /*int type = */packet.ReadInt16();
                 int quantity = packet.ReadInt16();
+                Logger.WriteLine("needed : " + quantity);
                 // TODO: ?
 
                 //IList<ClientCard> cards = new List<ClientCard>();
@@ -1261,7 +1262,7 @@ namespace WindBot.Game
                     /*CardLocation loc = (CardLocation)*/packet.ReadByte();
                     /*int seq = */packet.ReadByte();
                     int num = packet.ReadInt16();
-                    Logger.WriteLine("num of" + i + " : " + num);
+                    Logger.WriteLine("num of " + i + " : " + num);
                     //cards.Add(_duel.GetCard(player, loc, seq));
                     counters.Add(num);
                 }
@@ -1273,12 +1274,12 @@ namespace WindBot.Game
                 int lefted = 0;
                 foreach (int ct in counters) lefted += ct;
                 int index = 0;
-                for (int n = quantity; n > 0 && index < counters.Count; index++)
+                for (int needed = quantity; needed > 0 && index < counters.Count; index++)
                 {
                     if (counters[index] > 0)
                     {
                         lefted -= counters[index];
-                        int low = n - lefted;  // select at least : required - lefted
+                        int low = needed - lefted;  // select at least : required - lefted
                         int high = counters[index]; // select at most
                         int ct;
                         if(low <= 0)
@@ -1291,7 +1292,18 @@ namespace WindBot.Game
                             if (high > low) ct = low + ExternalsUtil.Choose(high - low);
                             else ct = low;
                         }
-                        n -= ct;
+                        //needed -= ct;
+                        if (needed >= ct)
+                        {
+                            needed -= ct;
+                            used[index] = ct;
+                        }
+                        else
+                        {
+                            used[index] = needed;
+                            needed = 0;
+                        }
+                        
                     }
                 }
                 // modify end
