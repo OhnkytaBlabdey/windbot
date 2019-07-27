@@ -1261,6 +1261,7 @@ namespace WindBot.Game
                     /*CardLocation loc = (CardLocation)*/packet.ReadByte();
                     /*int seq = */packet.ReadByte();
                     int num = packet.ReadInt16();
+                    Logger.WriteLine("num of" + i + " : " + num);
                     //cards.Add(_duel.GetCard(player, loc, seq));
                     counters.Add(num);
                 }
@@ -1276,12 +1277,13 @@ namespace WindBot.Game
                 {
                     if (counters[index] > 0)
                     {
-                        int low = n - lefted;
-                        int high = counters[index];
+                        lefted -= counters[index];
+                        int low = n - lefted;  // select at least : required - lefted
+                        int high = counters[index]; // select at most
                         int ct;
-                        if(low < 0)
+                        if(low <= 0)
                         {
-                            low = 0;
+                            // low = 0;
                             ct = ExternalsUtil.Choose(counters[index]);
                         }
                         else
@@ -1289,9 +1291,7 @@ namespace WindBot.Game
                             if (high > low) ct = low + ExternalsUtil.Choose(high - low);
                             else ct = low;
                         }
-                        
                         n -= ct;
-                        lefted -= counters[index];
                     }
                 }
                 // modify end
