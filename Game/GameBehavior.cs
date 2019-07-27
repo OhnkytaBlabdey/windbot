@@ -1268,13 +1268,30 @@ namespace WindBot.Game
                 //IList<int> used = _ai.OnSelectCounter(type, quantity, cards, counters);
                 int[] used = new int[counters.Count * 2];
                 // modify begin
+                // must meet the quantity condition !
+                int lefted = 0;
+                foreach (int ct in counters) lefted += ct;
                 int index = 0;
                 for (int n = quantity; n > 0 && index < counters.Count; index++)
                 {
                     if (counters[index] > 0)
                     {
-                        int ct = ExternalsUtil.Choose(counters[index]);
+                        int low = n - lefted;
+                        int high = counters[index];
+                        int ct;
+                        if(low < 0)
+                        {
+                            low = 0;
+                            ct = ExternalsUtil.Choose(counters[index]);
+                        }
+                        else
+                        {
+                            if (high > low) ct = low + ExternalsUtil.Choose(high - low);
+                            else ct = low;
+                        }
+                        
                         n -= ct;
+                        lefted -= counters[index];
                     }
                 }
                 // modify end
