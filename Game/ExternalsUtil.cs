@@ -167,7 +167,7 @@ namespace WindBot.Game
             while (process.StandardOutput.EndOfStream)
             {
                 ct++;
-                if(ct>10)
+                if(ct>100)
                 {
                     Console.WriteLine("fail to read");
                     throw new Exception("...");
