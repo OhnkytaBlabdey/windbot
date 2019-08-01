@@ -1257,12 +1257,13 @@ namespace WindBot.Game
                 packet.ReadByte(); // player
                 int type = packet.ReadInt16();
                 int quantity = packet.ReadInt16();
-                Logger.WriteLine("type : " + type);
-                Logger.WriteLine("needed : " + quantity);
+                Logger.WriteLine("type-counter : " + type);
+                Logger.WriteLine("needed-counters : " + quantity);
                 // TODO: ?
 
                 IList<int> counters;
                 int count = packet.ReadByte();
+                Logger.WriteLine("count-cards : " + count);
                 counters = new int[count];
                 for (int i = 0; i < count; ++i)
                 {
@@ -1271,12 +1272,12 @@ namespace WindBot.Game
                     packet.ReadByte();
                     packet.ReadByte();
                     int num = packet.ReadInt16();
-                    Logger.WriteLine("counter amount of " + i + " th card : " + num);
+                    Logger.WriteLine("counters on the " + i + " th card : " + num);
                     //counters.Add(num);
                     counters[i] = num;
                 }
 
-                int[] used = new int[count * 2];
+                int[] used = new int[count];
                 // modify begin
                 // must meet the quantity condition !
                 int lefted = 0;
@@ -1294,12 +1295,23 @@ namespace WindBot.Game
                         if(low <= 0)
                         {
                             // low = 0;
+                            Logger.WriteLine("the " + index + "th card's counters are free.");
                             ct = ExternalsUtil.Choose(counters[index]);
+                            Logger.WriteLine("the" + index + "th card's result : " + ct);
                         }
                         else
                         {
-                            if (high > low) ct = low + ExternalsUtil.Choose(high - low);
-                            else ct = low;
+                            if (high > low)
+                            {
+                                Logger.WriteLine("the " + index + "th card needs to commit " + low + " ~ " + high + "counters.");
+                                ct = low + ExternalsUtil.Choose(high - low);
+                                Logger.WriteLine("the" + index + "th card's result : " + ct);
+                            }
+                            else
+                            {
+                                ct = low;
+                                Logger.WriteLine("the " + index + "th card's counters are all needed.");
+                            }
                         }
 
                         if (needed >= ct)
@@ -1312,18 +1324,22 @@ namespace WindBot.Game
                             used[index] = needed;
                             needed = 0;
                         }
+                        Logger.WriteLine("the" + index + "th card's final-result : " + used[index]);
+                    } else
+                    {
+                        Logger.WriteLine("skip the " + index + "th card.");
                     }
                 }
                 // modify end
-                byte[] result = new byte[used.Length * 2];
-                for (int i = 0; i < used.Length; ++i)
+                byte[] result = new byte[count * 2];
+                for (int i = 0; i < count; ++i)
                 {
-                    result[i * 2] = (byte)(used[i] & 0xff);
+                    result[i * 2] = (byte)(used[i] & 0x00ff);
                     result[i * 2 + 1] = (byte)(used[i] >> 8);
                 }
                 for (int i = 0; i < result.Length; ++i)
                 {
-                    Logger.WriteLine("res: " + i + " : " + result[i]);
+                    Logger.WriteLine("select-counter-res " + i + " : " + result[i]);
                 }
                 BinaryWriter reply = GamePacketFactory.Create(CtosMessage.Response);
                 reply.Write(result);
@@ -1466,7 +1482,7 @@ namespace WindBot.Game
                         break;
                     }
                 }
-                Logger.WriteLine("res " + res);
+                Logger.WriteLine("idle-res " + res);
                 Connection.Send(CtosMessage.Response, res);
                 return;
             }
@@ -1595,7 +1611,7 @@ namespace WindBot.Game
 
             if (iscon)
             {
-                // TODO:
+                // TODO: encoding
                 int selected = _ai.OnSelectPlace(_select_hint, player, location, filter);
                 _select_hint = 0;
 

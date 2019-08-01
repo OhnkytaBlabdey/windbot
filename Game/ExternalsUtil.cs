@@ -167,9 +167,11 @@ namespace WindBot.Game
             int ct = 0;
             while (process.StandardOutput.EndOfStream)
             {
-                Thread.Sleep(500);
+                if (ct > 15) {
+                    Thread.Sleep(500);
+                }
                 ct++;
-                if(ct>20)
+                if(ct>40)
                 {
                     Console.WriteLine("fail to read");
                     throw new Exception("...");
@@ -178,7 +180,7 @@ namespace WindBot.Game
             str = process.StandardOutput.ReadLine();
             int res = int.Parse(str);
             
-            Logger.WriteLine("resp " + res);
+            Logger.WriteLine("resp : " + res);
             return res;
         }
         static public int Choose(int signature,int count)
