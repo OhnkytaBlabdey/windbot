@@ -73,6 +73,8 @@
     <Compile Include="Game\AI\Decks\CyberDragonExecutor.cs" />
     <Compile Include="Game\AI\Decks\DarkMagicianExecutor.cs" />
     <Compile Include="Game\AI\Decks\OrcustExecutor.cs" />
+    <Compile Include="Game\AI\Decks\FirstHand.cs" />
+    <Compile Include="Game\AI\Decks\SecondHand.cs" />
     <Compile Include="Game\AI\Decks\SkyStrikerExecutor.cs" />
     <Compile Include="Game\AI\Decks\MokeyMokeyKingExecutor.cs" />
     <Compile Include="Game\AI\Decks\MokeyMokeyExecutor.cs" />
@@ -123,6 +125,7 @@
     <Compile Include="Game\ClientField.cs" />
     <Compile Include="Game\Deck.cs" />
     <Compile Include="Game\Duel.cs" />
+    <Compile Include="Game\ExternalsUtil.cs" />
     <Compile Include="Game\GameAI.cs" />
     <Compile Include="Game\GameBehavior.cs" />
     <Compile Include="Game\GameClient.cs" />
