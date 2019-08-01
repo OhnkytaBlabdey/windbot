@@ -139,7 +139,7 @@ namespace WindBot.Game
             _messages.Add(GameMessage.AnnounceCard, OnAnnounceCard);
             _messages.Add(GameMessage.AnnounceNumber, OnAnnounceNumber);
             _messages.Add(GameMessage.AnnounceRace, OnAnnounceRace);
-            //1 not implemented not deleted
+            //1 not implemented now deleted
             //_messages.Add(GameMessage.AnnounceCardFilter, OnAnnounceCard);
             //以上
             _messages.Add(GameMessage.RockPaperScissors, OnRockPaperScissors);
@@ -1005,6 +1005,7 @@ namespace WindBot.Game
 
                 // TODO:
                 byte[] result = ExternalsUtil.SelectCard(count, min, max);
+                Logger.WriteLine("result of select card :");
                 for (int i = 0; i < result.Length; ++i)
                 {
                     Logger.WriteLine("res: " + i + " : " + result[i]);
@@ -1254,34 +1255,34 @@ namespace WindBot.Game
             {
                 Logger.WriteLine("OnSelectCounter");
                 packet.ReadByte(); // player
-                /*int type = */packet.ReadInt16();
+                int type = packet.ReadInt16();
                 int quantity = packet.ReadInt16();
+                Logger.WriteLine("type : " + type);
                 Logger.WriteLine("needed : " + quantity);
                 // TODO: ?
 
-                //IList<ClientCard> cards = new List<ClientCard>();
-                IList<int> counters = new List<int>();
+                IList<int> counters;
                 int count = packet.ReadByte();
+                counters = new int[count];
                 for (int i = 0; i < count; ++i)
                 {
-                    packet.ReadInt32(); // card id
-                    /*int player = GetLocalPlayer(*/packet.ReadByte()/*)*/;
-                    /*CardLocation loc = (CardLocation)*/packet.ReadByte();
-                    /*int seq = */packet.ReadByte();
+                    packet.ReadInt32();
+                    packet.ReadByte();
+                    packet.ReadByte();
+                    packet.ReadByte();
                     int num = packet.ReadInt16();
-                    Logger.WriteLine("num of " + i + " : " + num);
-                    //cards.Add(_duel.GetCard(player, loc, seq));
-                    counters.Add(num);
+                    Logger.WriteLine("counter amount of " + i + " th card : " + num);
+                    //counters.Add(num);
+                    counters[i] = num;
                 }
 
-                //IList<int> used = _ai.OnSelectCounter(type, quantity, cards, counters);
-                int[] used = new int[counters.Count * 2];
+                int[] used = new int[count * 2];
                 // modify begin
                 // must meet the quantity condition !
                 int lefted = 0;
                 foreach (int ct in counters) lefted += ct;
                 int index = 0;
-                for (int needed = quantity; needed > 0 && index < counters.Count; index++)
+                for (int needed = quantity; needed > 0 && index < count; index++)
                 {
                     if (counters[index] > 0)
                     {
@@ -1289,6 +1290,7 @@ namespace WindBot.Game
                         int low = needed - lefted;  // select at least : required - lefted
                         int high = counters[index]; // select at most
                         int ct;
+
                         if(low <= 0)
                         {
                             // low = 0;
@@ -1299,7 +1301,7 @@ namespace WindBot.Game
                             if (high > low) ct = low + ExternalsUtil.Choose(high - low);
                             else ct = low;
                         }
-                        //needed -= ct;
+
                         if (needed >= ct)
                         {
                             needed -= ct;
@@ -1310,7 +1312,6 @@ namespace WindBot.Game
                             used[index] = needed;
                             needed = 0;
                         }
-                        
                     }
                 }
                 // modify end
@@ -1592,39 +1593,79 @@ namespace WindBot.Game
                 filter = (field >> 30) & Zones.PendulumZones;
             }
 
-            int selected = _ai.OnSelectPlace(_select_hint, player, location, filter);
-            _select_hint = 0;
-
-            byte[] resp = new byte[3];
-            resp[0] = (byte)GetLocalPlayer(player);
-
-            if (location != CardLocation.PendulumZone)
+            if (iscon)
             {
-                resp[1] = (byte)location;
-                if ((selected & filter) > 0)
-                    filter &= selected;
+                // TODO:
+                int selected = _ai.OnSelectPlace(_select_hint, player, location, filter);
+                _select_hint = 0;
 
-                if ((filter & Zones.z6) != 0) resp[2] = 6;
-                else if ((filter & Zones.z5) != 0) resp[2] = 5;
-                else if ((filter & Zones.z2) != 0) resp[2] = 2;
-                else if ((filter & Zones.z1) != 0) resp[2] = 1;
-                else if ((filter & Zones.z3) != 0) resp[2] = 3;
-                else if ((filter & Zones.z0) != 0) resp[2] = 0;
-                else if ((filter & Zones.z4) != 0) resp[2] = 4;
+                byte[] resp = new byte[3];
+                resp[0] = (byte)GetLocalPlayer(player);
+
+                if (location != CardLocation.PendulumZone)
+                {
+                    resp[1] = (byte)location;
+                    if ((selected & filter) > 0)
+                        filter &= selected;
+
+                    if ((filter & Zones.z6) != 0) resp[2] = 6;
+                    else if ((filter & Zones.z5) != 0) resp[2] = 5;
+                    else if ((filter & Zones.z2) != 0) resp[2] = 2;
+                    else if ((filter & Zones.z1) != 0) resp[2] = 1;
+                    else if ((filter & Zones.z3) != 0) resp[2] = 3;
+                    else if ((filter & Zones.z0) != 0) resp[2] = 0;
+                    else if ((filter & Zones.z4) != 0) resp[2] = 4;
+                }
+                else
+                {
+                    resp[1] = (byte)CardLocation.SpellZone;
+                    if ((selected & filter) > 0)
+                        filter &= selected;
+
+                    if ((filter & Zones.z0) != 0) resp[2] = 6;
+                    if ((filter & Zones.z1) != 0) resp[2] = 7;
+                }
+
+                BinaryWriter reply = GamePacketFactory.Create(CtosMessage.Response);
+                reply.Write(resp);
+                Connection.Send(reply);
             }
             else
             {
-                resp[1] = (byte)CardLocation.SpellZone;
-                if ((selected & filter) > 0)
-                    filter &= selected;
+                int selected = _ai.OnSelectPlace(_select_hint, player, location, filter);
+                _select_hint = 0;
 
-                if ((filter & Zones.z0) != 0) resp[2] = 6;
-                if ((filter & Zones.z1) != 0) resp[2] = 7;
+                byte[] resp = new byte[3];
+                resp[0] = (byte)GetLocalPlayer(player);
+
+                if (location != CardLocation.PendulumZone)
+                {
+                    resp[1] = (byte)location;
+                    if ((selected & filter) > 0)
+                        filter &= selected;
+
+                    if ((filter & Zones.z6) != 0) resp[2] = 6;
+                    else if ((filter & Zones.z5) != 0) resp[2] = 5;
+                    else if ((filter & Zones.z2) != 0) resp[2] = 2;
+                    else if ((filter & Zones.z1) != 0) resp[2] = 1;
+                    else if ((filter & Zones.z3) != 0) resp[2] = 3;
+                    else if ((filter & Zones.z0) != 0) resp[2] = 0;
+                    else if ((filter & Zones.z4) != 0) resp[2] = 4;
+                }
+                else
+                {
+                    resp[1] = (byte)CardLocation.SpellZone;
+                    if ((selected & filter) > 0)
+                        filter &= selected;
+
+                    if ((filter & Zones.z0) != 0) resp[2] = 6;
+                    if ((filter & Zones.z1) != 0) resp[2] = 7;
+                }
+
+                BinaryWriter reply = GamePacketFactory.Create(CtosMessage.Response);
+                reply.Write(resp);
+                Connection.Send(reply);
             }
-
-            BinaryWriter reply = GamePacketFactory.Create(CtosMessage.Response);
-            reply.Write(resp);
-            Connection.Send(reply);
         }
 
         private void OnSelectPosition(BinaryReader packet)

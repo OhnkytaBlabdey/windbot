@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Threading;
 
 namespace WindBot.Game
 {
@@ -166,8 +167,9 @@ namespace WindBot.Game
             int ct = 0;
             while (process.StandardOutput.EndOfStream)
             {
+                Thread.Sleep(500);
                 ct++;
-                if(ct>100)
+                if(ct>20)
                 {
                     Console.WriteLine("fail to read");
                     throw new Exception("...");
