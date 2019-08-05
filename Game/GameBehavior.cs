@@ -985,11 +985,13 @@ namespace WindBot.Game
                 bool cancelable = packet.ReadByte() != 0;
                 int min = packet.ReadByte();
                 int max = packet.ReadByte();
-
+                Logger.WriteLine("min : " + min + ", max : " + max);
                 int count = packet.ReadByte();
+                Logger.WriteLine("count : " + count);
                 for (int i = 0; i < count; ++i)
                 {
-                    packet.ReadInt32(); //id
+                    int id = packet.ReadInt32(); //id
+                    Logger.WriteLine(i + " th card's id : " + id);
                     packet.ReadByte(); //player
                     packet.ReadByte(); //location
                     packet.ReadByte(); //sequence
@@ -1287,30 +1289,30 @@ namespace WindBot.Game
                 {
                     if (counters[index] > 0)
                     {
-                        lefted -= counters[index];
-                        int low = needed - lefted;  // select at least : required - lefted
+                        lefted -= counters[index]; // lefted counters : count on index+1 ~ end
+                        int low = needed - lefted; // select at least : required - lefted
                         int high = counters[index]; // select at most
                         int ct;
 
                         if(low <= 0)
                         {
                             // low = 0;
-                            Logger.WriteLine("the " + index + "th card's counters are free.");
-                            ct = ExternalsUtil.Choose(counters[index]);
-                            Logger.WriteLine("the" + index + "th card's result : " + ct);
+                            Logger.WriteLine("the " + index + " th card's counters are free.");
+                            ct = ExternalsUtil.Choose(counters[index] + 1) - 1; // 0~max, able to select 0
+                            Logger.WriteLine("the " + index + " th card's result : " + ct);
                         }
                         else
                         {
                             if (high > low)
                             {
-                                Logger.WriteLine("the " + index + "th card needs to commit " + low + " ~ " + high + "counters.");
-                                ct = low + ExternalsUtil.Choose(high - low);
-                                Logger.WriteLine("the" + index + "th card's result : " + ct);
+                                Logger.WriteLine("the " + index + " th card needs to commit " + low + " ~ " + high + "counters.");
+                                ct = low + ExternalsUtil.Choose(high - low + 1) - 1; // able to select low
+                                Logger.WriteLine("the " + index + " th card's result : " + ct);
                             }
                             else
                             {
                                 ct = low;
-                                Logger.WriteLine("the " + index + "th card's counters are all needed.");
+                                Logger.WriteLine("the " + index + " th card's counters are all needed.");
                             }
                         }
 
@@ -1324,8 +1326,9 @@ namespace WindBot.Game
                             used[index] = needed;
                             needed = 0;
                         }
-                        Logger.WriteLine("the" + index + "th card's final-result : " + used[index]);
-                    } else
+                        Logger.WriteLine("the " + index + " th card's final-result : " + used[index]);
+                    }
+                    else
                     {
                         Logger.WriteLine("skip the " + index + "th card.");
                     }
@@ -1334,7 +1337,7 @@ namespace WindBot.Game
                 byte[] result = new byte[count * 2];
                 for (int i = 0; i < count; ++i)
                 {
-                    result[i * 2] = (byte)(used[i] & 0x00ff);
+                    result[i * 2] = (byte)(used[i] & 0xff);
                     result[i * 2 + 1] = (byte)(used[i] >> 8);
                 }
                 for (int i = 0; i < result.Length; ++i)
@@ -1385,35 +1388,74 @@ namespace WindBot.Game
 
         private void OnSelectEffectYn(BinaryReader packet)
         {
-            packet.ReadByte(); // player
-
-            int cardId = packet.ReadInt32();
-            int player = GetLocalPlayer(packet.ReadByte());
-            CardLocation loc = (CardLocation)packet.ReadByte();
-            int seq = packet.ReadByte();
-            packet.ReadByte();
-            int desc = packet.ReadInt32();
-
-            if (desc == 0 || desc == 221)
+            if (iscon)
             {
-                // 0: phase trigger effect
-                // 221: trigger effect
-                // for compatibility
-                desc = -1;
-            }
+                Logger.WriteLine("OnSelectEffectYn");
+                packet.ReadByte(); // player
 
-            ClientCard card = _duel.GetCard(player, loc, seq);
-            if (card == null)
+                int cardId = packet.ReadInt32();
+                int player = GetLocalPlayer(packet.ReadByte());
+                CardLocation loc = (CardLocation)packet.ReadByte();
+                int seq = packet.ReadByte();
+                packet.ReadByte();
+                int desc = packet.ReadInt32();
+                Logger.WriteLine("id : " + cardId + ", desc : " + desc);
+
+                if (desc == 0 || desc == 221)
+                {
+                    // 0: phase trigger effect
+                    // 221: trigger effect
+                    // for compatibility
+                    desc = -1;
+                }
+
+                ClientCard card = _duel.GetCard(player, loc, seq);
+                if (card == null)
+                {
+                    Connection.Send(CtosMessage.Response, 0);
+                    return;
+                }
+
+                if (card.Id == 0)
+                    card.SetId(cardId);
+
+                //int reply = _ai.OnSelectEffectYn(card, desc) ? (1) : (0);
+                int reply = ExternalsUtil.Choose(2) - 1;
+                Logger.WriteLine("effect yesno - res : " + reply);
+                Connection.Send(CtosMessage.Response, reply);
+            }
+            else
             {
-                Connection.Send(CtosMessage.Response, 0);
-                return;
-            }
-            
-            if (card.Id == 0)
-                card.SetId(cardId);
+                packet.ReadByte(); // player
 
-            int reply = _ai.OnSelectEffectYn(card, desc) ? (1) : (0);
-            Connection.Send(CtosMessage.Response, reply);
+                int cardId = packet.ReadInt32();
+                int player = GetLocalPlayer(packet.ReadByte());
+                CardLocation loc = (CardLocation)packet.ReadByte();
+                int seq = packet.ReadByte();
+                packet.ReadByte();
+                int desc = packet.ReadInt32();
+
+                if (desc == 0 || desc == 221)
+                {
+                    // 0: phase trigger effect
+                    // 221: trigger effect
+                    // for compatibility
+                    desc = -1;
+                }
+
+                ClientCard card = _duel.GetCard(player, loc, seq);
+                if (card == null)
+                {
+                    Connection.Send(CtosMessage.Response, 0);
+                    return;
+                }
+
+                if (card.Id == 0)
+                    card.SetId(cardId);
+
+                int reply = _ai.OnSelectEffectYn(card, desc) ? (1) : (0);
+                Connection.Send(CtosMessage.Response, reply);
+            }
         }
 
         private void OnSelectIdleCmd(BinaryReader packet)
@@ -1433,11 +1475,12 @@ namespace WindBot.Game
                     A[k] += count;
                     for (int i = 0; i < count; ++i)
                     {
-                        packet.ReadInt32(); // card id
+                        int id = packet.ReadInt32(); // card id
                         packet.ReadByte(); //controler
                         packet.ReadByte(); //location
                         packet.ReadByte(); //sequence
                         //card.ActionIndex[k] = i;
+                        Logger.WriteLine(k + " type " + i + " th card's id : " + id);
                     }
                 }
                 count = packet.ReadByte();
@@ -1445,11 +1488,12 @@ namespace WindBot.Game
                 A[5] += count;
                 for (int i = 0; i < count; ++i)
                 {
-                    packet.ReadInt32(); // card id
+                    int id = packet.ReadInt32(); // card id
                     packet.ReadByte(); //controler
                     packet.ReadByte(); //location
                     packet.ReadByte(); //sequence
-                    packet.ReadInt32(); //desc
+                    int desc = packet.ReadInt32(); //desc
+                    Logger.WriteLine(" activateable " + i + " th card's id : " + id + ", desc : " + desc);
 
                     //card.ActionIndex[5] = i;
                     //if (card.ActionActivateIndex.ContainsKey(desc))
@@ -1482,7 +1526,7 @@ namespace WindBot.Game
                         break;
                     }
                 }
-                Logger.WriteLine("idle-res " + res);
+                Logger.WriteLine("idle-res " + res + ", index : " + (res >> 16) + ", action : " + (res & 0xff));
                 Connection.Send(CtosMessage.Response, res);
                 return;
             }
@@ -1832,12 +1876,31 @@ namespace WindBot.Game
 
         private void OnAnnounceNumber(BinaryReader packet)
         {
-            IList<int> numbers = new List<int>();
-            packet.ReadByte(); // player
-            int count = packet.ReadByte();
-            for (int i = 0; i < count; ++i)
-                numbers.Add(packet.ReadInt32());
-            Connection.Send(CtosMessage.Response, _ai.OnAnnounceNumber(numbers));
+            if (iscon)
+            {
+                IList<int> numbers = new List<int>();
+                Logger.WriteLine("OnAnnounceNumber");
+                packet.ReadByte(); // player
+                int count = packet.ReadByte();
+                Logger.WriteLine("count : " + count);
+                for (int i = 0; i < count; ++i)
+                {
+                    int t = packet.ReadInt32();
+                    numbers.Add(t);
+                    Logger.WriteLine(i + " th number : " + t);
+                }
+                int res = ExternalsUtil.Choose(count);
+                Connection.Send(CtosMessage.Response, res - 1); // 0~count-1
+            }
+            else
+            {
+                IList<int> numbers = new List<int>();
+                packet.ReadByte(); // player
+                int count = packet.ReadByte();
+                for (int i = 0; i < count; ++i)
+                    numbers.Add(packet.ReadInt32());
+                Connection.Send(CtosMessage.Response, _ai.OnAnnounceNumber(numbers));
+            }
         }
 
         private void OnAnnounceRace(BinaryReader packet)

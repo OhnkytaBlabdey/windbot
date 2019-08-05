@@ -35,7 +35,7 @@ namespace WindBot.Game
 
             public byte[] GetResult()
             {
-                Logger.WriteLine("dump again.");
+                Logger.WriteLine("(select card) dump again.");
                 Dump();
                 byte[] res = new byte[chosen.Count + 1];
                 res[0] = (byte)chosen.Count;
@@ -173,7 +173,7 @@ namespace WindBot.Game
                 ct++;
                 if(ct>40)
                 {
-                    Console.WriteLine("fail to read");
+                    Console.WriteLine("fail to read while io.");
                     throw new Exception("...");
                 }
             }
