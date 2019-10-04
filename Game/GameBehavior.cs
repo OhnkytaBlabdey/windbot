@@ -17,6 +17,7 @@ namespace WindBot.Game
         public YGOClient Connection { get; private set; }
         public Deck Deck { get; private set; }
         static public bool iscon=false;
+        static public int start_lp;
 
         private GameAI _ai;
 
@@ -362,6 +363,7 @@ namespace WindBot.Game
             _duel.Turn = 0;
             _duel.Fields[GetLocalPlayer(0)].LifePoints = packet.ReadInt32();
             _duel.Fields[GetLocalPlayer(1)].LifePoints = packet.ReadInt32();
+            start_lp = _duel.Fields[0].LifePoints;
             int deck = packet.ReadInt16();
             int extra = packet.ReadInt16();
             _duel.Fields[GetLocalPlayer(0)].Init(deck, extra);
@@ -386,6 +388,7 @@ namespace WindBot.Game
             if (iscon) ExternalsUtil.Choose(0);
             
             Logger.DebugWriteLine("Duel finished against " + otherName + ", result: " + textResult);
+            Logger.DebugWriteLine("http result " + ExternalsUtil.getHttp("127.0.0.1:8000/count?res=" + result + "&id=" + start_lp, 1));
         }
 
         private void OnDraw(BinaryReader packet)

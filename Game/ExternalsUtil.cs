@@ -1,5 +1,7 @@
 ﻿using System;
 using System.IO;
+using System.Net;
+using System.Text;
 using System.Diagnostics;
 
 namespace WindBot.Game
@@ -73,6 +75,17 @@ namespace WindBot.Game
             int choice = int.Parse(Console.ReadLine());
             res = choice;
             return res;
+        }
+        static public string getHttp(string url, int timeout)
+        {
+            HttpWebRequest request = (HttpWebRequest) WebRequest.Create(url);
+            request.Timeout = timeout;
+            request.Method = "GET";
+            request.ContentType = "text/html;charset=UTF-8";
+            request.UserAgent = null;
+            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+            string text = new StreamReader(response.GetResponseStream(), Encoding.UTF8).ReadToEnd();
+            return text;
         }
     }
 }
