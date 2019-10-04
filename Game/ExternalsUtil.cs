@@ -3,6 +3,7 @@ using System.IO;
 using System.Net;
 using System.Text;
 using System.Diagnostics;
+using System.Runtime;
 
 namespace WindBot.Game
 {
@@ -78,14 +79,22 @@ namespace WindBot.Game
         }
         static public string getHttp(string url, int timeout)
         {
-            HttpWebRequest request = (HttpWebRequest) WebRequest.Create(url);
-            request.Timeout = timeout;
-            request.Method = "GET";
-            request.ContentType = "text/html;charset=UTF-8";
-            request.UserAgent = null;
-            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-            string text = new StreamReader(response.GetResponseStream(), Encoding.UTF8).ReadToEnd();
-            return text;
+            try
+            {
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+                request.Timeout = timeout;
+                request.Method = "GET";
+                request.ContentType = "text/html;charset=UTF-8";
+                request.UserAgent = null;
+                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+                if (response == null) return null;
+                string text = new StreamReader(response.GetResponseStream(), Encoding.UTF8).ReadToEnd();
+                return text;
+            }catch (Exception ex)
+            {
+                Logger.WriteErrorLine(ex.Message);
+                return null;
+            }
         }
     }
 }

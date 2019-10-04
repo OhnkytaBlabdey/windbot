@@ -363,7 +363,6 @@ namespace WindBot.Game
             _duel.Turn = 0;
             _duel.Fields[GetLocalPlayer(0)].LifePoints = packet.ReadInt32();
             _duel.Fields[GetLocalPlayer(1)].LifePoints = packet.ReadInt32();
-            start_lp = _duel.Fields[0].LifePoints;
             int deck = packet.ReadInt16();
             int extra = packet.ReadInt16();
             _duel.Fields[GetLocalPlayer(0)].Init(deck, extra);
@@ -388,7 +387,15 @@ namespace WindBot.Game
             if (iscon) ExternalsUtil.Choose(0);
             
             Logger.DebugWriteLine("Duel finished against " + otherName + ", result: " + textResult);
-            Logger.DebugWriteLine("http result " + ExternalsUtil.getHttp("127.0.0.1:8000/count?res=" + result + "&id=" + start_lp, 1));
+            if (_duel.IsFirst)
+            {
+                Logger.WriteLine("player second.");
+            }
+            else
+            {
+                Logger.WriteLine("duel result:" + result.ToString() + ", id:" + start_lp.ToString());
+            }
+            // Logger.DebugWriteLine("http result " + ExternalsUtil.getHttp("127.0.0.1:8000/count?res=" + result + "&id=" + start_lp, 1));
         }
 
         private void OnDraw(BinaryReader packet)
@@ -790,43 +797,49 @@ namespace WindBot.Game
 
         private void OnUpdateData(BinaryReader packet)
         {
-            int player = GetLocalPlayer(packet.ReadByte());
-            CardLocation loc = (CardLocation)packet.ReadByte();
-            IList<ClientCard> cards = null;
-            switch (loc)
+            try
             {
-                case CardLocation.Hand:
-                    cards = _duel.Fields[player].Hand;
-                    break;
-                case CardLocation.MonsterZone:
-                    cards = _duel.Fields[player].MonsterZone;
-                    break;
-                case CardLocation.SpellZone:
-                    cards = _duel.Fields[player].SpellZone;
-                    break;
-                case CardLocation.Grave:
-                    cards = _duel.Fields[player].Graveyard;
-                    break;
-                case CardLocation.Removed:
-                    cards = _duel.Fields[player].Banished;
-                    break;
-                case CardLocation.Deck:
-                    cards = _duel.Fields[player].Deck;
-                    break;
-                case CardLocation.Extra:
-                    cards = _duel.Fields[player].ExtraDeck;
-                    break;
-            }
-            if (cards != null)
-            {
-                foreach (ClientCard card in cards)
+                int player = GetLocalPlayer(packet.ReadByte());
+                CardLocation loc = (CardLocation)packet.ReadByte();
+                IList<ClientCard> cards = null;
+                switch (loc)
                 {
-                    int len = packet.ReadInt32();
-                    long pos = packet.BaseStream.Position;
-                    if (len > 8)
-                      card.Update(packet, _duel);
-                    packet.BaseStream.Position = pos + len - 4;
+                    case CardLocation.Hand:
+                        cards = _duel.Fields[player].Hand;
+                        break;
+                    case CardLocation.MonsterZone:
+                        cards = _duel.Fields[player].MonsterZone;
+                        break;
+                    case CardLocation.SpellZone:
+                        cards = _duel.Fields[player].SpellZone;
+                        break;
+                    case CardLocation.Grave:
+                        cards = _duel.Fields[player].Graveyard;
+                        break;
+                    case CardLocation.Removed:
+                        cards = _duel.Fields[player].Banished;
+                        break;
+                    case CardLocation.Deck:
+                        cards = _duel.Fields[player].Deck;
+                        break;
+                    case CardLocation.Extra:
+                        cards = _duel.Fields[player].ExtraDeck;
+                        break;
                 }
+                if (cards != null)
+                {
+                    foreach (ClientCard card in cards)
+                    {
+                        int len = packet.ReadInt32();
+                        long pos = packet.BaseStream.Position;
+                        if (len > 8)
+                            card.Update(packet, _duel);
+                        packet.BaseStream.Position = pos + len - 4;
+                    }
+                }
+            }catch (NullReferenceException ex)
+            {
+                Logger.WriteErrorLine(ex.Message);
             }
         }
 
