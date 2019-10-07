@@ -71,6 +71,7 @@
     <Compile Include="Game\AI\Decks\Level8Executor.cs" />
     <Compile Include="Game\AI\Decks\SalamangreatExecutor.cs" />
     <Compile Include="Game\AI\Decks\CyberDragonExecutor.cs" />
+    <Compile Include="Game\AI\Decks\SecondHand.cs" />
     <Compile Include="Game\AI\Decks\DarkMagicianExecutor.cs" />
     <Compile Include="Game\AI\Decks\OrcustExecutor.cs" />
     <Compile Include="Game\AI\Decks\SkyStrikerExecutor.cs" />
