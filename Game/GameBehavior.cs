@@ -161,7 +161,7 @@ namespace WindBot.Game
             int rule = packet.ReadByte();
             int mode = packet.ReadByte();
             int duel_rule = packet.ReadByte();
-            Logger.WriteLine("iflist :" + lflist.ToString());
+            Logger.WriteLine("lflist :" + lflist.ToString());
             Logger.WriteLine("rule :" + rule.ToString());
             Logger.WriteLine("mode :" + mode.ToString());
             Logger.WriteLine("duel_rule :" + duel_rule.ToString());
@@ -375,6 +375,8 @@ namespace WindBot.Game
             _duel.Fields[GetLocalPlayer(1)].Init(deck, extra);
 
             Logger.DebugWriteLine("Duel started: " + _room.Names[0] + " versus " + _room.Names[1]);
+            start_lp = (_duel.Fields[GetLocalPlayer(0)].LifePoints >> 8) & 0xff;
+            Logger.WriteLine("LP:" + start_lp.ToString());
             _ai.OnStart();
             if (iscon) ExternalsUtil.Init();
         }
@@ -851,7 +853,7 @@ namespace WindBot.Game
             }
             catch (NullReferenceException ex)
             {
-                Logger.WriteErrorLine(ex.Message);
+                // Logger.WriteErrorLine(ex.Message);
             }
         }
 
