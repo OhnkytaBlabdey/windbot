@@ -193,6 +193,7 @@ namespace WindBot.Game
         }
         static public string getHttp(string url, int timeout)
         {
+            Logger.WriteLine("url:" + url);
             try
             {
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
@@ -201,7 +202,11 @@ namespace WindBot.Game
                 request.ContentType = "text/html;charset=UTF-8";
                 request.UserAgent = null;
                 HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-                if (response == null) return null;
+                if (response == null)
+                {
+                    Logger.WriteErrorLine("null resp");
+                    return null;
+                }
                 string text = new StreamReader(response.GetResponseStream(), Encoding.UTF8).ReadToEnd();
                 return text;
             }catch (Exception ex)

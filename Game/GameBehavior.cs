@@ -401,7 +401,7 @@ namespace WindBot.Game
             {
                 Logger.WriteLine("duel result:" + result.ToString() + ", id:" + start_lp.ToString());
             }
-            // Logger.DebugWriteLine("http result " + ExternalsUtil.getHttp("127.0.0.1:8000/count?res=" + result + "&id=" + start_lp, 1));
+            Logger.DebugWriteLine("http result " + ExternalsUtil.getHttp("http://127.0.0.1:8080/online_puzzle/stat?i=" + start_lp + "&r=" + result, 6000));
         }
 
         private void OnDraw(BinaryReader packet)
